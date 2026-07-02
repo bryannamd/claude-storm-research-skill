@@ -11,12 +11,16 @@ Clone this repository, then copy (or symlink) the `skills/storm-research` folder
 
 ```bash
 git clone https://github.com/bryannamd/claude-storm-research-skill.git
+mkdir -p ~/.claude/skills
+rm -rf ~/.claude/skills/storm-research   # remove any previous install
 cp -r claude-storm-research-skill/skills/storm-research ~/.claude/skills/storm-research
 ```
 
 Or symlink it to keep it updated with `git pull`:
 
 ```bash
+mkdir -p ~/.claude/skills
+rm -rf ~/.claude/skills/storm-research   # remove any previous install
 ln -s "$(pwd)/claude-storm-research-skill/skills/storm-research" ~/.claude/skills/storm-research
 ```
 
