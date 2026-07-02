@@ -59,7 +59,7 @@ The skill produces two final artifacts for every research run:
 
 ## Validation
 
-Claude Code watches `~/.claude/skills/` and picks up new skills automatically within a running session. If `~/.claude/skills/` did not already exist before you cloned into it, restart Claude Code once so the new directory is watched.
+Claude Code watches `~/.claude/skills/` and picks up new skills automatically within a running session. If `~/.claude/skills/` did not exist before installation, restart Claude Code once so the new directory is watched.
 
 After installation, verify the skill is recognized:
 
