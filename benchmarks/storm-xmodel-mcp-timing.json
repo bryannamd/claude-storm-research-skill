@@ -1,0 +1,14 @@
+{
+  "A_lenses": 107.78609129200049,
+  "  lens:practitioner(codex)": 75.58717374999833,
+  "  lens:skeptic(codex)": 76.94560629200714,
+  "  lens:historian(codex)": 107.78477741700772,
+  "  lens:academic(agy)": 85.63718616700498,
+  "  lens:economist(agy)": 65.49436475000402,
+  "  reason(claude)": 97.30004866699164,
+  "  verify-codexlenses(agy)": 172.8285210000031,
+  "  verify-agylenses(codex)": 175.48036133300047,
+  "B_reason_verify_overlapped": 175.48508662500535,
+  "C_synthesis(claude)": 184.01680120898527,
+  "TOTAL_wallclock": 467.2912510830065
+}

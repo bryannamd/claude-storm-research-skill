@@ -81,6 +81,27 @@ Test with a lightweight query:
 claude -p "deep research on the history of the Roman aqueducts"
 ```
 
+## Benchmarks
+
+The [`benchmarks/`](benchmarks/) folder holds an empirical comparison against Claude Code's native deep-research, plus a sequential-vs-parallel study of this skill's own execution, across two topics (a descriptive one and a contested decision one). Full data and output artifacts are in [`benchmarks/README.md`](benchmarks/README.md).
+
+**storm-research vs. deep-research** (matched scale, same model, ~10 agents each):
+
+| | deep-research | storm-research |
+|---|---|---|
+| Wall-clock | **~1.8× faster** (flat fan-out) | slower (sequential stage gating) |
+| Tokens / cost | ~equal at equal scale — the lever is agent count, not methodology |  |
+| Quality on contested topics | accurate but unranked findings dump | verification caught **fabricated figures** a plain dump passed through (e.g. invented Discord P99 numbers, a garbled Uber race count) and ranked findings by reliability |
+
+**Sequential vs. parallel cross-model** (this skill's own pipeline, codex + agy as lens/verify agents):
+
+| Topic | Sequential (Claude-only) | Parallel cross-model | Δ |
+|---|---|---|---|
+| MCP | 10.5 min | **7.8 min** | −26% |
+| Rust vs Go | 12.2 min | **10.5 min** | −14% |
+
+Parallelizing the pipeline gives a stable **~2.2×** over the same calls run back-to-back (lenses collapse to the slowest one; reasoning overlaps verification). Against fast Claude-only subagents the net gain is smaller (14–26%) because external CLIs are slower per call — so **cross-model buys verification quality, not speed**. Pick deep-research for descriptive breadth and speed; pick storm-research when the cost of a plausible-but-wrong claim justifies the slower, self-critiquing pipeline.
+
 ## Documentation
 
 Read the full documentation under [`skills/storm-research/`](skills/storm-research/) for:
