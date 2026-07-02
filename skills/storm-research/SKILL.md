@@ -1,98 +1,99 @@
 ---
 name: storm-research
 description: >
-  Deep research skill implementing the Stanford STORM methodology for multi-perspective topic synthesis.
-  Use this when the user asks for deep research, comprehensive briefs, or investigation of complex topics
-  using trigger phrases like "deep research on", "STORM briefing", "comprehensive research brief",
-  "investigate the topic of", "research report on", or "storm research".
+  Deep research skill implementing the Stanford STORM methodology (Shao et al., NAACL 2024) with
+  five parallel expert lenses, contradiction mapping, adversarial peer review, and primary-source
+  verification. Lens and verification agents run on external CLIs (codex, agy) by default for
+  cross-model diversity, with Claude subagents as fallback. Use when the user asks for deep research,
+  comprehensive briefs, or investigation of complex topics using trigger phrases like "deep research on",
+  "STORM briefing", "comprehensive research brief", "investigate the topic of", "research report on",
+  or "storm research". Overkill for a simple factual lookup.
 license: MIT
-compatibility: Requires Claude Code with WebSearch and WebFetch tool access.
-allowed-tools: WebSearch WebFetch
+compatibility: >
+  Requires Claude Code with WebSearch and WebFetch tool access. Prefers external agent CLIs
+  (codex, agy) on PATH for lens and verification agents; falls back to built-in subagents.
+allowed-tools: WebSearch WebFetch Bash(codex *) Bash(agy *) Bash(command -v *)
+argument-hint: "[topic to research]"
 metadata:
-  version: "1.0.0"
+  version: "2.0.0"
   author: Bryan Choi
 ---
 
 # STORM Research Skill
 
-This skill runs a deep research workflow based on the Stanford STORM methodology. It builds comprehensive reports by simulating perspective-guided writers, retrieving web sources, conducting source-grounded conversations with a retrieval expert, and synthesizing the resulting evidence. You get a complete view of a topic instead of a shallow summary.
+Turns one topic into a verified, multi-perspective research brief plus an HTML briefing. Based on Stanford STORM (Shao et al., NAACL 2024): perspective-guided question asking and source-grounded conversations produce broader, better-organized research than a single prompt. This skill adds what STORM's authors flagged as missing — self-critique — through adversarial peer review and per-claim primary-source verification.
+
+Run the full pipeline end to end. Do not shortcut a stage. This is heavier than a quick web lookup; that is the point.
+
+## Executor Routing (read first)
+
+Lens agents (Stage 02) and verification agents (Stage 06) run on **external, non-Anthropic agent CLIs by default** — cross-model execution catches biases a model cannot see in its own output.
+
+1. Detect once at run start: `command -v codex`, `command -v agy`.
+2. Both available → split lenses across both; verification is cross-model (each executor verifies the *other's* claims, never solely its own).
+3. One available → it runs all lenses; Claude runs all verification clusters (producer/verifier separation holds).
+4. Neither available → Claude built-in subagents run everything, with verification in fresh contexts that never see the lens transcripts. Note the single-model run in the report's method line.
+5. Synthesis and final drafting always stay in the main Claude session — weak models fail at citation-dense text; delegation is for parallel research and verification only.
+
+Full detection, invocation, and failure-fallback rules: [docs/executors.md](docs/executors.md). **Follow it exactly.**
 
 ## Pipeline Overview
 
-The research process follows seven strict stages to ensure quality and depth. Each stage builds upon the previous one.
+**01 Scope Clarification** — Turn the request into a one-line topic frame, identify the reader's role (targets the actionable section), derive a kebab-case topic slug. Default to proceeding; ask at most one clarifying question, and only when ambiguity would change the research.
 
-**01 Scope Clarification**
-Define the exact boundaries of the topic and get user approval before Stage 02. Identify the core questions we need to answer before searching. This prevents drift into unrelated areas.
+**02 Expert Lenses & Retrieval Conversation** — Run five expert lenses in parallel (Practitioner, Academic, Skeptic, Economist, Historian) on the routed executors. Each lens does real web research and returns a fixed format: core position, strongest evidence with cited URLs, and the one thing only that lens would say. Each lens then gets one to two grounded follow-up rounds — the STORM conversation loop, deliberately bounded.
 
-**02 Expert Perspective Generation and Retrieval Conversation**
-Simulate different domain experts, generate targeted questions, run `WebSearch` and `WebFetch`, and store source-grounded conversations in `conversations/`. This is the core STORM loop.
+**03 Contradiction & Tension Mapping** — Map where lenses directly contradict, which has the strongest/weakest evidence, the one question that would resolve the biggest contradiction, what every lens agrees on (likely true), and what no lens addressed (the field's blind spot).
 
-**03 Contradiction and Tension Mapping**
-Analyze the retrieved information for conflicting claims. Map out ongoing debates and areas of uncertainty. We highlight disagreements rather than hiding them. This provides a balanced view.
+**04 Information Synthesis & Outline Drafting** — Curate findings into an outline answering the thesis question; map citations to sections.
 
-**04 Information Synthesis and Outline Drafting**
-Organize the gathered data into a logical structure. Draft the initial sections of the research report. The outline groups related concepts together naturally.
+**05 Adversarial Peer Review** — Grade the draft's own work: per-finding confidence scores (1–10), weakest link, bias check (did one lens dominate?), missing sixth lens, overall grade. STORM's known weaknesses — source bias transfer and over-association of unrelated facts — are explicit review targets.
 
-**05 Simulated Peer Review**
-Critique the synthesized draft from multiple angles. This is a post-synthesis QA step, not a replacement for the Stage 02 retrieval conversation loop.
+**06 Source Verification & Fact-Checking** — Cross-model verification clusters check every claim against its primary source. Verdicts: CONFIRMED / CORRECTED / DEMOTED / FABRICATED (dropped). The report is then rewritten as V2 with post-verification confidence scores.
 
-**06 Source Verification and Fact-Checking**
-Cross-reference all claims against the original web sources. Ensure every factual statement has a valid citation. We drop claims that lack strong evidence.
-
-**07 Output Formatting and Delivery**
-Package the final content. Produce both a detailed text document and a presentation-ready slide deck, then present them for user approval before marking the run complete.
+**07 Output Formatting & Delivery** — Render `brief.md` and an `index.html` briefing from [assets/report-template.html](assets/report-template.html): 60-second summary, findings ranked by reliability with supported-by/challenged-by lens tags, the assumption the briefing rests on plus the missing sixth lens, reader-role-targeted actions, and the verified source list. Present for user approval.
 
 ## Trigger Activation Guide
 
-You can invoke this skill by using specific phrases in your prompt. The system listens for these exact patterns.
-
-*   `deep research on`
-*   `STORM briefing`
-*   `storm:`
-*   `comprehensive research brief`
-*   `investigate the topic of`
-*   `research report on`
-*   `storm research`
-
-Just include one of these phrases in your request. The skill will automatically take over the research process. You don't need to specify the seven stages manually.
-
-## Prerequisites
-
-You need access to live web search tools. The skill relies heavily on retrieving current information. Ensure your environment allows external network requests before starting a session.
+* `deep research on`
+* `STORM briefing`
+* `storm:`
+* `comprehensive research brief`
+* `investigate the topic of`
+* `research report on`
+* `storm research`
 
 ## Output Reference
 
-The skill generates two primary artifacts upon completion: `.storm-research/<topic-slug>/brief.md` and `.storm-research/<topic-slug>/index.html`.
+Artifacts land in `.storm-research/<topic-slug>/`:
 
-### Markdown Research Brief
-A `brief.md` file containing the full synthesis. It includes all citations and mapped tensions. Use this for deep reading and archival purposes. The document structure follows the generated outline.
-
-### HTML Slide Deck
-An `index.html` file formatted as a presentation. This highlights the key findings and expert perspectives. Open it in any web browser for a quick overview. It works well for sharing results with a team.
+* `brief.md` — full synthesis with citations and mapped tensions.
+* `index.html` — self-contained briefing rendered from the bundled template.
+* `scope.md`, `executor-manifest.md`, `conversations/`, `raw-source-corpus.json`, `tension-map.md`, `outline-v1.md`, `peer-review.md`, `outline-v2.md`, `claim-verification-ledger.md` — inspectable intermediate state.
 
 ## Additional Resources
 
-During execution, read these supporting documents to ensure correct behavior. The pipeline overview above is a summary; the stage documents contain the detailed instructions, checklists, and schemas.
+The stage documents are the authoritative instructions; this overview is a summary.
 
-* **Stage instructions:** `docs/stage-01.md` through `docs/stage-07.md` — Detailed inputs, actions, outputs, and QA checklists for each of the seven stages. Stage 02 (retrieval conversation) and Stage 06 (source verification) are especially critical; follow them precisely.
-* **Conceptual overview:** `docs/pipeline.md` — Why STORM works and how the stages connect.
-* **Source grading:** `docs/verification-rubric.md` — How to grade sources (A–F) and what qualifies each grade.
-* **Output schema:** `docs/output-schema.md` — Exact HTML slide deck structure, responsive constraints, and accessibility requirements.
-* **Examples:** `examples/quick-start.md`, `examples/sample-request.md`, `examples/sample-briefing-outline.md`, `examples/sample-verification-ledger.md` — Reference for what requests, outputs, and ledgers should look like.
-* **Test contracts:** `tests/golden-output-checklist.md`, `tests/manual-test-script.md`, `tests/skill-structure-checklist.md` — Use these to verify a run before declaring it complete.
+* **Executor protocol:** `docs/executors.md` — external-agent detection, invocation, routing, and fallback. Binding for Stages 02 and 06.
+* **Stage instructions:** `docs/stage-01.md` … `docs/stage-07.md` — inputs, actions, outputs, QA checklists.
+* **Conceptual overview:** `docs/pipeline.md` — the STORM methodology and how stages map to it.
+* **Source grading:** `docs/verification-rubric.md` — A–F grading plus the evidence-quality hierarchy.
+* **Output schema:** `docs/output-schema.md` — HTML briefing structure and accessibility requirements.
+* **Report template:** `assets/report-template.html` — fill-in template for the final briefing.
+* **Examples:** `examples/` — sample requests, outline, verification ledger.
+* **Test contracts:** `tests/` — verify a run before declaring it complete.
 
 ## Safety and Ethics Note
 
-Always verify the generated outputs. AI models can hallucinate facts or misinterpret complex debates. The source verification stage minimizes this risk, but human review remains essential.
-
-Check the provided citations before using the research in critical decision-making. Don't treat the output as absolute truth. The web sources themselves might contain errors or bias. We rely on the quality of the retrieved data.
+Always verify the generated outputs. The verification stage minimizes hallucination risk, but human review remains essential. Check citations before using the research in critical decisions.
 
 ### Safety Protocol for High-Impact Topics
 
-Apply this protocol whenever the topic involves medical, legal, financial, political, electoral, public-health, conflict, crisis, personal-safety, or similarly high-impact decisions.
+Apply whenever the topic involves medical, legal, financial, political, electoral, public-health, conflict, crisis, or personal-safety decisions.
 
-* Do not present medical, legal, or financial advice as authoritative. State that the report is research support only and that the user should consult qualified professionals before acting.
-* Flag contested, emerging, or low-confidence claims prominently in the executive summary and in the section where the claim appears.
-* Never infer private facts about individuals, including health status, finances, location, identity, relationships, legal exposure, political preference, or intent, unless those facts are explicitly present in a fetched public source and are necessary to the user's stated research scope.
-* For sensitive topics, require user approval before final synthesis. Present the verified outline, flagged claims, disclaimers, and excluded claims first; produce the final brief only after the user confirms the framing is appropriate.
-* **Hard rule: no claim in the final output without a fetched source quote.** If a claim cannot be traced to a quote, remove it or label it `[UNVERIFIED]` during review. `[UNVERIFIED]` claims must be moved to a "Claims Requiring Verification" appendix and excluded from the main narrative. They may appear in the final output **only** in that appendix, never as factual statements in the body. User approval does not override this rule; approval only decides whether to keep the appendix or discard it entirely.
+* Do not present medical, legal, or financial advice as authoritative. State that the report is research support only.
+* Flag contested, emerging, or low-confidence claims prominently in the executive summary and where they appear.
+* Never infer private facts about individuals unless explicitly present in a fetched public source and necessary to the stated scope.
+* For sensitive topics, require user approval of the verified outline, flagged claims, and disclaimers before final synthesis.
+* **Hard rule: no claim in the final output without a fetched source quote.** Untraceable claims are removed or labeled `[UNVERIFIED]` and confined to a "Claims Requiring Verification" appendix — never the main narrative. User approval only decides whether to keep or discard the appendix.

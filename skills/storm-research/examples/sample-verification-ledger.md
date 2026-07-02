@@ -1,19 +1,21 @@
 # Sample Verification Ledger
 
-The skill tracks every claim it may use. This ledger ensures you know exactly which quoted source supports each claim and how much to trust it. Entries below are marked `(Sample/Illustrative)` and are not real citations.
+The skill tracks every claim it may use. This ledger ensures you know exactly which quoted source supports each claim, how much to trust it, and which executor verified it. Entries below are marked `(Sample/Illustrative)` and are not real citations.
 
-| Claim | Source Quote | URL | Grade | Verdict |
-|---|---|---|---|---|
-| (Sample/Illustrative) Edge inference reduces safety-system latency compared with cloud round trips. | (Sample/Illustrative) "The vehicle performed perception inference locally to avoid network round-trip delays." | https://example.invalid/sample-local-inference | B | Qualified: illustrative source, not final evidence. |
-| (Sample/Illustrative) Vendor accelerator specifications can support hardware capability claims. | (Sample/Illustrative) "The module integrates dedicated AI acceleration hardware for in-vehicle workloads." | https://example.invalid/sample-vendor-spec | A for specs / C for market claims | Qualified: use only for vendor-controlled specifications. |
-| (Sample/Illustrative) A preprint can inform methodology but needs corroboration. | (Sample/Illustrative) "The benchmark has not yet undergone peer review." | https://example.invalid/sample-preprint | B | Qualified: cite as preprint, not settled consensus. |
-| (Sample/Illustrative) An unsourced rumor should not support a factual claim. | (Sample/Illustrative) "Analysts believe the system may outperform competitors." | https://example.invalid/sample-rumor | D | Removed: unsupported comparative claim. |
-| (Sample/Illustrative) A timed-out source cannot support any claim. | (Sample/Illustrative) No quote available because the source could not be fetched. | https://example.invalid/sample-timeout | Unverified | Removed: no fetched quote. |
+| Claim | Verdict | Source Quote | URL | Grade | Verifying Executor |
+|---|---|---|---|---|---|
+| (Sample/Illustrative) Edge inference reduces safety-system latency compared with cloud round trips. | CONFIRMED | (Sample/Illustrative) "The vehicle performed perception inference locally to avoid network round-trip delays." | https://example.invalid/sample-local-inference | B | codex |
+| (Sample/Illustrative) The market grew "38% year over year." | CORRECTED → primary source reports 28% | (Sample/Illustrative) "Segment revenue increased 28% over the prior fiscal year." | https://example.invalid/sample-earnings | A | agy |
+| (Sample/Illustrative) A preprint benchmark shows the method outperforming baselines. | DEMOTED | (Sample/Illustrative) "The benchmark has not yet undergone peer review." | https://example.invalid/sample-preprint | C | agy |
+| (Sample/Illustrative) "77% of firms have no AI policy." | FABRICATED — traces only to an aggregator; no primary source exists. Dropped. | (none — no primary source) | https://example.invalid/sample-aggregator | F | codex |
+| (Sample/Illustrative) A timed-out source cannot support any claim. | `[UNVERIFIED]` — moved to appendix | (Sample/Illustrative) No quote available because the source could not be fetched. | https://example.invalid/sample-timeout | Unverified | claude |
 
-**Grading Legend:**
+**Verdict Legend:**
 
-* **A**: Gold standard. Peer-reviewed, official government data, or primary academic research.
-* **B**: Reliable. Vendor technical docs, established news outlets, or pre-print academic papers.
-* **C**: Contextual. Blogs, secondary reporting, or opinion pieces. Use with caution.
-* **D**: Unreliable. Speculation, heavy bias, or lack of citations. Excluded from factual claims.
-* **Unverified**: Could not be accessed or parsed during source gathering.
+* **CONFIRMED**: The primary source states the claim; quote captured.
+* **CORRECTED**: The primary source says something materially different; the claim is rewritten to match.
+* **DEMOTED**: The claim traces only to a weak source; kept with lowered confidence and labeled grade.
+* **FABRICATED**: No primary source exists; the claim is dropped from the report entirely.
+* **`[UNVERIFIED]`**: Source unreachable; the claim is isolated in the Claims Requiring Verification appendix.
+
+Grading criteria: see `docs/verification-rubric.md`. The Verifying Executor must differ from the executor that produced the claim whenever more than one executor is available.

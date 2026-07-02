@@ -9,18 +9,20 @@
 
 | #  | Path                              | Required? | Type       | Size Expectation |
 |----|-----------------------------------|-----------|------------|------------------|
-| 1  | `SKILL.md`                        | Yes       | Skill manifest | 80–120 lines |
-| 2  | `docs/pipeline.md`                | Yes       | Conceptual overview | 20–40 lines |
-| 3  | `docs/stage-01.md` … `stage-07.md` | Yes (7x) | Stage instructions | 40–60 lines each |
-| 4  | `docs/verification-rubric.md`    | Yes       | Source grading rubric | 30–50 lines |
-| 5  | `docs/output-schema.md`           | Yes       | HTML briefing schema | 30–50 lines |
-| 6  | `examples/quick-start.md`         | Yes       | 5-minute tutorial | 15–25 lines |
-| 7  | `examples/sample-request.md`      | Yes       | Full request walkthrough | 20–30 lines |
-| 8  | `examples/sample-briefing-outline.md` | Yes  | Example deliverable structure | 20–40 lines |
-| 9  | `examples/sample-verification-ledger.md` | Yes | Example source-verification table | 15–25 lines |
-| 10 | `tests/skill-structure-checklist.md` | Yes   | This file — structural contract | 70–90 lines |
-| 11 | `tests/manual-test-script.md`     | Yes       | Human reviewer test script | 70–100 lines |
-| 12 | `tests/golden-output-checklist.md` | Yes      | Golden output acceptance criteria | 60–80 lines |
+| 1  | `SKILL.md`                        | Yes       | Skill manifest | 80–140 lines |
+| 2  | `assets/report-template.html`     | Yes       | Fill-in HTML briefing template | 120–180 lines |
+| 3  | `docs/pipeline.md`                | Yes       | Conceptual overview (STORM mapping) | 40–70 lines |
+| 4  | `docs/executors.md`               | Yes       | External-agent routing protocol | 30–60 lines |
+| 5  | `docs/stage-01.md` … `stage-07.md` | Yes (7x) | Stage instructions | 35–65 lines each |
+| 6  | `docs/verification-rubric.md`    | Yes       | Source grading + confidence rubric | 40–60 lines |
+| 7  | `docs/output-schema.md`           | Yes       | HTML briefing schema | 30–60 lines |
+| 8  | `examples/quick-start.md`         | Yes       | 5-minute tutorial | 15–25 lines |
+| 9  | `examples/sample-request.md`      | Yes       | Full request walkthrough | 20–30 lines |
+| 10 | `examples/sample-briefing-outline.md` | Yes  | Example deliverable structure | 20–40 lines |
+| 11 | `examples/sample-verification-ledger.md` | Yes | Example claim-verification ledger | 15–30 lines |
+| 12 | `tests/skill-structure-checklist.md` | Yes   | This file — structural contract | 70–110 lines |
+| 13 | `tests/manual-test-script.md`     | Yes       | Human reviewer test script | 70–100 lines |
+| 14 | `tests/golden-output-checklist.md` | Yes      | Golden output acceptance criteria | 60–90 lines |
 
 ## Repo Root Files
 
@@ -36,10 +38,10 @@ Per the [Agent Skills spec](https://agentskills.io/specification):
 - [ ] `name: storm-research` — lowercase, hyphens only, matches the parent directory name (`storm-research`), ≤ 64 characters
 - [ ] `description` present, non-empty, ≤ 1024 characters, states what the skill does and when to use it
 - [ ] `license` references the repo's MIT license
-- [ ] `compatibility` documents tool requirements (WebSearch/WebFetch)
-- [ ] `allowed-tools` includes `WebSearch` and `WebFetch`
+- [ ] `compatibility` documents tool requirements and the external-CLI preference (codex/agy) with fallback
+- [ ] `allowed-tools` includes `WebSearch`, `WebFetch`, and the scoped Bash patterns for `codex exec`, `agy`, and `command -v`
 - [ ] `metadata.version` follows semver (`x.y.z`), `metadata.author` present — custom fields belong under `metadata`, not top-level
-- [ ] No non-standard top-level fields (e.g. `id`) outside the spec's `name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools`
+- [ ] Top-level fields limited to the spec's `name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools` plus documented Claude Code extension fields (`argument-hint`) — never undocumented inventions like `id`
 - [ ] Trigger phrases are documented in `description` or body text
 
 ## Directory Integrity
@@ -64,9 +66,10 @@ Per the [Agent Skills spec](https://agentskills.io/specification):
 ## Run Command
 
 ```bash
-# Verify file manifest (run from repo root)
-cd skills/storm-research
-find . -type f | LC_ALL=C sort | diff - <(echo "./SKILL.md
+# Verify file manifest (run from repo root; use git ls-files so local runtime state is ignored)
+git ls-files skills/storm-research | LC_ALL=C sort | sed 's|^skills/storm-research|.|' | diff - <(echo "./SKILL.md
+./assets/report-template.html
+./docs/executors.md
 ./docs/output-schema.md
 ./docs/pipeline.md
 ./docs/stage-01.md

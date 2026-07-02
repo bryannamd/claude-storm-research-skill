@@ -1,49 +1,46 @@
-## Stage 02: Expert Perspective Generation & Retrieval Conversation
+## Stage 02: Expert Lenses & Retrieval Conversation
 
 ### Purpose
 
-This stage forces the research to look beyond surface answers. It creates distinct expert personas, has them ask perspective-guided questions, retrieves sources for those questions, and simulates multi-turn conversations with a retrieval-grounded expert. This is the core STORM mechanism that produces the raw evidence used downstream.
+This is the core STORM mechanism. Five named expert lenses research the same topic frame in parallel, each finding holes the others miss. Per `docs/executors.md`, the lenses run on external agent CLIs (codex, agy) when available — cross-model diversity is part of the design — and each lens gets one to two grounded follow-up rounds, reproducing STORM's simulated writer–expert conversation in bounded form.
 
 ### Inputs
 
-* The formal scope document from Stage 01.
-* The defined thesis question and sub-questions.
-* The glossary of key terms.
-* Any specific persona requests from the user.
+* The scope document and one-line topic frame from Stage 01.
+* `executor-manifest.md` (which executors run which lenses).
+* Any extra lenses requested by the user (a sixth or seventh persona).
+
+### The Five Lenses
+
+Every lens prompt embeds the same `{TOPIC}` and `{TOPIC_FRAME}` and demands this exact return format: **CORE POSITION** (2 sentences) → **STRONGEST EVIDENCE** (3–5 bullets, each with a concrete data point, case, or named source, cited with real URLs) → **THE ONE THING** only this lens would say.
+
+1. **THE PRACTITIONER** — works with this daily. Prioritize recent sources, case studies, practitioner threads. Surface the gap between what hands-on operators know and what academics or pundits miss: workflow friction, what actually works, what breaks.
+2. **THE ACADEMIC** — has studied this for years. What does the peer-reviewed evidence actually say, and where does it contradict popular belief?
+3. **THE SKEPTIC** — thinks the mainstream view is wrong. What is the strongest counterargument, and what evidence do proponents conveniently ignore?
+4. **THE ECONOMIST** — follows the money. Who profits from the current narrative, and what financial incentives shape the research?
+5. **THE HISTORIAN** — has seen similar patterns before. What historical parallels exist, and how did they resolve?
 
 ### Actions
 
-1. Review the scope document to understand the core topic.
-2. Identify five to seven distinct expert personas relevant to the topic. Examples include academic researchers, industry practitioners, policy makers, or economic analysts.
-3. Define the specific background, biases, and priorities for each persona.
-4. Generate targeted research questions from the perspective of each persona.
-5. For each persona, invoke `WebSearch` with their domain-specific queries.
-6. Fetch the top 3 useful results per query using `WebFetch`.
-7. Build `raw-source-corpus.json` with URL, title, fetched text summary, persona, query, and retrieval timestamp.
-8. Simulate a conversation: each persona asks follow-up questions based on fetched content, and the retrieval expert answers only from fetched sources.
-9. Continue each conversation until the persona's key questions are answered or the fetched evidence is exhausted.
-10. Store transcripts as `conversations/<persona>.md`, including questions, source-grounded answers, and cited URLs.
-11. Review questions and transcripts to ensure they align with Stage 01 boundaries.
-12. Save persona profiles, question lists, transcripts, and corpus artifacts to the workspace.
+1. Build the five lens prompts from the topic frame, each ending with the required return format and an instruction to cite real URLs.
+2. Dispatch all five lenses **in parallel** on the executors assigned in `executor-manifest.md` (external CLIs in the background; Claude subagents only as routed fallback).
+3. Collect each lens's output and store it as `conversations/<lens>.md` in the run workspace (`.storm-research/<topic-slug>/`).
+4. Run one to two **follow-up rounds** per lens (two when the topic is complex or the first round surfaced surprising claims): from its output, generate 1–3 follow-up questions targeting gaps, and have the same executor answer them grounded in fetched sources. Append to the transcript. This bounded loop is the skill's deliberate compression of STORM's longer simulated conversations — see `docs/pipeline.md`.
+5. Build `raw-source-corpus.json` with every cited URL, title, claim summary, lens, and retrieval timestamp.
+6. Check transcripts against Stage 01 boundaries; discard out-of-scope material.
 
 ### Outputs
 
-* A list of five to seven detailed expert personas.
-* A set of specific research questions for each persona.
-* A `conversations/` directory containing one transcript per persona.
-* A `raw-source-corpus.json` file containing fetched source metadata and summaries.
-* A mapping of how each persona's questions relate to the main thesis.
-* A structured document containing all persona data.
-* A summary of the expected value each persona brings.
+* `conversations/<lens>.md` — one transcript per lens with the fixed-format position, evidence, follow-up Q&A, and cited URLs.
+* `raw-source-corpus.json` — all fetched source metadata.
+* A mapping of each lens's findings to the thesis and sub-questions.
 
 ### QA Checklist
 
-* [ ] Are there at least five distinct expert personas defined?
-* [ ] Do the personas represent genuinely different viewpoints or domains?
-* [ ] Are the questions generated by each persona specific and answerable?
-* [ ] Was `WebSearch` invoked for each persona's domain-specific queries?
-* [ ] Were the top 3 useful results per query fetched with `WebFetch`?
-* [ ] Do transcripts show follow-up questions grounded in fetched content?
-* [ ] Do the persona questions stay within the boundaries defined in Stage 01?
-* [ ] Is there minimal overlap between the questions asked by different personas?
-* [ ] Were `conversations/` and `raw-source-corpus.json` saved to the workspace?
+* [ ] Were all five lenses dispatched in parallel on the executors recorded in `executor-manifest.md`?
+* [ ] Does every lens output follow the fixed format (core position / strongest evidence / the one thing)?
+* [ ] Does every evidence bullet carry a real, resolvable URL?
+* [ ] Did each lens get at least one grounded follow-up round?
+* [ ] Were per-call failures handled by the executor fallback rules (retry once, then next executor)?
+* [ ] Do the transcripts stay within Stage 01 boundaries, with minimal overlap between lenses?
+* [ ] Were `conversations/` and `raw-source-corpus.json` saved in the run workspace?

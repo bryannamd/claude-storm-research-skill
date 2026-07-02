@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  STORM Research briefing template.
+  Replace every {{TOKEN}} and repeat the marked blocks per item.
+  Keep the file self-contained: no external CSS, JS, fonts, or images.
+-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — STORM Research Briefing</title>
+<style>
+  :root {
+    --ink: #1a1d21; --muted: #5c6470; --line: #e3e6ea; --bg: #ffffff;
+    --accent: #0f4c81; --ok: #1e7a3c; --ok-bg: #e8f5ec;
+    --warn: #8a5a00; --warn-bg: #fdf3e0; --bad: #a02b2b; --bad-bg: #fbeaea;
+    --note-bg: #f4f6f8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+  .kicker { font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+            color: var(--accent); font-weight: 700; }
+  h1 { font-size: 34px; line-height: 1.2; margin: 12px 0 8px; }
+  .subtitle { color: var(--muted); font-size: 17px; margin: 0 0 20px; }
+  .meta { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line); padding: 10px 0; }
+  .meta strong { color: var(--ink); }
+  .box { border-radius: 8px; padding: 14px 16px; margin: 20px 0; font-size: 14px; }
+  .box-verified { background: var(--ok-bg); border: 1px solid var(--ok); }
+  .box-note { background: var(--note-bg); border: 1px solid var(--line); }
+  .box h2 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 8px; }
+  h2.section { font-size: 24px; margin: 44px 0 12px; padding-top: 20px;
+               border-top: 3px solid var(--accent); }
+  h2.section .num { color: var(--accent); font-size: 14px; display: block; }
+  .finding { border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 14px 0; }
+  .finding h3 { margin: 0 0 8px; font-size: 17px; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+           padding: 2px 8px; border-radius: 4px; margin-right: 6px; }
+  .b-high { background: var(--ok-bg); color: var(--ok); }
+  .b-med  { background: var(--warn-bg); color: var(--warn); }
+  .b-low  { background: var(--bad-bg); color: var(--bad); }
+  .b-confirmed  { background: var(--ok-bg); color: var(--ok); }
+  .b-corrected  { background: var(--warn-bg); color: var(--warn); }
+  .b-demoted    { background: var(--warn-bg); color: var(--warn); }
+  .b-fabricated { background: var(--bad-bg); color: var(--bad); }
+  .lens-tags { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .lens-tags .support { color: var(--ok); font-weight: 600; }
+  .lens-tags .challenge { color: var(--bad); font-weight: 600; }
+  .caveat { font-size: 13px; color: var(--muted); margin-top: 8px;
+            border-left: 3px solid var(--warn); padding-left: 10px; }
+  .sources li { font-size: 13.5px; margin: 8px 0; }
+  .sources .note { color: var(--muted); }
+  a { color: var(--accent); }
+  ul, ol { padding-left: 22px; }
+  @media (max-width: 480px) { h1 { font-size: 26px; } main { padding: 32px 16px 64px; } }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">STORM Research · {{VERSION}} ({{VERIFIED_LABEL}})</p>
+  <h1>{{TITLE}}</h1>
+  <p class="subtitle">A five-lens synthesis: practitioner, academic, skeptic, economist, and historian.
+     Every claim independently checked against its primary source before publication.</p>
+  <p class="meta"><strong>Date</strong> {{DATE}} &nbsp;·&nbsp;
+     <strong>Method</strong> {{LENS_COUNT}} expert lenses + contradiction map ({{EXECUTOR_LINE}}) &nbsp;·&nbsp;
+     <strong>Audience</strong> {{READER_ROLE}}</p>
+
+  <div class="box box-verified">
+    <h2>Verified</h2>
+    All {{SOURCE_COUNT}} sources independently checked against primary sources on {{VERIFY_DATE}},
+    across {{CLUSTER_COUNT}} verification clusters.
+    Result: {{FABRICATED_COUNT}} fabricated (dropped), {{CORRECTED_COUNT}} corrected,
+    {{DEMOTED_COUNT}} demoted. Confidence scores reflect post-verification evidence quality.
+  </div>
+
+  <div class="box box-note">
+    <h2>How to read this</h2>
+    <ul>
+      <li>The panel was author-constructed. All five lenses share one framing; treat coverage,
+          not independence, as the guarantee.</li>
+      <li>Confidence is scored 1–10 on evidence quality: peer-reviewed causal work &gt;
+          official policy/financial data &gt; single commissioned survey &gt; analogy &gt; preprint.</li>
+      <li>Measured fact and interpretation are flagged separately. A high score means the data
+          is solid, not that the strategic reading is certain.</li>
+    </ul>
+  </div>
+
+  <h2 class="section"><span class="num">01</span>The 60-Second Summary</h2>
+  <p>{{SUMMARY_PARAGRAPHS}}</p>
+
+  <h2 class="section"><span class="num">02</span>Key Findings, Ranked by Reliability</h2>
+  <!-- repeat .finding per finding, highest reliability first.
+       {{BADGE_CLASS}}: b-high (score 8-10) | b-med (5-7) | b-low (1-4) -->
+  <div class="finding">
+    <h3>{{FINDING_TITLE}}</h3>
+    <span class="badge {{BADGE_CLASS}}">RELIABILITY: {{LEVEL}} · {{SCORE}}/10</span>
+    <p>{{FINDING_BODY_WITH_CITATIONS}}</p>
+    <p class="lens-tags"><span class="support">Supported by</span> {{SUPPORTING_LENSES}} ·
+       <span class="challenge">Challenged by</span> {{CHALLENGING_LENSES}}</p>
+    <p class="caveat"><strong>Caveat:</strong> {{CAVEAT}}</p>
+  </div>
+
+  <h2 class="section"><span class="num">03</span>Where the Lenses Disagree</h2>
+  <p>{{TENSION_SUMMARY}}</p>
+
+  <h2 class="section"><span class="num">04</span>The Assumption This Briefing Rests On (and the Missing Sixth Lens)</h2>
+  <p>{{ASSUMPTION_AND_MISSING_LENS}}</p>
+
+  <h2 class="section"><span class="num">05</span>What To Actually Do Differently</h2>
+  <!-- targeted at {{READER_ROLE}} -->
+  <ol>{{ACTION_ITEMS}}</ol>
+
+  <h2 class="section"><span class="num">06</span>Sources</h2>
+  <ul class="sources">
+    <!-- repeat per source.
+         {{VERDICT_CLASS}}: b-confirmed | b-corrected | b-demoted | b-fabricated (must match {{VERDICT}}) -->
+    <li><span class="badge {{VERDICT_CLASS}}">{{VERDICT}}</span>
+        <a href="{{URL}}">{{SOURCE_TITLE}}</a> — {{GRADE}}.
+        <span class="note">{{VERIFICATION_NOTE}}</span></li>
+  </ul>
+</main>
+</body>
+</html>

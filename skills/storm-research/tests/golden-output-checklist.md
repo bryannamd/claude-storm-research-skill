@@ -24,23 +24,24 @@
 ## Verification Ledger
 
 - [ ] Every cited source appears in the verification ledger
-- [ ] Ledger includes: URL, domain, assessed grade, confidence note, access date
-- [ ] Claim ledger includes: claim, quoted source snippet, URL, grade, and verdict
-- [ ] ≥ 90 % of claims traceable to quoted source snippets
+- [ ] Claim ledger includes: claim, verdict (CONFIRMED/CORRECTED/DEMOTED/FABRICATED), quoted source snippet, URL, grade, and verifying executor
+- [ ] Cross-model rule held: no executor was the sole verifier of claims it produced (when >1 executor available)
+- [ ] All FABRICATED claims dropped from the report; all CORRECTED claims rewritten
+- [ ] ≥ 90 % of claims traceable to quoted primary-source snippets
 - [ ] Zero `[UNVERIFIED]` claims in the main narrative body; any `[UNVERIFIED]` claims are isolated in the Claims Requiring Verification appendix only
-- [ ] ≥ 1 source flagged as “unverified” or “low confidence” if applicable
 - [ ] No ledger entry left blank
 
-## HTML Slide Deck
+## HTML Briefing
 
-- [ ] 5-7 slides generated
-- [ ] Slide 1: Title + scope sentence
-- [ ] Slide 2: Executive Summary (3–5 bullets)
-- [ ] Slides 3–5: Key findings (one major finding per slide, with supporting chart or quote)
-- [ ] Slide 6: Strategic implications / recommendations (if used)
-- [ ] Slide 7: Sources + next steps (when a 7th slide is used)
-- [ ] All slides use consistent typography and color palette
-- [ ] Mobile-responsive (tested at 375 px width)
+- [ ] Rendered from `assets/report-template.html` without restructuring
+- [ ] Header shows version (V2), date, method line with executors used, and reader role
+- [ ] VERIFIED box numbers match the verification ledger counts
+- [ ] Section 01: 60-second summary present
+- [ ] Section 02: key findings ranked by post-verification reliability, each with score badge, supported-by/challenged-by lens tags, and caveat
+- [ ] Section 04: assumption + missing sixth lens named
+- [ ] Section 05: actions targeted at the reader role
+- [ ] Section 06: every source carries a verdict badge
+- [ ] Self-contained (no external CSS/JS/fonts/images); mobile-responsive (tested at 375 px width)
 
 ## Content Quality
 
@@ -64,7 +65,7 @@
 | Structure | 15 % | ___ | ___ |
 | Source Quality | 25 % | ___ | ___ |
 | Verification Ledger | 15 % | ___ | ___ |
-| HTML Slide Deck | 15 % | ___ | ___ |
+| HTML Briefing | 15 % | ___ | ___ |
 | Content Quality | 20 % | ___ | ___ |
 | Safety & Ethics | 10 % | ___ | ___ |
 | **Total** | **100 %** | | **___** |

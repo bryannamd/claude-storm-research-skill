@@ -1,7 +1,9 @@
 # claude-storm-research-skill
-A multi-perspective research engine for Claude Code, implementing the Stanford STORM methodology as an [Agent Skill](https://agentskills.io).
+A multi-perspective research engine for Claude Code, implementing the Stanford STORM methodology (Shao et al., NAACL 2024) as an [Agent Skill](https://agentskills.io).
 
-This skill transforms Claude Code into a deep research assistant using the STORM methodology. It simulates multiple expert perspectives to investigate topics from different angles before synthesizing the findings. You get comprehensive, cited reports instead of surface-level summaries.
+This skill transforms Claude Code into a deep research assistant. Five expert lenses — Practitioner, Academic, Skeptic, Economist, Historian — research the same topic in parallel, their contradictions get mapped, and every claim is verified against its primary source before publication. You get a reliability-ranked, cited briefing instead of a surface-level summary.
+
+**Cross-model by default:** when the `codex` (OpenAI Codex CLI) and/or `agy` (Antigravity CLI) commands are on your PATH, lens agents run on those external models, and verification is routed so that no model is the sole grader of claims it produced — with both CLIs they verify each other's claims; with one CLI, Claude verifies its output. A claim that survives independent verification has passed a stronger test than one a model grades on its own work. Without external CLIs, the skill falls back to Claude subagents automatically (verification then runs in fresh contexts).
 
 The skill itself lives in [`skills/storm-research/`](skills/storm-research/), following the standard `<skill-name>/SKILL.md` layout so the folder can be dropped directly into any Claude Code skills directory.
 
@@ -42,20 +44,24 @@ Then describe the topic you want researched.
 
 ## What You Get
 
-The skill produces two final artifacts for every research run:
-1. A detailed markdown brief with inline citations (`.storm-research/<topic>/brief.md`).
-2. A standalone HTML slide deck for presentations (`.storm-research/<topic>/index.html`).
+The skill produces two final artifacts for every research run in `.storm-research/<topic-slug>/`:
+1. A detailed markdown brief with inline citations (`brief.md`).
+2. A self-contained HTML briefing rendered from the bundled template (`index.html`): 60-second summary, key findings ranked by post-verification reliability with supported-by/challenged-by lens tags, the missing-sixth-lens callout, reader-targeted actions, and a source list badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED.
+
+Intermediate artifacts (lens transcripts, source corpus, claim-verification ledger, executor manifest) stay in the workspace so every run is inspectable.
 
 ## Key Features
 
-* 7-Stage STORM Pipeline: Guides the model through planning, perspective generation, interviewing, searching, and synthesis.
-* Source Verification: Forces the model to ground claims in actual fetched web content.
-* Multi-Perspective Analysis: Explores topics from different viewpoints to avoid bias and uncover blind spots.
+* **7-Stage STORM Pipeline** — scope → five parallel expert lenses with grounded follow-ups → contradiction map → synthesis → adversarial peer review → cross-model verification → templated delivery.
+* **External executors first** — lens and verification agents run on `codex`/`agy` when installed; Claude subagents otherwise. See `skills/storm-research/docs/executors.md`.
+* **Primary-source verification** — every claim needs a fetched quote from a primary source; fabrications are dropped and the report is rewritten as V2 with rescored confidence.
+* **Self-critique built in** — STORM's authors flagged the method's missing self-critique (source bias transfer, over-association); the peer-review stage targets exactly those failure modes.
 
 ## Requirements
 
 * Claude Code CLI with custom skill support.
 * `WebSearch` and `WebFetch` tools available in your Claude Code environment.
+* Optional but preferred: `codex` and/or `agy` CLIs on PATH for cross-model lens and verification agents.
 
 ## Validation
 

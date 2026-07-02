@@ -23,13 +23,13 @@
 
 **Steps:**
 1. Feed the sample request to Claude Code.
-2. Verify the Skill invokes Stage 01 (Scope Clarification) first.
-3. Confirm ≥ 5 expert perspectives are generated in Stage 02.
-4. Verify contradiction table is produced in Stage 03.
-5. Check synthesis outline has ≥ 8 sections in Stage 04.
-6. Confirm ≥ 1 peer-review objection is raised and addressed in Stage 05.
-7. Validate ≥ 70 % of cited sources are verified (grade ≥ B) in Stage 06.
-8. Ensure final output includes both Markdown brief AND HTML slide deck in Stage 07.
+2. Verify the Skill invokes Stage 01 (Scope Clarification) first, runs executor detection, and writes `executor-manifest.md`.
+3. Confirm the 5 expert lenses run **in parallel** in Stage 02 on the executors recorded in the manifest (external CLIs when available), each returning the fixed format (core position / strongest evidence / the one thing).
+4. Verify the contradiction map answers all five questions in Stage 03 (conflicts, evidence strength, resolving question, universal agreement, blind spot).
+5. Check the synthesis outline maps every claim to a source in Stage 04.
+6. Confirm the peer review produces per-finding confidence scores and names a missing sixth lens in Stage 05.
+7. Validate the verification ledger records verdicts and verifying executors in Stage 06, with the cross-model rule held.
+8. Ensure final output includes both the Markdown brief AND the template-rendered HTML briefing in Stage 07.
 
 **Pass Criteria:** All 8 checkpoints satisfied.
 
@@ -41,12 +41,13 @@
 
 **Steps:**
 1. Open `index.html` in Chrome/Firefox.
-2. Check 5-7 slide pages present (Title → Executive Summary → Sections → Sources → Appendix).
-3. Verify every citation links to a real, accessible URL (spot-check 5).
-4. Ensure all images have alt text.
-5. Confirm color contrast passes WCAG AA (use browser DevTools contrast checker).
+2. Check the briefing follows the template order: header + VERIFIED box + HOW TO READ THIS → 60-second summary → ranked findings → disagreements → assumption/missing lens → actions → badged sources.
+3. Confirm the VERIFIED box counts match `claim-verification-ledger.md`.
+4. Verify every citation links to a real, accessible URL (spot-check 5).
+5. Confirm the file is self-contained (no external CSS/JS/font/image requests in DevTools Network tab).
+6. Confirm color contrast passes WCAG AA (use browser DevTools contrast checker).
 
-**Pass Criteria:** 0 broken links, 100 % alt text coverage, WCAG AA pass.
+**Pass Criteria:** 0 broken links, ledger counts match, 0 external requests, WCAG AA pass.
 
 ---
 
