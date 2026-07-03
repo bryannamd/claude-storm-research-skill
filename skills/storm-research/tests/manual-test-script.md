@@ -8,12 +8,15 @@
 **Setup:** Fresh Claude Code session with the skill installed.
 
 **Steps:**
-1. Type: `"I need a deep research report on quantum computing"`
-2. Type: `"Run a STORM briefing on climate change mitigation"`
-3. Type: `"Storm: investigate the economics of fusion energy"`
-4. Type: `"Generate a comprehensive research brief about CRISPR"`
+1. Explicit English: `"I need a deep research report on quantum computing"`
+2. Explicit English: `"Run a STORM briefing on climate change mitigation"`
+3. Loose / implicit English: `"dig into the economics of fusion energy and give me the full picture"`
+4. Korean, explicit: `"스톰으로 반도체 공급망 조사해줘"`
+5. Korean, loose: `"이 주제 깊게 알아봐줘: 고체 전해질 배터리"`
 
-**Expected:** Skill activates on ≥ 3 of 4 prompts. If not, flag trigger coverage gap.
+**Expected:** Skill activates on ≥ 4 of 5 prompts, including at least one loose/implicit and at least one Korean prompt. If a loose or Korean prompt fails, flag a trigger coverage gap.
+
+**Negative check:** Type a simple one-fact question like `"what year did the Roman Empire fall?"` — the skill should **not** activate (it is overkill for a lookup).
 
 ---
 
@@ -23,15 +26,16 @@
 
 **Steps:**
 1. Feed the sample request to Claude Code.
-2. Verify the Skill invokes Stage 01 (Scope Clarification) first, runs executor detection, and writes `executor-manifest.md`.
-3. Confirm the 5 experts run **in parallel** in Stage 02 on the executors recorded in the manifest (external CLIs when available), each returning the fixed format (core position / strongest evidence / the one thing).
-4. Verify the contradiction map answers all five questions in Stage 03 (conflicts, evidence strength, resolving question, universal agreement, blind spot).
-5. Check the synthesis outline maps every claim to a source in Stage 04.
-6. Confirm the peer review produces per-finding confidence scores and names a missing sixth expert in Stage 05.
-7. Validate the verification ledger records verdicts and verifying executors in Stage 06, with the cross-model rule held.
-8. Ensure final output includes both the Markdown brief AND the template-rendered HTML briefing in Stage 07.
+2. Confirm the skill shows a **green-light executor status** up front (🟢/⚪ for codex and agy) and states the run mode (cross-model / one-CLI / Claude-only), matching what is actually installed.
+3. Verify the Skill invokes Stage 01 (Scope Clarification) first, runs executor detection, and writes `executor-manifest.md`.
+4. Confirm the 5 experts run **in parallel** in Stage 02 on the executors recorded in the manifest (external CLIs when available), each returning the fixed format (core position / strongest evidence / the one thing).
+5. Verify the contradiction map answers all five questions in Stage 03 (conflicts, evidence strength, resolving question, universal agreement, blind spot).
+6. Check the synthesis outline maps every claim to a source in Stage 04.
+7. Confirm the peer review produces per-finding confidence scores and names a missing sixth expert in Stage 05.
+8. Validate the verification ledger records verdicts and verifying executors in Stage 06, with the cross-model rule held.
+9. Ensure final output includes both the Markdown brief AND the template-rendered HTML briefing in Stage 07.
 
-**Pass Criteria:** All 8 checkpoints satisfied.
+**Pass Criteria:** All 9 checkpoints satisfied.
 
 ---
 

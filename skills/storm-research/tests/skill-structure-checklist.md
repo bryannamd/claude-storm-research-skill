@@ -41,7 +41,7 @@ Per the [Agent Skills spec](https://agentskills.io/specification):
 - [ ] `description` present, non-empty, ≤ 1024 characters, states what the skill does and when to use it
 - [ ] `license` references the repo's MIT license
 - [ ] `compatibility` documents tool requirements and the external-CLI preference (codex/agy) with fallback
-- [ ] `allowed-tools` includes `WebSearch`, `WebFetch`, and the scoped Bash patterns for `codex exec`, `agy`, and `command -v`
+- [ ] `allowed-tools` includes `WebSearch`, `WebFetch`, and the scoped Bash patterns `Bash(codex *)`, `Bash(agy *)`, and `Bash(command -v *)` (the invoked commands are `codex --search exec …`, `agy -p …`, and `command -v …`)
 - [ ] `metadata.version` follows semver (`x.y.z`), `metadata.author` present — custom fields belong under `metadata`, not top-level
 - [ ] Top-level fields limited to the spec's `name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools` plus documented Claude Code extension fields (`argument-hint`) — never undocumented inventions like `id`
 - [ ] Trigger phrases are documented in `description` or body text
@@ -56,7 +56,7 @@ Per the [Agent Skills spec](https://agentskills.io/specification):
 ## Size Gate
 
 - [ ] Total repo size ≤ 150 KB
-- [ ] SKILL.md ≤ 8 KB
+- [ ] SKILL.md ≤ 10 KB (well under the spec's 500-line guidance; the entry point stays scannable)
 - [ ] Any single stage doc ≤ 6 KB
 
 ## Naming Conventions

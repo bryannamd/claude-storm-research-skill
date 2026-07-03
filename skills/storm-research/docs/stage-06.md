@@ -14,7 +14,7 @@ Every claim in the outline gets checked against its primary source before public
 ### Actions
 
 1. Extract every factual claim planned for the final report and group them into 4–6 **verification clusters** by theme or source overlap.
-2. Assign each cluster to an executor per the routing rules in `docs/executors.md` (rules 1–5), keyed to each claim's **actual producer** — if a expert fell back to another executor, its claims are verified as that executor's output, not the originally assigned one's. In a single-model run, use fresh-context verification per rule 3. Dispatch clusters in parallel.
+2. Assign each cluster to an executor per the routing rules in `docs/executors.md` (rules 1–5), keyed to each claim's **actual producer** — if an expert fell back to another executor, its claims are verified as that executor's output, not the originally assigned one's. In a single-model run, use fresh-context verification per rule 3. Dispatch clusters in parallel.
 3. Each verification agent must, for every claim: locate the primary source (not an aggregator), fetch it, find the supporting quote, and return a verdict:
    * **CONFIRMED** — the primary source states it; quote captured.
    * **CORRECTED** — the source says something materially different; return the corrected figure or wording.

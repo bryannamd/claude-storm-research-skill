@@ -4,10 +4,12 @@ description: >
   Deep research skill implementing the Stanford STORM methodology (Shao et al., NAACL 2024) with
   five parallel experts, contradiction mapping, adversarial peer review, and primary-source
   verification. Expert and verification agents run on external CLIs (codex, agy) by default for
-  cross-model diversity, with Claude subagents as fallback. Use when the user asks for deep research,
-  comprehensive briefs, or investigation of complex topics using trigger phrases like "deep research on",
-  "STORM briefing", "comprehensive research brief", "investigate the topic of", "research report on",
-  or "storm research". Overkill for a simple factual lookup.
+  cross-model diversity, with Claude subagents as fallback. Use whenever the user wants deep,
+  multi-source, or thorough research on a topic — even when they ask loosely or implicitly, not only
+  with exact phrases. Triggers include "deep research on", "STORM briefing", "comprehensive research
+  brief", "investigate the topic of", "research report on", "storm research", "research X with storm",
+  "storm this", and Korean phrasings such as "스톰으로 조사해", "storm으로 조사", "스톰 리서치",
+  "심층 조사", or "딥리서치". Overkill for a simple factual lookup.
 license: MIT
 compatibility: >
   Requires Claude Code with WebSearch and WebFetch tool access. Prefers external agent CLIs
@@ -24,6 +26,23 @@ metadata:
 Turns one topic into a verified, multi-perspective research brief plus an HTML briefing. Based on Stanford STORM (Shao et al., NAACL 2024): perspective-guided question asking and source-grounded conversations produce broader, better-organized research than a single prompt. This skill adds what STORM's authors flagged as missing — self-critique — through adversarial peer review and per-claim primary-source verification.
 
 Run the full pipeline end to end. Do not shortcut a stage. This is heavier than a quick web lookup; that is the point.
+
+## Step 0 — Executor check (do this first, show the user)
+
+Which external AI CLIs are installed, checked right now:
+
+```!
+command -v codex >/dev/null 2>&1 && echo "🟢 codex — available" || echo "⚪ codex — not installed (optional)"
+command -v agy   >/dev/null 2>&1 && echo "🟢 agy (Antigravity / Gemini) — available" || echo "⚪ agy (Antigravity / Gemini) — not installed (optional)"
+```
+
+**Before starting, show the user a one-line green-light status** based on the result above, then state the mode:
+
+- **Both 🟢** → cross-model mode (strongest): experts split across codex and agy, and each verifies the other's claims.
+- **One 🟢** → that CLI runs the experts; Claude does the verification.
+- **None** → Claude-only mode; the whole pipeline still runs, just without a second AI's cross-check.
+
+If the block above did not execute (shell injection disabled), run `command -v codex` and `command -v agy` yourself and report the same status. Record the result in `executor-manifest.md` (Stage 01).
 
 ## Executor Routing (read first)
 
@@ -55,13 +74,14 @@ Full detection, invocation, and failure-fallback rules: [docs/executors.md](docs
 
 ## Trigger Activation Guide
 
-* `deep research on`
-* `STORM briefing`
-* `storm:`
-* `comprehensive research brief`
-* `investigate the topic of`
-* `research report on`
-* `storm research`
+Fire on any request for deep, multi-source, or thorough research — **you do not need an exact phrase**. Loose or implicit asks count ("dig into X", "give me the full picture on Y", "스톰으로 조사해", "이거 깊게 알아봐"). Common triggers:
+
+* `deep research on` / `research report on` / `comprehensive research brief`
+* `STORM briefing` / `storm:` / `storm research` / `research X with storm` / `storm this`
+* `investigate the topic of` / `dig into` / `give me the full picture on`
+* Korean: `스톰으로 조사(해)` / `storm으로 조사` / `스톰 리서치` / `심층 조사(해줘)` / `딥리서치` / `깊게 알아봐줘`
+
+When in doubt on a research-shaped request, prefer running the skill. Skip it only for a simple one-fact lookup.
 
 ## Output Reference
 
