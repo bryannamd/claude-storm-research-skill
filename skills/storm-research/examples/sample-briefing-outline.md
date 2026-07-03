@@ -1,6 +1,8 @@
 # Sample Briefing Outline
 
-This shows the standard structure of a completed research briefing.
+This shows how the **long-form markdown brief** (`brief.md`) can be organized around the topic — with an executive summary, a table of contents, and topical chapters like the ones below.
+
+Note the two deliverables have different shapes: `brief.md` is free to use topical chapters (as shown here), but the **HTML briefing** (`index.html`) always follows the fixed six-section template in `docs/output-schema.md` (60-second summary → findings ranked by reliability → disagreements → assumption & missing lens → actions → badged sources). This example is a `brief.md` outline, not an `index.html` layout.
 
 ## Edge AI in Passenger Autonomous Vehicles
 

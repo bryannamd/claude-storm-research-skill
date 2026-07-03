@@ -1,85 +1,89 @@
 # claude-storm-research-skill
-A multi-perspective research engine for Claude Code, implementing the Stanford STORM methodology (Shao et al., NAACL 2024) as an [Agent Skill](https://agentskills.io).
+A multi-perspective research engine for [Claude Code](https://code.claude.com/docs), implementing the Stanford STORM methodology (Shao et al., NAACL 2024) as an [Agent Skill](https://agentskills.io).
 
-This skill transforms Claude Code into a deep research assistant. Five expert lenses — Practitioner, Academic, Skeptic, Economist, Historian — research the same topic in parallel, their contradictions get mapped, and every claim is verified against its primary source before publication. You get a reliability-ranked, cited briefing instead of a surface-level summary.
+Instead of a shallow one-shot answer, you get a reliability-ranked, cited briefing: five expert lenses — Practitioner, Academic, Skeptic, Economist, Historian — research your topic in parallel, their contradictions get mapped, and every claim is checked against its primary source before it reaches the report.
 
-**Cross-model by default:** when the `codex` (OpenAI Codex CLI) and/or `agy` (Antigravity CLI) commands are on your PATH, lens agents run on those external models, and verification is routed so that no model is the sole grader of claims it produced — with both CLIs they verify each other's claims; with one CLI, Claude verifies its output. A claim that survives independent verification has passed a stronger test than one a model grades on its own work. Without external CLIs, the skill falls back to Claude subagents automatically (verification then runs in fresh contexts).
+## What this is (read first)
 
-The skill itself lives in [`skills/storm-research/`](skills/storm-research/), following the standard `<skill-name>/SKILL.md` layout so the folder can be dropped directly into any Claude Code skills directory.
+**This repo contains no program to run — it is a set of instructions Claude Code follows.** A "skill" is Markdown (a `SKILL.md` file plus supporting docs) that teaches Claude *how* to do something. When you install it and ask Claude to research a topic, Claude reads these files and does the work itself using its own web-search and file-writing tools. There is no JavaScript, Python, or server to start. If you clone this and wonder "where's the code?" — the Markdown **is** the code.
 
-## Installation
+**You do not need anything beyond Claude Code for your first run.** Optionally, if the `codex` (OpenAI Codex CLI) or `agy` (Antigravity CLI) commands are on your PATH, the skill uses them so that one model's claims get verified by a *different* model — stronger than a model grading its own work. Without them, Claude does the whole pipeline itself. Either way it just works.
 
-Clone this repository, then copy (or symlink) the `skills/storm-research` folder into your local skills directory:
+## Quick start (5 minutes)
 
 ```bash
+# 1. Clone and enter the repo
 git clone https://github.com/bryannamd/claude-storm-research-skill.git
+cd claude-storm-research-skill
+
+# 2. Install the skill into your personal Claude skills folder
 mkdir -p ~/.claude/skills
-rm -rf ~/.claude/skills/storm-research   # remove any previous install
-cp -r claude-storm-research-skill/skills/storm-research ~/.claude/skills/storm-research
+rm -rf ~/.claude/skills/storm-research        # remove any previous install
+cp -r skills/storm-research ~/.claude/skills/storm-research
+
+# 3. Start Claude Code and confirm the skill is loaded
+claude
+#   then type:  /skills          → you should see "storm-research" listed
 ```
 
-Or symlink it to keep it updated with `git pull`:
+Now ask for research in plain language (or type the `/storm-research` command):
+
+```
+deep research on the impact of solid-state batteries on EV range
+```
+
+Claude states its understanding in one line, then runs the pipeline. When it finishes, your report is written to **`.storm-research/<topic-slug>/` inside the folder you launched `claude` from**:
+
+```bash
+# from that same folder:
+open .storm-research/*/index.html      # macOS — opens the HTML briefing in your browser
+#   (Linux: xdg-open  ·  Windows: start)
+```
+
+That's it. The rest of this README explains options and internals.
+
+## Install as a symlink (auto-update with `git pull`)
+
+Prefer a symlink if you want `git pull` to update the installed skill in place. Run from the repo root:
 
 ```bash
 mkdir -p ~/.claude/skills
-rm -rf ~/.claude/skills/storm-research   # remove any previous install
-ln -s "$(pwd)/claude-storm-research-skill/skills/storm-research" ~/.claude/skills/storm-research
+rm -rf ~/.claude/skills/storm-research
+ln -s "$(pwd)/skills/storm-research" ~/.claude/skills/storm-research
 ```
 
-## Quick Usage
+If `~/.claude/skills/` did not exist before you installed, restart Claude Code once so it starts watching the new folder.
 
-Trigger the skill by asking Claude Code to research a topic. Try these examples:
+## How to use it
+
+Trigger the skill by asking Claude Code to research a topic — any of these phrasings work:
 
 * "deep research on the impact of solid-state batteries."
 * "STORM briefing on the history of the FSRS algorithm."
 * "research report on recent changes to US copyright law regarding AI."
 
-You can also invoke it manually with:
+Or invoke it directly by name: type `/storm-research` and then describe your topic. For the best results, add a sentence of scope (who the report is for, what to include or exclude) — see [`skills/storm-research/examples/`](skills/storm-research/examples/) for worked examples.
 
-```
-/storm-research
-```
+## What you get
 
-Then describe the topic you want researched.
+Every run writes two deliverables to `.storm-research/<topic-slug>/` (relative to where you launched Claude):
 
-## What You Get
+1. **`brief.md`** — a detailed markdown report with inline citations, for deep reading.
+2. **`index.html`** — a self-contained HTML briefing (open it in any browser): a 60-second summary, key findings ranked by reliability with which lenses supported or challenged each, the assumption the report rests on plus the missing sixth lens, reader-targeted actions, and a source list badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED.
 
-The skill produces two final artifacts for every research run in `.storm-research/<topic-slug>/`:
-1. A detailed markdown brief with inline citations (`brief.md`).
-2. A self-contained HTML briefing rendered from the bundled template (`index.html`): 60-second summary, key findings ranked by post-verification reliability with supported-by/challenged-by lens tags, the missing-sixth-lens callout, reader-targeted actions, and a source list badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED.
+Intermediate files (lens transcripts, source corpus, the claim-verification ledger) stay in that folder too, so you can inspect exactly how each conclusion was reached.
 
-Intermediate artifacts (lens transcripts, source corpus, claim-verification ledger, executor manifest) stay in the workspace so every run is inspectable.
+## Key features
 
-## Key Features
-
-* **7-Stage STORM Pipeline** — scope → five parallel expert lenses with grounded follow-ups → contradiction map → synthesis → adversarial peer review → cross-model verification → templated delivery.
-* **External executors first** — lens and verification agents run on `codex`/`agy` when installed; Claude subagents otherwise. See `skills/storm-research/docs/executors.md`.
-* **Primary-source verification** — every claim needs a fetched quote from a primary source; fabrications are dropped and the report is rewritten as V2 with rescored confidence.
+* **7-stage STORM pipeline** — scope → five parallel expert lenses → contradiction map → synthesis → adversarial peer review → primary-source verification → templated delivery.
+* **Cross-model verification when available** — lens and verification agents run on `codex`/`agy` when installed; Claude subagents otherwise. See [`docs/executors.md`](skills/storm-research/docs/executors.md).
+* **Primary-source verification** — every claim needs a fetched quote from a primary source; fabrications are dropped and the report is rewritten with rescored confidence.
 * **Self-critique built in** — STORM's authors flagged the method's missing self-critique (source bias transfer, over-association); the peer-review stage targets exactly those failure modes.
 
 ## Requirements
 
-* Claude Code CLI with custom skill support.
-* `WebSearch` and `WebFetch` tools available in your Claude Code environment.
-* Optional but preferred: `codex` and/or `agy` CLIs on PATH for cross-model lens and verification agents.
-
-## Validation
-
-Claude Code watches `~/.claude/skills/` and picks up new skills automatically within a running session. If `~/.claude/skills/` did not exist before installation, restart Claude Code once so the new directory is watched.
-
-After installation, verify the skill is recognized:
-
-```bash
-claude
-# Then run: /skills
-# Should show: storm-research in the list
-```
-
-Test with a lightweight query:
-
-```bash
-claude -p "deep research on the history of the Roman aqueducts"
-```
+* [Claude Code](https://code.claude.com/docs) with the `WebSearch` and `WebFetch` tools available — this is all you need.
+* *Optional:* the `codex` and/or `agy` CLIs on your PATH, for cross-model verification. The skill detects them automatically and falls back to Claude alone if they are absent.
 
 ## Benchmarks
 
@@ -104,13 +108,12 @@ Parallelizing the pipeline gives a stable **~2.2×** over the same calls run bac
 
 ## Documentation
 
-Read the full documentation under [`skills/storm-research/`](skills/storm-research/) for:
-- Skill manifest and instructions (`skills/storm-research/SKILL.md`)
-- Stage-by-stage pipeline instructions (`skills/storm-research/docs/stage-01.md` through `stage-07.md`)
-- Source verification rubric (`skills/storm-research/docs/verification-rubric.md`)
-- Output schema specification (`skills/storm-research/docs/output-schema.md`)
-- Usage examples (`skills/storm-research/examples/`)
-- Test contracts (`skills/storm-research/tests/`)
+Everything lives under [`skills/storm-research/`](skills/storm-research/):
+
+- **[`SKILL.md`](skills/storm-research/SKILL.md)** — the skill manifest and top-level instructions Claude reads first.
+- **[`docs/`](skills/storm-research/docs/)** — the detailed pipeline. Start with [`docs/README.md`](skills/storm-research/docs/README.md), which maps every stage and reference file to a one-line description.
+- **[`examples/`](skills/storm-research/examples/)** — worked requests and sample outputs to copy from.
+- **[`tests/`](skills/storm-research/tests/)** — human acceptance checklists (not automated tests). See [`tests/README.md`](skills/storm-research/tests/README.md).
 
 ## License
 

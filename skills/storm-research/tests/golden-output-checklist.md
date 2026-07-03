@@ -5,13 +5,17 @@
 
 ## Structure
 
-- [ ] Title page with topic, date, and author attribution
-- [ ] Executive Summary (≤ 300 words) covering scope, key findings, and confidence level
-- [ ] Table of Contents with clickable anchors
-- [ ] ≥ 8 content sections (including Introduction and Conclusion)
-- [ ] Each section has ≥ 2 cited sources
-- [ ] Sources section with ≥ 12 unique citations
-- [ ] Appendix with methodology note (STORM 7-stage pipeline summary)
+The HTML briefing (`index.html`) follows the fixed six-section template — see `docs/output-schema.md`.
+
+- [ ] Header: title, version (V2), date, method line (lenses + executors used), reader role
+- [ ] VERIFIED box whose counts match the claim-verification ledger
+- [ ] Section 01 — 60-Second Summary
+- [ ] Section 02 — Key Findings ranked by reliability, each with a score badge and supported-by / challenged-by lens tags
+- [ ] Section 03 — Where the Lenses Disagree
+- [ ] Section 04 — The assumption the briefing rests on + the missing sixth lens
+- [ ] Section 05 — What to do differently (targeted at the reader role)
+- [ ] Section 06 — Sources, each with a CONFIRMED / CORRECTED / DEMOTED / FABRICATED badge
+- [ ] The markdown brief (`brief.md`) carries the same verified content in long form, with inline citations and a Claims Requiring Verification appendix if any `[UNVERIFIED]` items remain
 
 ## Source Quality
 

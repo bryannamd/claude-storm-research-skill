@@ -9,14 +9,14 @@ Target audience: Technical product managers who understand basic machine learnin
 Preferred depth: Highly technical, with specific latency benchmarks if available.
 Output format: A detailed markdown report with a clear executive summary."
 
-**Pipeline Execution Summary:**
+**Pipeline Execution Summary** (the 7 stages, in order — see `docs/stage-01.md` … `stage-07.md`):
 
-1. **Intake and Scoping**: The system parses your constraints and identifies key knowledge gaps. Research parameters are then established.
-2. **Perspective Generation**: Simulated domain experts generate targeted questions and search the web and academic databases for raw data on TPUs, NPUs, and latency benchmarks.
-3. **Source Verification**: Each source is checked for credibility. Marketing fluff gets filtered out while peer-reviewed papers get flagged.
-4. **Synthesis**: The verified facts are woven into a coherent narrative. Hardware specifics are structured specifically for your product manager audience.
-5. **Drafting**: The initial markdown document is generated. Every citation links back to the verified ledger.
-6. **Review**: The draft is read against your original prompt. The passenger vehicle boundary gets a strict check.
-7. **Final Polish**: The final layout is applied and the HTML version is generated.
+1. **Scope Clarification**: The system restates your topic in one line, records the audience (technical product managers) and the boundaries (passenger vehicles only; TPUs/NPUs in focus), and proceeds.
+2. **Expert Lenses & Retrieval**: Five named lenses — practitioner, academic, skeptic, economist, historian — research in parallel, each doing real web/source retrieval on TPUs, NPUs, and latency benchmarks, then a grounded follow-up round. On a machine with `codex`/`agy` installed, the lenses run cross-model.
+3. **Contradiction & Tension Mapping**: Where the lenses disagree, agree, and go blind is mapped explicitly.
+4. **Synthesis & Outline Drafting**: The findings are curated into a cited outline structured for the product-manager audience.
+5. **Adversarial Peer Review**: The draft is scored for confidence, checked for bias, and probed for a missing sixth lens.
+6. **Source Verification**: Every claim is traced to its primary source and marked CONFIRMED / CORRECTED / DEMOTED / FABRICATED; fabrications are dropped and the report is rewritten as V2.
+7. **Output Formatting & Delivery**: The final `brief.md` and `index.html` are generated, with the passenger-vehicle boundary given a strict final check.
 
 Once the pipeline finishes, you can review the output and ask for specific sections to be expanded or revised.
