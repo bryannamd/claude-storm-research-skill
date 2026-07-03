@@ -2,7 +2,7 @@
 
 ### Purpose
 
-This stage makes the five lenses analyze each other. Where experts disagree is where real understanding lives; mapping the fights prevents the report from presenting a false consensus. This stage runs in the main Claude session — it needs every transcript in context at once.
+This stage makes the five experts analyze each other. Where experts disagree is where real understanding lives; mapping the fights prevents the report from presenting a false consensus. This stage runs in the main Claude session — it needs every transcript in context at once.
 
 ### Inputs
 
@@ -11,19 +11,19 @@ This stage makes the five lenses analyze each other. Where experts disagree is w
 
 ### Actions
 
-Answer the five contradiction-map questions against the full set of lens outputs:
+Answer the five contradiction-map questions against the full set of expert outputs:
 
-1. **Direct conflicts** — Where do two or more lenses directly contradict each other? List each conflict with the specific claims that clash and their sources.
-2. **Evidence strength** — For each conflict, which lens has the strongest evidence and which the weakest, and why? Use the evidence-quality hierarchy from `docs/verification-rubric.md`.
+1. **Direct conflicts** — Where do two or more experts directly contradict each other? List each conflict with the specific claims that clash and their sources.
+2. **Evidence strength** — For each conflict, which expert has the strongest evidence and which the weakest, and why? Use the evidence-quality hierarchy from `docs/verification-rubric.md`.
 3. **The resolving question** — What is the one question that, if answered, would resolve the biggest contradiction?
-4. **Universal agreement** — What does every lens agree on? Even opponents confirming it makes it likely true; mark these as the report's highest-confidence candidates.
-5. **The blind spot** — What did none of the lenses address? This is the field's blind spot and often the most valuable finding; it feeds Stage 05's missing-sixth-lens check.
+4. **Universal agreement** — What does every expert agree on? Even opponents confirming it makes it likely true; mark these as the report's highest-confidence candidates.
+5. **The blind spot** — What did none of the experts address? This is the field's blind spot and often the most valuable finding; it feeds Stage 05's missing-sixth-expert check.
 
 Then:
 
 6. Group related conflicts into broader tension themes and assign preliminary confidence levels by weight of evidence.
 7. Note where data is missing or inconclusive as explicit knowledge gaps.
-8. Save the structured tension map as `tension-map.md` in the run workspace, with traceability to `conversations/<lens>.md` and corpus entries.
+8. Save the structured tension map as `tension-map.md` in the run workspace, with traceability to `conversations/<expert>.md` and corpus entries.
 
 ### Outputs
 

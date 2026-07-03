@@ -1,7 +1,7 @@
 # claude-storm-research-skill
 A multi-perspective research engine for [Claude Code](https://code.claude.com/docs), implementing the Stanford STORM methodology (Shao et al., NAACL 2024) as an [Agent Skill](https://agentskills.io).
 
-Instead of a shallow one-shot answer, you get a reliability-ranked, cited briefing: five expert lenses — Practitioner, Academic, Skeptic, Economist, Historian — research your topic in parallel, their contradictions get mapped, and every claim is checked against its primary source before it reaches the report.
+Instead of a shallow one-shot answer, you get a reliability-ranked, cited briefing. A panel of five experts — the Practitioner, the Academic, the Skeptic, the Economist, and the Historian — each research your topic from their own angle, all at once. The skill then maps where they disagree and fact-checks every claim against its original source before it reaches the report.
 
 ## What this is (read first)
 
@@ -69,21 +69,21 @@ Or invoke it directly by name: type `/storm-research` and then describe your top
 Every run writes two deliverables to `.storm-research/<topic-slug>/` (relative to where you launched Claude):
 
 1. **`brief.md`** — a detailed markdown report with inline citations, for deep reading.
-2. **`index.html`** — a self-contained HTML briefing (open it in any browser): a 60-second summary, key findings ranked by reliability with which lenses supported or challenged each, the assumption the report rests on plus the missing sixth lens, reader-targeted actions, and a source list badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED.
+2. **`index.html`** — a self-contained HTML briefing (open it in any browser): a 60-second summary; key findings ranked by reliability, each showing which experts backed it and which pushed back; the assumption the report rests on (plus one angle the panel missed); advice aimed at whoever the report is for; and a source list badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED.
 
-Intermediate files (lens transcripts, source corpus, the claim-verification ledger) stay in that folder too, so you can inspect exactly how each conclusion was reached.
+Intermediate files (each expert's research notes, the collected sources, the claim-by-claim fact-check ledger) stay in that folder too, so you can inspect exactly how each conclusion was reached.
 
 ## Key features
 
-* **7-stage STORM pipeline** — scope → five parallel expert lenses → contradiction map → synthesis → adversarial peer review → primary-source verification → templated delivery.
-* **Cross-model verification when available** — lens and verification agents run on `codex`/`agy` when installed; Claude subagents otherwise. See [`docs/executors.md`](skills/storm-research/docs/executors.md).
-* **Primary-source verification** — every claim needs a fetched quote from a primary source; fabrications are dropped and the report is rewritten with rescored confidence.
-* **Self-critique built in** — STORM's authors flagged the method's missing self-critique (source bias transfer, over-association); the peer-review stage targets exactly those failure modes.
+* **7-stage pipeline** — set the scope → five experts research at once → map where they disagree → draft an outline → a tough self-review → fact-check every claim against its source → deliver a consistent report.
+* **A second AI double-checks the first, when available** — the research and fact-checking can run on `codex`/`agy` (other AI models) when they're installed, so one model's claims get reviewed by a *different* one. Claude does it all on its own otherwise. See [`docs/executors.md`](skills/storm-research/docs/executors.md).
+* **Every claim is fact-checked** — each claim needs a real quote from an original source; anything invented is dropped, and the report is rewritten with its confidence scores updated.
+* **Built-in self-critique** — the original STORM method had no self-check, so it could quietly absorb a source's bias or invent links between unrelated facts. The review stage hunts for exactly those two mistakes.
 
 ## Requirements
 
 * [Claude Code](https://code.claude.com/docs) with the `WebSearch` and `WebFetch` tools available — this is all you need.
-* *Optional:* the `codex` and/or `agy` CLIs on your PATH, for cross-model verification. The skill detects them automatically and falls back to Claude alone if they are absent.
+* *Optional:* the `codex` and/or `agy` CLIs on your PATH, so a second AI can double-check the first. The skill detects them automatically and falls back to Claude alone if they are absent.
 
 ## Benchmarks
 
@@ -93,18 +93,18 @@ The [`benchmarks/`](benchmarks/) folder holds an empirical comparison against Cl
 
 | | deep-research | storm-research |
 |---|---|---|
-| Wall-clock | **~1.8× faster** (flat fan-out) | slower (sequential stage gating) |
+| Wall-clock | **~1.8× faster** (does everything at once) | slower (works through ordered stages) |
 | Tokens / cost | ~equal at equal scale — the lever is agent count, not methodology |  |
 | Quality on contested topics | accurate but unranked findings dump | verification caught **fabricated figures** a plain dump passed through (e.g. invented Discord P99 numbers, a garbled Uber race count) and ranked findings by reliability |
 
-**Sequential vs. parallel cross-model** (this skill's own pipeline, codex + agy as lens/verify agents):
+**Sequential vs. parallel cross-model** (this skill's own pipeline, with codex + agy doing the research and fact-checking):
 
 | Topic | Sequential (Claude-only) | Parallel cross-model | Δ |
 |---|---|---|---|
 | MCP | 10.5 min | **7.8 min** | −26% |
 | Rust vs Go | 12.2 min | **10.5 min** | −14% |
 
-Parallelizing the pipeline gives a stable **~2.2×** over the same calls run back-to-back (lenses collapse to the slowest one; reasoning overlaps verification). Against fast Claude-only subagents the net gain is smaller (14–26%) because external CLIs are slower per call — so **cross-model buys verification quality, not speed**. Pick deep-research for descriptive breadth and speed; pick storm-research when the cost of a plausible-but-wrong claim justifies the slower, self-critiquing pipeline.
+Running the steps in parallel is a stable **~2.2×** faster than doing them one after another (the five experts run at once, so you wait for the slowest instead of the sum; the reasoning overlaps the fact-checking). Against Claude's own fast helpers the net gain is smaller (14–26%), because the outside models (codex/agy) are slower per call — so **using a second AI buys accuracy, not speed**. Pick deep-research for broad, quick, descriptive answers; pick storm-research when a plausible-but-wrong claim would be costly enough to justify the slower, self-checking pipeline.
 
 ## Documentation
 

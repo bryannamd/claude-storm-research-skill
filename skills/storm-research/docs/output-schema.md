@@ -8,13 +8,13 @@ A single scrolling briefing (not a slide deck), in this exact order:
 
 | # | Section | Content | Source |
 |---|---|---|---|
-| — | Header | Kicker (`STORM RESEARCH · V2 (VERIFIED)`), title, five-lens subtitle, Date/Method/Audience meta line | Stage 01 + `executor-manifest.md` |
+| — | Header | Kicker (`STORM RESEARCH · V2 (VERIFIED)`), title, five-expert subtitle, Date/Method/Audience meta line | Stage 01 + `executor-manifest.md` |
 | — | VERIFIED box | Sources checked, cluster count, fabricated/corrected/demoted counts, verify date | Stage 06 statistics |
 | — | HOW TO READ THIS box | Author-constructed panel note, 1–10 evidence-quality scale, fact-vs-interpretation flag | Fixed template copy |
 | 01 | The 60-Second Summary | The whole story in a few sentences, leading with the tension that matters most | Stage 04/07 |
-| 02 | Key Findings, Ranked by Reliability | One block per finding, highest score first: title, `RELIABILITY: HIGH/MEDIUM/LOW · n/10` badge, cited body, supported-by/challenged-by lens tags, caveat line | Stage 06 V2 outline |
-| 03 | Where the Lenses Disagree | The major tensions and the one resolving question | Stage 03 |
-| 04 | The Assumption This Briefing Rests On (and the Missing Sixth Lens) | The shared framing all lenses inherit, plus the named missing lens and its expected effect | Stage 05 |
+| 02 | Key Findings, Ranked by Reliability | One block per finding, highest score first: title, `RELIABILITY: HIGH/MEDIUM/LOW · n/10` badge, cited body, supported-by/challenged-by expert tags, caveat line | Stage 06 V2 outline |
+| 03 | Where the Experts Disagree | The major tensions and the one resolving question | Stage 03 |
+| 04 | The Assumption This Briefing Rests On (and the Missing Sixth Expert) | The shared framing all experts inherit, plus the named missing expert and its expected effect | Stage 05 |
 | 05 | What To Actually Do Differently | Numbered actions targeted at the reader role | Stage 01 role + Stage 07 |
 | 06 | Sources | One entry per source: verdict badge (`CONFIRMED`/`CORRECTED`/`DEMOTED`/`FABRICATED`), linked title, grade, verification note | Stage 06 ledger |
 

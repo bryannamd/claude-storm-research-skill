@@ -14,23 +14,23 @@ The paper also names the method's open problems: **source bias transfer** (the s
 
 | STORM (paper / official implementation) | This skill |
 |---|---|
-| Perspective discovery from similar articles | Five fixed expert lenses (Practitioner, Academic, Skeptic, Economist, Historian) + user-added lenses — fixed personas trade discovery breadth for comparability and repeatability across runs |
-| Simulated writer–expert conversations, one per perspective, in parallel | Stage 02: parallel lens agents on external CLIs (codex, agy) with one or two grounded follow-up rounds each |
+| Perspective discovery from similar articles | Five fixed experts (Practitioner, Academic, Skeptic, Economist, Historian) + user-added experts — fixed personas trade discovery breadth for comparability and repeatability across runs |
+| Simulated writer–expert conversations, one per perspective, in parallel | Stage 02: parallel expert agents on external CLIs (codex, agy) with one or two grounded follow-up rounds each |
 | Separate LM roles (cheap model for conversation simulation, strong model for cited text) | Executor split: research and verification delegated outward; synthesis and citation-dense drafting stay in the main Claude session |
 | Outline curation → article generation → polish | Stages 04 → 07 |
 | — (paper flags missing self-critique) | Stage 05 adversarial peer review + Stage 06 cross-model verification, added on top of STORM |
 
-Three deliberate departures from the paper: the output is a decision brief with ranked findings rather than a Wikipedia-style article; the review/verification stages exist precisely because the paper's editors found bias and fabrication the automated pipeline could not catch itself; and the simulated conversation is compressed to one or two follow-up rounds per lens — a token/cost constraint accepted knowingly, traded against STORM's longer multi-turn dialogues.
+Three deliberate departures from the paper: the output is a decision brief with ranked findings rather than a Wikipedia-style article; the review/verification stages exist precisely because the paper's editors found bias and fabrication the automated pipeline could not catch itself; and the simulated conversation is compressed to one or two follow-up rounds per expert — a token/cost constraint accepted knowingly, traded against STORM's longer multi-turn dialogues.
 
-The cross-model executor design also borrows Co-STORM's core observation (Jiang et al., EMNLP 2024): multiple agents questioning from different positions surface "unknown unknowns" a single line of questioning misses. The Stage 03 blind-spot question and the Stage 05 missing-sixth-lens check operationalize that.
+The cross-model executor design also borrows Co-STORM's core observation (Jiang et al., EMNLP 2024): multiple agents questioning from different positions surface "unknown unknowns" a single line of questioning misses. The Stage 03 blind-spot question and the Stage 05 missing-sixth-expert check operationalize that.
 
 ## Stage Flow
 
 1. **Scope Clarification** — topic frame, reader role, boundaries, executor detection.
-2. **Expert Lenses & Retrieval Conversation** — the parallel STORM loop; produces transcripts and the source corpus.
-3. **Contradiction & Tension Mapping** — where the lenses fight, agree, and go blind.
+2. **Expert Panel & Retrieval Conversation** — the parallel STORM loop; produces transcripts and the source corpus.
+3. **Contradiction & Tension Mapping** — where the experts fight, agree, and go blind.
 4. **Information Synthesis & Outline Drafting** — the V1 outline with per-claim citations.
-5. **Adversarial Peer Review** — confidence scores, bias check, missing sixth lens.
+5. **Adversarial Peer Review** — confidence scores, bias check, missing sixth expert.
 6. **Source Verification & Fact-Checking** — cross-model clusters, CONFIRMED/CORRECTED/DEMOTED/FABRICATED verdicts, V2 rewrite.
 7. **Output Formatting & Delivery** — brief.md + template-rendered index.html, user approval.
 

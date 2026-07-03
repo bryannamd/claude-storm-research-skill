@@ -2,7 +2,7 @@
 
 ### Purpose
 
-This stage transforms a broad user request into a precise research frame without stalling the pipeline. It defines what the investigation covers, who it is for, and what a good answer looks like. A tight frame is what lets five lenses stay comparable in Stage 02; the follow-up rule is: default to proceeding, ask only when ambiguity would actually change the research.
+This stage transforms a broad user request into a precise research frame without stalling the pipeline. It defines what the investigation covers, who it is for, and what a good answer looks like. A tight frame is what lets five experts stay comparable in Stage 02; the follow-up rule is: default to proceeding, ask only when ambiguity would actually change the research.
 
 ### Inputs
 
@@ -20,7 +20,7 @@ This stage transforms a broad user request into a precise research frame without
 5. Define explicit inclusion and exclusion boundaries, and define key terms that need strict definitions.
 6. Derive a kebab-case `topic-slug` from the topic. All run artifacts — this stage's and every later stage's — live in `.storm-research/<topic-slug>/` (the "run workspace"); never write them anywhere else.
 7. Run executor detection per `docs/executors.md` and write `executor-manifest.md` to the run workspace.
-8. Save the scope document (topic frame, thesis, sub-questions, boundaries, glossary, reader role) as `scope.md` in the run workspace, then tell the user in one line that the pipeline is running (which lenses, which executors).
+8. Save the scope document (topic frame, thesis, sub-questions, boundaries, glossary, reader role) as `scope.md` in the run workspace, then tell the user in one line that the pipeline is running (which experts, which executors).
 
 ### Outputs
 

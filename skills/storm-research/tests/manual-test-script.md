@@ -24,10 +24,10 @@
 **Steps:**
 1. Feed the sample request to Claude Code.
 2. Verify the Skill invokes Stage 01 (Scope Clarification) first, runs executor detection, and writes `executor-manifest.md`.
-3. Confirm the 5 expert lenses run **in parallel** in Stage 02 on the executors recorded in the manifest (external CLIs when available), each returning the fixed format (core position / strongest evidence / the one thing).
+3. Confirm the 5 experts run **in parallel** in Stage 02 on the executors recorded in the manifest (external CLIs when available), each returning the fixed format (core position / strongest evidence / the one thing).
 4. Verify the contradiction map answers all five questions in Stage 03 (conflicts, evidence strength, resolving question, universal agreement, blind spot).
 5. Check the synthesis outline maps every claim to a source in Stage 04.
-6. Confirm the peer review produces per-finding confidence scores and names a missing sixth lens in Stage 05.
+6. Confirm the peer review produces per-finding confidence scores and names a missing sixth expert in Stage 05.
 7. Validate the verification ledger records verdicts and verifying executors in Stage 06, with the cross-model rule held.
 8. Ensure final output includes both the Markdown brief AND the template-rendered HTML briefing in Stage 07.
 
@@ -41,7 +41,7 @@
 
 **Steps:**
 1. Open `index.html` in Chrome/Firefox.
-2. Check the briefing follows the template order: header + VERIFIED box + HOW TO READ THIS → 60-second summary → ranked findings → disagreements → assumption/missing lens → actions → badged sources.
+2. Check the briefing follows the template order: header + VERIFIED box + HOW TO READ THIS → 60-second summary → ranked findings → disagreements → assumption/missing expert → actions → badged sources.
 3. Confirm the VERIFIED box counts match `claim-verification-ledger.md`.
 4. Verify every citation links to a real, accessible URL (spot-check 5).
 5. Confirm the file is self-contained (no external CSS/JS/font/image requests in DevTools Network tab).

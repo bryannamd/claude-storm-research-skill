@@ -45,9 +45,9 @@
   .b-corrected  { background: var(--warn-bg); color: var(--warn); }
   .b-demoted    { background: var(--warn-bg); color: var(--warn); }
   .b-fabricated { background: var(--bad-bg); color: var(--bad); }
-  .lens-tags { font-size: 12px; color: var(--muted); margin-top: 8px; }
-  .lens-tags .support { color: var(--ok); font-weight: 600; }
-  .lens-tags .challenge { color: var(--bad); font-weight: 600; }
+  .expert-tags { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .expert-tags .support { color: var(--ok); font-weight: 600; }
+  .expert-tags .challenge { color: var(--bad); font-weight: 600; }
   .caveat { font-size: 13px; color: var(--muted); margin-top: 8px;
             border-left: 3px solid var(--warn); padding-left: 10px; }
   .sources li { font-size: 13.5px; margin: 8px 0; }
@@ -61,10 +61,10 @@
 <main>
   <p class="kicker">STORM Research · {{VERSION}} ({{VERIFIED_LABEL}})</p>
   <h1>{{TITLE}}</h1>
-  <p class="subtitle">A five-lens synthesis: practitioner, academic, skeptic, economist, and historian.
+  <p class="subtitle">A five-expert synthesis: practitioner, academic, skeptic, economist, and historian.
      Every claim independently checked against its primary source before publication.</p>
   <p class="meta"><strong>Date</strong> {{DATE}} &nbsp;·&nbsp;
-     <strong>Method</strong> {{LENS_COUNT}} expert lenses + contradiction map ({{EXECUTOR_LINE}}) &nbsp;·&nbsp;
+     <strong>Method</strong> {{EXPERT_COUNT}} experts + contradiction map ({{EXECUTOR_LINE}}) &nbsp;·&nbsp;
      <strong>Audience</strong> {{READER_ROLE}}</p>
 
   <div class="box box-verified">
@@ -78,7 +78,7 @@
   <div class="box box-note">
     <h2>How to read this</h2>
     <ul>
-      <li>The panel was author-constructed. All five lenses share one framing; treat coverage,
+      <li>The panel was author-constructed. All five experts share one framing; treat coverage,
           not independence, as the guarantee.</li>
       <li>Confidence is scored 1–10 on evidence quality: peer-reviewed causal work &gt;
           official policy/financial data &gt; single commissioned survey &gt; analogy &gt; preprint.</li>
@@ -97,16 +97,16 @@
     <h3>{{FINDING_TITLE}}</h3>
     <span class="badge {{BADGE_CLASS}}">RELIABILITY: {{LEVEL}} · {{SCORE}}/10</span>
     <p>{{FINDING_BODY_WITH_CITATIONS}}</p>
-    <p class="lens-tags"><span class="support">Supported by</span> {{SUPPORTING_LENSES}} ·
-       <span class="challenge">Challenged by</span> {{CHALLENGING_LENSES}}</p>
+    <p class="expert-tags"><span class="support">Supported by</span> {{SUPPORTING_EXPERTS}} ·
+       <span class="challenge">Challenged by</span> {{CHALLENGING_EXPERTS}}</p>
     <p class="caveat"><strong>Caveat:</strong> {{CAVEAT}}</p>
   </div>
 
-  <h2 class="section"><span class="num">03</span>Where the Lenses Disagree</h2>
+  <h2 class="section"><span class="num">03</span>Where the Experts Disagree</h2>
   <p>{{TENSION_SUMMARY}}</p>
 
-  <h2 class="section"><span class="num">04</span>The Assumption This Briefing Rests On (and the Missing Sixth Lens)</h2>
-  <p>{{ASSUMPTION_AND_MISSING_LENS}}</p>
+  <h2 class="section"><span class="num">04</span>The Assumption This Briefing Rests On (and the Missing Sixth Expert)</h2>
+  <p>{{ASSUMPTION_AND_MISSING_EXPERT}}</p>
 
   <h2 class="section"><span class="num">05</span>What To Actually Do Differently</h2>
   <!-- targeted at {{READER_ROLE}} -->

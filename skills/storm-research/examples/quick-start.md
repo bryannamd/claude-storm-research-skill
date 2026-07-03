@@ -43,7 +43,7 @@ Audience: a hospital procurement lead deciding what to pilot.
 
 ## 4. What happens
 
-Claude states its understanding in **one line** and proceeds (it asks at most one clarifying question, and only if the topic is genuinely ambiguous). Then it runs the pipeline: five expert lenses research in parallel → their contradictions are mapped → an adversarial peer review → every claim is checked against its primary source → a final briefing is written. On a machine with `codex` or `agy` installed, the lenses and verification run cross-model; otherwise Claude does it all.
+Claude states its understanding in **one line** and proceeds (it asks at most one clarifying question, and only if the topic is genuinely ambiguous). Then it runs the pipeline: five experts research in parallel → the skill maps where they disagree → a tough self-review → every claim is fact-checked against its original source → a final briefing is written. On a machine with `codex` or `agy` installed, the research and fact-checking run on those other AI models; otherwise Claude does it all.
 
 ## 5. Read the result
 
@@ -58,8 +58,8 @@ The HTML briefing leads with a 60-second summary, then findings ranked by reliab
 
 ## 6. Iterate
 
-The peer-review stage names a "missing sixth lens." If it looks useful, just say so:
+The self-review stage names one angle the five experts missed — a possible "sixth expert." If it looks useful, just say so:
 
 ```
-add that sixth lens and give me a V3
+add that sixth expert and give me a V3
 ```

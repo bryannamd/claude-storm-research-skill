@@ -2,8 +2,8 @@
 name: storm-research
 description: >
   Deep research skill implementing the Stanford STORM methodology (Shao et al., NAACL 2024) with
-  five parallel expert lenses, contradiction mapping, adversarial peer review, and primary-source
-  verification. Lens and verification agents run on external CLIs (codex, agy) by default for
+  five parallel experts, contradiction mapping, adversarial peer review, and primary-source
+  verification. Expert and verification agents run on external CLIs (codex, agy) by default for
   cross-model diversity, with Claude subagents as fallback. Use when the user asks for deep research,
   comprehensive briefs, or investigation of complex topics using trigger phrases like "deep research on",
   "STORM briefing", "comprehensive research brief", "investigate the topic of", "research report on",
@@ -11,7 +11,7 @@ description: >
 license: MIT
 compatibility: >
   Requires Claude Code with WebSearch and WebFetch tool access. Prefers external agent CLIs
-  (codex, agy) on PATH for lens and verification agents; falls back to built-in subagents.
+  (codex, agy) on PATH for expert and verification agents; falls back to built-in subagents.
 allowed-tools: WebSearch WebFetch Bash(codex *) Bash(agy *) Bash(command -v *)
 argument-hint: "[topic to research]"
 metadata:
@@ -27,12 +27,12 @@ Run the full pipeline end to end. Do not shortcut a stage. This is heavier than 
 
 ## Executor Routing (read first)
 
-Lens agents (Stage 02) and verification agents (Stage 06) run on **external, non-Anthropic agent CLIs by default** — cross-model execution catches biases a model cannot see in its own output.
+Expert agents (Stage 02) and verification agents (Stage 06) run on **external, non-Anthropic agent CLIs by default** — cross-model execution catches biases a model cannot see in its own output.
 
 1. Detect once at run start: `command -v codex`, `command -v agy`.
-2. Both available → split lenses across both; verification is cross-model (each executor verifies the *other's* claims, never solely its own).
-3. One available → it runs all lenses; Claude runs all verification clusters (producer/verifier separation holds).
-4. Neither available → Claude built-in subagents run everything, with verification in fresh contexts that never see the lens transcripts. Note the single-model run in the report's method line.
+2. Both available → split experts across both; verification is cross-model (each executor verifies the *other's* claims, never solely its own).
+3. One available → it runs all experts; Claude runs all verification clusters (producer/verifier separation holds).
+4. Neither available → Claude built-in subagents run everything, with verification in fresh contexts that never see the expert transcripts. Note the single-model run in the report's method line.
 5. Synthesis and final drafting always stay in the main Claude session — weak models fail at citation-dense text; delegation is for parallel research and verification only.
 
 Full detection, invocation, and failure-fallback rules: [docs/executors.md](docs/executors.md). **Follow it exactly.**
@@ -41,17 +41,17 @@ Full detection, invocation, and failure-fallback rules: [docs/executors.md](docs
 
 **01 Scope Clarification** — Turn the request into a one-line topic frame, identify the reader's role (targets the actionable section), derive a kebab-case topic slug. Default to proceeding; ask at most one clarifying question, and only when ambiguity would change the research.
 
-**02 Expert Lenses & Retrieval Conversation** — Run five expert lenses in parallel (Practitioner, Academic, Skeptic, Economist, Historian) on the routed executors. Each lens does real web research and returns a fixed format: core position, strongest evidence with cited URLs, and the one thing only that lens would say. Each lens then gets one to two grounded follow-up rounds — the STORM conversation loop, deliberately bounded.
+**02 Expert Panel & Retrieval Conversation** — Run five experts in parallel (Practitioner, Academic, Skeptic, Economist, Historian) on the routed executors. Each expert does real web research and returns a fixed format: core position, strongest evidence with cited URLs, and the one thing only that expert would say. Each expert then gets one to two grounded follow-up rounds — the STORM conversation loop, deliberately bounded.
 
-**03 Contradiction & Tension Mapping** — Map where lenses directly contradict, which has the strongest/weakest evidence, the one question that would resolve the biggest contradiction, what every lens agrees on (likely true), and what no lens addressed (the field's blind spot).
+**03 Contradiction & Tension Mapping** — Map where experts directly contradict, which has the strongest/weakest evidence, the one question that would resolve the biggest contradiction, what every expert agrees on (likely true), and what no expert addressed (the field's blind spot).
 
 **04 Information Synthesis & Outline Drafting** — Curate findings into an outline answering the thesis question; map citations to sections.
 
-**05 Adversarial Peer Review** — Grade the draft's own work: per-finding confidence scores (1–10), weakest link, bias check (did one lens dominate?), missing sixth lens, overall grade. STORM's known weaknesses — source bias transfer and over-association of unrelated facts — are explicit review targets.
+**05 Adversarial Peer Review** — Grade the draft's own work: per-finding confidence scores (1–10), weakest link, bias check (did one expert dominate?), missing sixth expert, overall grade. STORM's known weaknesses — source bias transfer and over-association of unrelated facts — are explicit review targets.
 
 **06 Source Verification & Fact-Checking** — Cross-model verification clusters check every claim against its primary source. Verdicts: CONFIRMED / CORRECTED / DEMOTED / FABRICATED (dropped). The report is then rewritten as V2 with post-verification confidence scores.
 
-**07 Output Formatting & Delivery** — Render `brief.md` and an `index.html` briefing from [assets/report-template.html](assets/report-template.html): 60-second summary, findings ranked by reliability with supported-by/challenged-by lens tags, the assumption the briefing rests on plus the missing sixth lens, reader-role-targeted actions, and the verified source list. Present for user approval.
+**07 Output Formatting & Delivery** — Render `brief.md` and an `index.html` briefing from [assets/report-template.html](assets/report-template.html): 60-second summary, findings ranked by reliability with supported-by/challenged-by expert tags, the assumption the briefing rests on plus the missing sixth expert, reader-role-targeted actions, and the verified source list. Present for user approval.
 
 ## Trigger Activation Guide
 

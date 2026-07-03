@@ -7,12 +7,12 @@
 
 The HTML briefing (`index.html`) follows the fixed six-section template — see `docs/output-schema.md`.
 
-- [ ] Header: title, version (V2), date, method line (lenses + executors used), reader role
+- [ ] Header: title, version (V2), date, method line (experts + executors used), reader role
 - [ ] VERIFIED box whose counts match the claim-verification ledger
 - [ ] Section 01 — 60-Second Summary
-- [ ] Section 02 — Key Findings ranked by reliability, each with a score badge and supported-by / challenged-by lens tags
-- [ ] Section 03 — Where the Lenses Disagree
-- [ ] Section 04 — The assumption the briefing rests on + the missing sixth lens
+- [ ] Section 02 — Key Findings ranked by reliability, each with a score badge and supported-by / challenged-by expert tags
+- [ ] Section 03 — Where the Experts Disagree
+- [ ] Section 04 — The assumption the briefing rests on + the missing sixth expert
 - [ ] Section 05 — What to do differently (targeted at the reader role)
 - [ ] Section 06 — Sources, each with a CONFIRMED / CORRECTED / DEMOTED / FABRICATED badge
 - [ ] The markdown brief (`brief.md`) carries the same verified content in long form, with inline citations and a Claims Requiring Verification appendix if any `[UNVERIFIED]` items remain
@@ -41,8 +41,8 @@ The HTML briefing (`index.html`) follows the fixed six-section template — see 
 - [ ] Header shows version (V2), date, method line with executors used, and reader role
 - [ ] VERIFIED box numbers match the verification ledger counts
 - [ ] Section 01: 60-second summary present
-- [ ] Section 02: key findings ranked by post-verification reliability, each with score badge, supported-by/challenged-by lens tags, and caveat
-- [ ] Section 04: assumption + missing sixth lens named
+- [ ] Section 02: key findings ranked by post-verification reliability, each with score badge, supported-by/challenged-by expert tags, and caveat
+- [ ] Section 04: assumption + missing sixth expert named
 - [ ] Section 05: actions targeted at the reader role
 - [ ] Section 06: every source carries a verdict badge
 - [ ] Self-contained (no external CSS/JS/fonts/images); mobile-responsive (tested at 375 px width)
