@@ -6,7 +6,7 @@ This stage makes the five experts analyze each other. Where experts disagree is 
 
 ### Inputs
 
-* The `conversations/` transcripts and `raw-source-corpus.json` from Stage 02.
+* Expert transcripts and the raw source corpus from Stage 02, kept in session memory.
 * The scope document from Stage 01.
 
 ### Actions
@@ -23,11 +23,11 @@ Then:
 
 6. Group related conflicts into broader tension themes and assign preliminary confidence levels by weight of evidence.
 7. Note where data is missing or inconclusive as explicit knowledge gaps.
-8. Save the structured tension map as `tension-map.md` in the run workspace, with traceability to `conversations/<expert>.md` and corpus entries.
+8. Keep the structured tension map in session memory, with traceability to expert transcripts and corpus entries.
 
 ### Outputs
 
-* `tension-map.md` — the structured tension map answering all five questions, in the run workspace.
+* Tension map — the structured map answering all five questions, kept in session memory.
 * A list of conflicting claims with their respective sources and evidence-strength rulings.
 * The single resolving question for the biggest contradiction.
 * The universal-agreement list (highest-confidence candidates).

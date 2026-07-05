@@ -7,7 +7,7 @@ This is the core STORM mechanism. Five named experts research the same topic fra
 ### Inputs
 
 * The scope document and one-line topic frame from Stage 01.
-* `executor-manifest.md` (which executors run which experts).
+* Executor manifest (which executors run which experts), kept in session memory.
 * Any extra experts requested by the user (a sixth or seventh persona).
 
 ### The Five Experts
@@ -23,24 +23,27 @@ Every expert prompt embeds the same `{TOPIC}` and `{TOPIC_FRAME}` and demands th
 ### Actions
 
 1. Build the five expert prompts from the topic frame, each ending with the required return format and an instruction to cite real URLs.
-2. Dispatch all five experts **in parallel** on the executors assigned in `executor-manifest.md` (external CLIs in the background; Claude subagents only as routed fallback).
-3. Collect each expert's output and store it as `conversations/<expert>.md` in the run workspace (`.storm-research/<topic-slug>/`).
-4. Run one to two **follow-up rounds** per expert (two when the topic is complex or the first round surfaced surprising claims): from its output, generate 1–3 follow-up questions targeting gaps, and have the same executor answer them grounded in fetched sources. Append to the transcript. This bounded loop is the skill's deliberate compression of STORM's longer simulated conversations — see `docs/pipeline.md`.
-5. Build `raw-source-corpus.json` with every cited URL, title, claim summary, expert, and retrieval timestamp.
-6. Check transcripts against Stage 01 boundaries; discard out-of-scope material.
+2. Dispatch all five experts **in parallel** on the executors assigned in the executor manifest (external CLIs in the background; Claude subagents only as routed fallback).
+3. **Notify the user immediately** that the five experts are researching in parallel and estimate completion time (typically 3–5 minutes). Show a concise status line only; do not dump raw shell commands.
+4. **Actively wait for completion**. After dispatching all five experts, the system will send completion reminders as each background task finishes. Collect outputs into session memory as they become available. Do not go silent — provide a brief progress update after collecting each batch (e.g., "3 of 5 experts complete").
+5. Keep each expert's output in session memory (one transcript per expert with the fixed-format position, evidence, follow-up Q&A, and cited URLs). No files created.
+6. Run one to two **follow-up rounds** per expert (two when the topic is complex or the first round surfaced surprising claims): from its output, generate 1–3 follow-up questions targeting gaps, and have the same executor answer them grounded in fetched sources. Append to the transcript in session memory. This bounded loop is the skill's deliberate compression of STORM's longer simulated conversations — see `docs/pipeline.md`.
+7. Build the raw source corpus in session memory with every cited URL, title, claim summary, expert, and retrieval timestamp. No JSON files written.
+8. Check transcripts against Stage 01 boundaries; discard out-of-scope material.
+9. If the user asks to inspect expert outputs mid-run, display the relevant transcript in the terminal. Never write to disk unless explicitly requested.
 
 ### Outputs
 
-* `conversations/<expert>.md` — one transcript per expert with the fixed-format position, evidence, follow-up Q&A, and cited URLs.
-* `raw-source-corpus.json` — all fetched source metadata.
-* A mapping of each expert's findings to the thesis and sub-questions.
+* Expert transcripts — one per expert, kept in session memory.
+* Raw source corpus — all fetched source metadata, kept in session memory.
+* A mapping of each expert's findings to the thesis and sub-questions, kept in session memory.
 
 ### QA Checklist
 
-* [ ] Were all five experts dispatched in parallel on the executors recorded in `executor-manifest.md`?
+* [ ] Were all five experts dispatched in parallel on the executors recorded in the manifest?
 * [ ] Does every expert output follow the fixed format (core position / strongest evidence / the one thing)?
 * [ ] Does every evidence bullet carry a real, resolvable URL?
 * [ ] Did each expert get at least one grounded follow-up round?
 * [ ] Were per-call failures handled by the executor fallback rules (retry once, then next executor)?
 * [ ] Do the transcripts stay within Stage 01 boundaries, with minimal overlap between experts?
-* [ ] Were `conversations/` and `raw-source-corpus.json` saved in the run workspace?
+* [ ] Are all expert transcripts and the source corpus in session memory?

@@ -17,6 +17,6 @@ Output format: A detailed markdown report with a clear executive summary."
 4. **Synthesis & Outline Drafting**: The findings are curated into a cited outline structured for the product-manager audience.
 5. **Self-Review**: The draft is scored for confidence, checked for bias, and probed for an angle the five experts missed.
 6. **Source Verification**: Every claim is traced to its primary source and marked CONFIRMED / CORRECTED / DEMOTED / FABRICATED; fabrications are dropped and the report is rewritten as V2.
-7. **Output Formatting & Delivery**: The final `brief.md` and `index.html` are generated, with the passenger-vehicle boundary given a strict final check.
+7. **Output Formatting & Delivery**: The final terminal output is generated in the user's prompt language, with the passenger-vehicle boundary given a strict final check.
 
 Once the pipeline finishes, you can review the output and ask for specific sections to be expanded or revised.

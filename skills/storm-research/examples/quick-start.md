@@ -47,14 +47,9 @@ Claude states its understanding in **one line** and proceeds (it asks at most on
 
 ## 5. Read the result
 
-Two files land in `.storm-research/<topic-slug>/` **inside the folder you launched `claude` from**:
+The report streams directly to the terminal. No files generated. Read it right in the same terminal session.
 
-```bash
-open .storm-research/*/index.html      # the HTML briefing (macOS; Linux: xdg-open, Windows: start)
-cat  .storm-research/*/brief.md        # the long-form markdown report
-```
-
-The HTML briefing leads with a 60-second summary, then findings ranked by reliability, then the sources — each badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED so you can see what survived verification.
+The terminal output leads with a 60-second summary, then findings ranked by reliability, then the sources — each badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED so you can see what survived verification.
 
 ## 6. Iterate
 

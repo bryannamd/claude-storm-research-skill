@@ -32,13 +32,7 @@ Now ask for research in plain language (or type the `/storm-research` command):
 deep research on the impact of solid-state batteries on EV range
 ```
 
-Claude states its understanding in one line, then runs the pipeline. When it finishes, your report is written to **`.storm-research/<topic-slug>/` inside the folder you launched `claude` from**:
-
-```bash
-# from that same folder:
-open .storm-research/*/index.html      # macOS — opens the HTML briefing in your browser
-#   (Linux: xdg-open  ·  Windows: start)
-```
+Claude states its understanding in one line, then runs the pipeline. When it finishes, your report streams directly to the terminal as formatted text. No files generated. Read it right in the same terminal session.
 
 That's it. The rest of this README explains options and internals.
 
@@ -66,12 +60,11 @@ Or invoke it directly by name: type `/storm-research` and then describe your top
 
 ## What you get
 
-Every run writes two deliverables to `.storm-research/<topic-slug>/` (relative to where you launched Claude):
+Every run streams a single user-facing deliverable directly to the terminal:
 
-1. **`brief.md`** — a detailed markdown report with inline citations, for deep reading.
-2. **`index.html`** — a self-contained HTML briefing (open it in any browser): a 60-second summary; key findings ranked by reliability, each showing which experts backed it and which pushed back; the assumption the report rests on (plus one angle the panel missed); advice aimed at whoever the report is for; and a source list badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED.
+1. **Formatted terminal report** — a detailed text block with inline citations, written in the language you asked in (Korean if you asked in Korean, English otherwise). It includes: a 60-second summary; key findings ranked by reliability, each showing which experts backed it and which pushed back; the assumption the report rests on (plus one angle the panel missed); advice aimed at whoever the report is for; and a source list badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED. No files generated.
 
-Intermediate files (each expert's research notes, the collected sources, the claim-by-claim fact-check ledger) stay in that folder too, so you can inspect exactly how each conclusion was reached.
+If code/tool changes surfaced during the run, the cross-model review verdict is also displayed in the terminal. All intermediate state (expert transcripts, source corpus, tension maps, outlines, peer-review notes) is kept in session memory for inspection during the run. If you want to save the report, ask explicitly and it will be written to a file at that point only.
 
 ## Key features
 

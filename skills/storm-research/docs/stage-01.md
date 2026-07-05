@@ -16,11 +16,12 @@ This stage transforms a broad user request into a precise research frame without
 1. If the request already names a topic, use it. Otherwise ask what to research.
 2. State your interpretation of the topic in **one line** (the topic frame) and proceed. Ask a clarifying question only if the topic is genuinely ambiguous in a way that changes the research — at most one question, then default to proceeding.
 3. Identify the **reader's role** so Stage 07's actionable section can target it. Infer it from the topic and stated context; if unclear, ask in one line or default to "a practitioner or decision-maker in this field."
-4. Break the core topic into three to five specific, answerable sub-questions and one thesis question.
-5. Define explicit inclusion and exclusion boundaries, and define key terms that need strict definitions.
-6. Derive a kebab-case `topic-slug` from the topic. All run artifacts — this stage's and every later stage's — live in `.storm-research/<topic-slug>/` (the "run workspace"); never write them anywhere else.
-7. Run executor detection per `docs/executors.md` and write `executor-manifest.md` to the run workspace.
-8. Save the scope document (topic frame, thesis, sub-questions, boundaries, glossary, reader role) as `scope.md` in the run workspace, then tell the user in one line that the pipeline is running (which experts, which executors).
+4. Detect the **user prompt language** from the initial request. Record it as `prompt_language` (e.g., `ko` for Korean, `en` for English). Stage 07 uses this to write the final terminal output in the correct language.
+5. Break the core topic into three to five specific, answerable sub-questions and one thesis question.
+6. Define explicit inclusion and exclusion boundaries, and define key terms that need strict definitions.
+7. Derive a kebab-case `topic-slug` from the topic. Keep it in session memory; no files created.
+8. Run executor detection per `docs/executors.md`. Keep the executor manifest in session memory; no files created.
+9. Keep the scope document (topic frame, thesis, sub-questions, boundaries, glossary, reader role, prompt_language) in session memory, then tell the user in one line that the pipeline is running (which experts, which executors).
 
 ### Outputs
 
@@ -28,9 +29,9 @@ This stage transforms a broad user request into a precise research frame without
 * A list of specific sub-questions to investigate.
 * Explicit inclusion and exclusion criteria, plus a glossary of key terms.
 * The identified reader role.
-* A kebab-case topic slug defining the run workspace `.storm-research/<topic-slug>/`.
-* `executor-manifest.md` recording detected executors and the selected routing mode.
-* `scope.md` — the formal scope document in the run workspace.
+* A kebab-case topic slug kept in session memory.
+* Executor manifest recording detected executors and the selected routing mode, kept in session memory.
+* Scope document kept in session memory.
 
 ### QA Checklist
 
@@ -39,5 +40,5 @@ This stage transforms a broad user request into a precise research frame without
 * [ ] Is a reader role recorded (stated, inferred, or defaulted)?
 * [ ] Are the exclusion criteria specific enough to prevent scope creep?
 * [ ] Can the sub-questions be answered using available public information?
-* [ ] Was executor detection run and `executor-manifest.md` saved?
-* [ ] Are `scope.md` and `executor-manifest.md` both in `.storm-research/<topic-slug>/`?
+* [ ] Was executor detection run and the manifest kept in session memory?
+* [ ] Is the scope document in session memory?

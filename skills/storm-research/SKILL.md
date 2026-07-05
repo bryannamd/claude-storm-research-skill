@@ -17,13 +17,15 @@ compatibility: >
 allowed-tools: WebSearch WebFetch Bash(codex *) Bash(agy *) Bash(command -v *)
 argument-hint: "[topic to research]"
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
   author: Bryan Choi
 ---
 
 # STORM Research Skill
 
-Turns one topic into a verified, multi-perspective research brief plus an HTML briefing. Based on Stanford STORM (Shao et al., NAACL 2024): perspective-guided question asking and source-grounded conversations produce broader, better-organized research than a single prompt. This skill adds what STORM's authors flagged as missing — self-critique — through adversarial peer review and per-claim primary-source verification.
+/caveman full
+
+Turns one topic into a verified, multi-perspective research brief. Based on Stanford STORM (Shao et al., NAACL 2024): perspective-guided question asking and source-grounded conversations produce broader, better-organized research than a single prompt. This skill adds what STORM's authors flagged as missing — self-critique — through adversarial peer review and per-claim primary-source verification. The final output streams directly to the terminal as formatted text. No files generated.
 
 Run the full pipeline end to end. Do not shortcut a stage. This is heavier than a quick web lookup; that is the point.
 
@@ -42,7 +44,7 @@ command -v agy   >/dev/null 2>&1 && echo "🟢 agy (Antigravity / Gemini) — av
 - **One 🟢** → that CLI runs the experts; Claude does the verification.
 - **None** → Claude-only mode; the whole pipeline still runs, just without a second AI's cross-check.
 
-If the block above did not execute (shell injection disabled), run `command -v codex` and `command -v agy` yourself and report the same status. Record the result in `executor-manifest.md` (Stage 01).
+If the block above did not execute (shell injection disabled), run `command -v codex` and `command -v agy` yourself and report the same status. Record the result in session memory (Stage 01).
 
 ## Executor Routing (read first)
 
@@ -70,7 +72,7 @@ Full detection, invocation, and failure-fallback rules: [docs/executors.md](docs
 
 **06 Source Verification & Fact-Checking** — Cross-model verification clusters check every claim against its primary source. Verdicts: CONFIRMED / CORRECTED / DEMOTED / FABRICATED (dropped). The report is then rewritten as V2 with post-verification confidence scores.
 
-**07 Output Formatting & Delivery** — Render `brief.md` and an `index.html` briefing from [assets/report-template.html](assets/report-template.html): 60-second summary, findings ranked by reliability with supported-by/challenged-by expert tags, the assumption the briefing rests on plus the missing sixth expert, reader-role-targeted actions, and the verified source list. Present for user approval.
+**07 Output Formatting & Delivery** — Stream formatted terminal output in the user's prompt language (Korean if the user asked in Korean, English otherwise): 60-second summary, findings ranked by reliability with supported-by/challenged-by expert tags, the assumption the briefing rests on plus the missing sixth expert, reader-role-targeted actions, and the verified source list. Present for user approval.
 
 ## Trigger Activation Guide
 
@@ -85,11 +87,40 @@ When in doubt on a research-shaped request, prefer running the skill. Skip it on
 
 ## Output Reference
 
-Artifacts land in `.storm-research/<topic-slug>/`:
+No files generated. All output streams directly to the terminal.
 
-* `brief.md` — full synthesis with citations and mapped tensions.
-* `index.html` — self-contained briefing rendered from the bundled template.
-* `scope.md`, `executor-manifest.md`, `conversations/`, `raw-source-corpus.json`, `tension-map.md`, `outline-v1.md`, `peer-review.md`, `outline-v2.md`, `claim-verification-ledger.md` — inspectable intermediate state.
+**Final deliverable** (terminal output):
+* Formatted text block — full synthesis with citations and mapped tensions, written in the user's prompt language. Structured with clear section headers and bullet points for terminal readability.
+
+**Intermediate state** (kept in session memory only; no files):
+* Scope, executor manifest, expert transcripts, source corpus, tension map, outlines, peer-review notes. If the user asks to inspect intermediates, display them in the terminal. Never write to disk unless user explicitly requests a file save.
+
+## Language Policy
+
+Detect the user's prompt language at Stage 01. The final terminal output must be written in that language. If the user asked in Korean, the report must be in Korean. If the user asked in English, the report must be in English. This applies to all user-facing text; source quotes and proper nouns may remain in their original language.
+
+## Post-Run Cleanup Policy
+
+Nothing to clean up. No files created. All state lives in the active session. If the user asks to save the report, copy the terminal output to a file at that point only.
+
+## Final Report Polish
+
+Before presenting the report:
+
+1. **Language check** — Confirm output is in the user's prompt language.
+2. **Terminal formatting** — Use clean section headers, bullet lists, and short line widths for readability in the terminal. No wide tables or horizontal scroll.
+3. **Humanize** — Run the `humanizer` skill on Korean prose sections to remove AI-generated text artifacts.
+4. **Grammar check** — Run the `grammar-checker` skill on the full output to fix spelling, spacing, and punctuation.
+5. **Core-focused formatting** — Highlight key findings prominently; remove redundant fluff while preserving all citations and verification badges.
+
+## Code Improvement Review
+
+If the research process surfaces code improvements, tooling changes, or script additions:
+
+* Route **review** and **QA** through `codex` and `agy` for cross-model verification before committing any changes.
+* If only one external CLI is available, use it plus Claude for the review; if no external CLI is available, route through two independent Claude subagent contexts.
+* Cross-model code review catches bugs a single model may miss; do not rely solely on the executor that generated the code.
+* Code changes must not be merged until the review passes. Record review verdicts in the run workspace.
 
 ## Additional Resources
 
@@ -99,8 +130,7 @@ The stage documents are the authoritative instructions; this overview is a summa
 * **Stage instructions:** `docs/stage-01.md` … `docs/stage-07.md` — inputs, actions, outputs, QA checklists.
 * **Conceptual overview:** `docs/pipeline.md` — the STORM methodology and how stages map to it.
 * **Source grading:** `docs/verification-rubric.md` — A–F grading plus the evidence-quality hierarchy.
-* **Output schema:** `docs/output-schema.md` — HTML briefing structure and accessibility requirements.
-* **Report template:** `assets/report-template.html` — fill-in template for the final briefing.
+* **Output schema:** `docs/output-schema.md` — terminal output structure and formatting requirements.
 * **Examples:** `examples/` — sample requests, outline, verification ledger.
 * **Test contracts:** `tests/` — verify a run before declaring it complete.
 

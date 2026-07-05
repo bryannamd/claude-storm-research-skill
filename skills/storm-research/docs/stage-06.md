@@ -7,8 +7,8 @@ Every claim in the outline gets checked against its primary source before public
 ### Inputs
 
 * The revised outline from Stage 05 (with the weakest-link claim flagged for priority).
-* `raw-source-corpus.json` and the `conversations/` transcripts.
-* `executor-manifest.md` (verification routing).
+* The raw source corpus and expert transcripts from Stage 02, kept in session memory.
+* The executor manifest (verification routing), kept in session memory.
 * The tension map from Stage 03.
 
 ### Actions
@@ -24,16 +24,16 @@ Every claim in the outline gets checked against its primary source before public
    `[UNVERIFIED]` is **not a fifth verdict** — it is the disposition for claims whose source could not be fetched at all (dead link, paywall, timeout), so no verdict could be reached. Such claims go to the Claims Requiring Verification appendix, never the main narrative.
 4. Grade each source A–F per `docs/verification-rubric.md` and record the evidence-quality tier.
 5. For DEMOTED claims, attempt one search for a stronger source before accepting the demotion.
-6. Apply verdicts to the outline: drop FABRICATED, rewrite CORRECTED, rescore confidence for all findings post-verification. Save the result as `outline-v2.md` in the run workspace — this is the **V2** content.
+6. Apply verdicts to the outline: drop FABRICATED, rewrite CORRECTED, rescore confidence for all findings post-verification. Keep the result in session memory — this is the **V2** content.
 7. Add explicit disclaimers to medical, legal, and financial claims.
-8. Write `claim-verification-ledger.md` in the run workspace with columns: `Claim`, `Verdict`, `Source Quote`, `URL`, `Grade`, `Verifying Executor`.
+8. Build the claim-verification ledger in session memory with columns: `Claim`, `Verdict`, `Source Quote`, `URL`, `Grade`, `Verifying Executor`.
 9. Compile the verified bibliography with per-source verdict badges for the report's source list.
 
 ### Outputs
 
-* `claim-verification-ledger.md` — every claim with verdict, quote, URL, grade, and which executor verified it.
+* Claim-verification ledger — every claim with verdict, quote, URL, grade, and which executor verified it, kept in session memory.
 * Verification statistics for the report's VERIFIED box: sources checked, clusters, fabricated/corrected/demoted counts.
-* `outline-v2.md` — the V2 outline with post-verification confidence scores.
+* V2 outline — the outline with post-verification confidence scores, kept in session memory.
 * A verdict-badged bibliography.
 
 ### QA Checklist

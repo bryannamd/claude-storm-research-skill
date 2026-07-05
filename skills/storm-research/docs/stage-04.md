@@ -7,7 +7,7 @@ This stage curates the expert findings and tension map into a structured outline
 ### Inputs
 
 * The formal scope document from Stage 01 (thesis, sub-questions, reader role).
-* The `conversations/` transcripts and `raw-source-corpus.json` from Stage 02.
+* Expert transcripts and the raw source corpus from Stage 02, kept in session memory.
 * The contradiction and tension map from Stage 03.
 
 ### Actions
@@ -19,11 +19,11 @@ This stage curates the expert findings and tension map into a structured outline
 5. Integrate the expert perspectives so no single voice dominates the structure.
 6. Map every factual claim to its source in the corpus — a claim with no citation cannot enter the outline.
 7. Draft the narrative flow with clean transitions, and note where the 60-second summary will draw from.
-8. Save the detailed outline as `outline-v1.md` in the run workspace for peer review.
+8. Keep the detailed outline in session memory for peer review.
 
 ### Outputs
 
-* `outline-v1.md` — the comprehensive, hierarchical V1 outline answering the thesis question.
+* V1 outline — the comprehensive, hierarchical outline answering the thesis question, kept in session memory.
 * The candidate key findings with citations and per-expert support/challenge tags.
 * A mapping of tensions and universal agreements to sections.
 * A preliminary, section-organized citation list.

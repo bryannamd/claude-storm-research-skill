@@ -1,8 +1,8 @@
 # Sample Briefing Outline
 
-This shows how the **long-form markdown brief** (`brief.md`) can be organized around the topic — with an executive summary, a table of contents, and topical chapters like the ones below.
+This shows how the **terminal output** can be organized around the topic — with an executive summary, a table of contents, and topical chapters like the ones below.
 
-Note the two deliverables have different shapes: `brief.md` is free to use topical chapters (as shown here), but the **HTML briefing** (`index.html`) always follows the fixed six-section template in `docs/output-schema.md` (60-second summary → findings ranked by reliability → disagreements → assumption & the missing expert → actions → badged sources). This example is a `brief.md` outline, not an `index.html` layout.
+Note that the terminal output is free to use topical chapters (as shown here), but the final report always follows the fixed six-section template in `docs/output-schema.md` (60-second summary → findings ranked by reliability → disagreements → assumption & the missing expert → actions → badged sources). This example is a terminal output outline.
 
 ## Edge AI in Passenger Autonomous Vehicles
 

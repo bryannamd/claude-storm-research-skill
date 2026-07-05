@@ -8,7 +8,7 @@ STORM's authors flagged the method's known weakness: the system does not self-cr
 
 * The detailed outline from Stage 04.
 * The tension map from Stage 03 and the scope document from Stage 01.
-* The `conversations/` transcripts and source corpus.
+* Expert transcripts and source corpus, kept in session memory.
 
 ### Actions
 
@@ -25,15 +25,15 @@ Then:
 6. Check for **over-association of unrelated facts**: flag any narrative link between facts that no source actually draws.
 7. Scrutinize logical flow for gaps, unsupported leaps, and claims lacking citation mapping.
 8. Flag sections drifting outside Stage 01 boundaries.
-9. Compile the review as `peer-review.md` in the run workspace and revise `outline-v1.md` in place accordingly.
+9. Compile the review in session memory and revise the V1 outline in place accordingly.
 
 ### Outputs
 
-* `peer-review.md` — the formal review answering all five questions, with per-finding confidence scores.
+* Peer-review notes — the formal review answering all five questions, with per-finding confidence scores, kept in session memory.
 * The weakest-link claim queued for priority verification in Stage 06.
 * The missing-sixth-expert note for the final report.
 * A list of flagged over-associations and unsupported leaps.
-* The revised `outline-v1.md` incorporating the review.
+* The revised V1 outline incorporating the review, kept in session memory.
 
 ### QA Checklist
 

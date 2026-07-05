@@ -4,14 +4,14 @@ This skill runs its expert agents (Stage 02) and verification agents (Stage 06) 
 
 ## Detection
 
-At the start of every pipeline run, detect available executors once and record the result in the workspace:
+At the start of every pipeline run, detect available executors once and keep the result in session memory:
 
 ```bash
 command -v codex >/dev/null 2>&1 && echo "codex: available" || echo "codex: missing"
 command -v agy   >/dev/null 2>&1 && echo "agy: available"   || echo "agy: missing"
 ```
 
-Write the outcome to `executor-manifest.md` in the run workspace (which CLIs were found, which mode was selected). Tell the user in one line which mode the run uses.
+Store the outcome in session memory (which CLIs were found, which mode was selected). Tell the user in one line which mode the run uses. No files created.
 
 ## Invocation
 
@@ -21,15 +21,17 @@ Write the outcome to `executor-manifest.md` in the run workspace (which CLIs wer
 | agy (Antigravity CLI) | `agy -p "<prompt>"` | Print mode runs a single prompt non-interactively. Has its own web access. |
 | Claude (fallback) | Built-in subagent (`general-purpose` agent via the Task tool) with `WebSearch`/`WebFetch` | Used only when no external CLI is available, or when an external call fails. |
 
-Run external calls **in parallel in the background** (one background shell per expert), then collect outputs from the workspace files each agent writes. Each prompt must instruct the agent to end its reply with the exact structured format the stage doc requires, since external CLIs return plain text.
+Run external calls **in parallel in the background** (one background shell per expert), then collect outputs into session memory. Each prompt must instruct the agent to end its reply with the exact structured format the stage doc requires, since external CLIs return plain text. No files written by external agents.
+
+**OpenCode / UI environment note:** When running in OpenCode or any UI-based Claude environment, do not print raw shell dispatch commands to the user chat. Instead, show a concise one-line status (e.g., "Dispatching 5 experts in parallel via codex + agy..."). The user should see progress updates, not bash heredocs or background process IDs.
 
 ## Routing Rules
 
 1. **Both codex and agy available (default, preferred):** split the five experts across both CLIs — codex runs Practitioner, Skeptic, Historian; agy runs Academic, Economist. Any added sixth or seventh expert alternates to keep the split balanced. In Stage 06, codex verifies agy-produced claims and agy verifies codex-produced claims.
 2. **Only one external CLI available:** that CLI runs all five experts, and **Claude runs all verification clusters** — the producer/verifier separation still holds with two models in play.
-3. **No external CLI available (single-model run):** Claude built-in subagents run both experts and verification. The cross-*model* rule is unattainable here, so apply the closest substitute: each verification cluster runs in a **fresh subagent context** that receives only the claims and their source URLs — never the expert transcripts or the outline — so the verifier cannot inherit the producer's framing. Record `single-model run` in `executor-manifest.md` and in the final report's method line.
+3. **No external CLI available (single-model run):** Claude built-in subagents run both experts and verification. The cross-*model* rule is unattainable here, so apply the closest substitute: each verification cluster runs in a **fresh subagent context** that receives only the claims and their source URLs — never the expert transcripts or the outline — so the verifier cannot inherit the producer's framing. Record `single-model run` in the session memory executor manifest and in the final report's method line.
 4. **Producer/verifier separation (Stage 06):** whenever more than one executor is in play, no executor may be the sole verifier of claims it produced. Rules 1–3 enumerate how this resolves for each availability case.
-5. **Per-call failure fallback:** transient errors (network, timeout, malformed output) get one retry; on second failure, run that single expert or cluster on the **next available executor** in priority order (codex → agy → Claude, skipping any not detected in `executor-manifest.md`) and record the substitution in `executor-manifest.md`. **Usage-limit and quota errors (429, "usage limit reached") skip the retry** — fall back to the next available executor immediately, and stop routing new calls to the limited CLI for the rest of the run. Do not abort the pipeline for one failed call.
+5. **Per-call failure fallback:** transient errors (network, timeout, malformed output) get one retry; on second failure, run that single expert or cluster on the **next available executor** in priority order (codex → agy → Claude, skipping any not detected in the session memory executor manifest) and record the substitution in session memory. **Usage-limit and quota errors (429, "usage limit reached") skip the retry** — fall back to the next available executor immediately, and stop routing new calls to the limited CLI for the rest of the run. Do not abort the pipeline for one failed call.
    **A substitution changes the claim's producer.** Stage 06 routes verification by each claim's *actual* producer, not the original assignment: if an expert fell back to Claude, those claims are Claude-produced, so an available external CLI verifies them (and Claude verifies that CLI's claims) — the rule 2 default of "Claude runs all verification" bends to preserve the separation. Only when substitutions leave a single executor in play does the rule 3 fresh-context substitute apply to that executor's own claims.
 6. **Synthesis, contradiction mapping, and final drafting (Stages 03–05, 07) stay in the main Claude session.** These stages need the full run context; only the parallelizable research and verification work is delegated outward.
 

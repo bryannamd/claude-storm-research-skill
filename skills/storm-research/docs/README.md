@@ -14,7 +14,7 @@ Stages run in order; each one's output feeds the next.
 | [`stage-04.md`](stage-04.md) | 4 · Synthesis & Outline Drafting | Curate the findings into a cited outline. |
 | [`stage-05.md`](stage-05.md) | 5 · Adversarial Peer Review | Score confidence, check bias, name the missing sixth expert. |
 | [`stage-06.md`](stage-06.md) | 6 · Source Verification | Check every claim against its primary source; rewrite as V2. |
-| [`stage-07.md`](stage-07.md) | 7 · Output Formatting & Delivery | Render `brief.md` and the HTML briefing. |
+| [`stage-07.md`](stage-07.md) | 7 · Output Formatting & Delivery | Render terminal output in the user's prompt language. |
 
 ## Reference files
 
@@ -23,4 +23,4 @@ Stages run in order; each one's output feeds the next.
 | [`pipeline.md`](pipeline.md) | How this skill maps to the original Stanford STORM method, and where it deliberately differs. |
 | [`executors.md`](executors.md) | How expert and verification work is routed across external CLIs (`codex`, `agy`) and Claude — detection, cross-model rules, and fallback. |
 | [`verification-rubric.md`](verification-rubric.md) | How sources are graded A–F and how findings are scored 1–10 for confidence. |
-| [`output-schema.md`](output-schema.md) | The exact structure of the final HTML briefing (see also [`../assets/report-template.html`](../assets/report-template.html)). |
+| [`output-schema.md`](output-schema.md) | The exact structure of the final terminal output. |
