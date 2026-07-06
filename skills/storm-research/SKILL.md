@@ -14,7 +14,7 @@ license: MIT
 compatibility: >
   Requires Claude Code with WebSearch and WebFetch tool access. Prefers external agent CLIs
   (codex, agy) on PATH for expert and verification agents; falls back to built-in subagents.
-allowed-tools: WebSearch WebFetch Bash(codex *) Bash(agy *) Bash(command -v *)
+allowed-tools: WebSearch WebFetch Bash(codex *) Bash(agy *) Bash(timeout *) Bash(command -v *)
 argument-hint: "[topic to research]"
 metadata:
   version: "2.1.0"
@@ -23,7 +23,7 @@ metadata:
 
 # STORM Research Skill
 
-/caveman full
+Keep progress updates terse (if the `caveman` skill is installed, `/caveman full` applies); the final report itself is always written in full, polished prose.
 
 Turns one topic into a verified, multi-perspective research brief. Based on Stanford STORM (Shao et al., NAACL 2024): perspective-guided question asking and source-grounded conversations produce broader, better-organized research than a single prompt. This skill adds what STORM's authors flagged as missing — self-critique — through adversarial peer review and per-claim primary-source verification. The final output streams directly to the terminal as formatted text. No files generated.
 
@@ -41,7 +41,7 @@ command -v agy   >/dev/null 2>&1 && echo "🟢 agy (Antigravity / Gemini) — av
 **Before starting, show the user a one-line green-light status** based on the result above, then state the mode:
 
 - **Both 🟢** → cross-model mode (strongest): experts split across codex and agy, and each verifies the other's claims.
-- **One 🟢** → that CLI runs the experts; Claude does the verification.
+- **One 🟢** → that CLI runs the experts; Claude and that CLI verify each other's claims.
 - **None** → Claude-only mode; the whole pipeline still runs, just without a second AI's cross-check.
 
 If the block above did not execute (shell injection disabled), run `command -v codex` and `command -v agy` yourself and report the same status. Record the result in session memory (Stage 01).
@@ -52,7 +52,7 @@ Expert agents (Stage 02) and verification agents (Stage 06) run on **external, n
 
 1. Detect once at run start: `command -v codex`, `command -v agy`.
 2. Both available → split experts across both; verification is cross-model (each executor verifies the *other's* claims, never solely its own).
-3. One available → it runs all experts; Claude runs all verification clusters (producer/verifier separation holds).
+3. One available → it runs all experts; Claude verifies its claims, and it verifies any Claude-produced claims (producer/verifier separation holds).
 4. Neither available → Claude built-in subagents run everything, with verification in fresh contexts that never see the expert transcripts. Note the single-model run in the report's method line.
 5. Synthesis and final drafting always stay in the main Claude session — weak models fail at citation-dense text; delegation is for parallel research and verification only.
 
@@ -72,7 +72,7 @@ Full detection, invocation, and failure-fallback rules: [docs/executors.md](docs
 
 **06 Source Verification & Fact-Checking** — Cross-model verification clusters check every claim against its primary source. Verdicts: CONFIRMED / CORRECTED / DEMOTED / FABRICATED (dropped). The report is then rewritten as V2 with post-verification confidence scores.
 
-**07 Output Formatting & Delivery** — Stream formatted terminal output in the user's prompt language (Korean if the user asked in Korean, English otherwise): 60-second summary, findings ranked by reliability with supported-by/challenged-by expert tags, the assumption the briefing rests on plus the missing sixth expert, reader-role-targeted actions, and the verified source list. Present for user approval.
+**07 Output Formatting & Delivery** — Stream formatted terminal output in the user's prompt language (Korean if the user asked in Korean, English otherwise): 60-second summary, findings ranked by reliability with supported-by/challenged-by expert tags, the assumption the briefing rests on plus the missing sixth expert, reader-role-targeted actions, and the verified source list. Delivery completes the run; approval or revision requests are handled post-delivery.
 
 ## Trigger Activation Guide
 
@@ -109,8 +109,8 @@ Before presenting the report:
 
 1. **Language check** — Confirm output is in the user's prompt language.
 2. **Terminal formatting** — Use clean section headers, bullet lists, and short line widths for readability in the terminal. No wide tables or horizontal scroll.
-3. **Humanize** — Run the `humanizer` skill on Korean prose sections to remove AI-generated text artifacts.
-4. **Grammar check** — Run the `grammar-checker` skill on the full output to fix spelling, spacing, and punctuation.
+3. **Humanize** — Run the `humanizer` skill on Korean prose sections to remove AI-generated text artifacts (if installed; otherwise do an equivalent manual pass).
+4. **Grammar check** — Run the `grammar-checker` skill on the full output to fix spelling, spacing, and punctuation (if installed; otherwise do an equivalent manual pass).
 5. **Core-focused formatting** — Highlight key findings prominently; remove redundant fluff while preserving all citations and verification badges.
 
 ## Code Improvement Review
@@ -120,7 +120,7 @@ If the research process surfaces code improvements, tooling changes, or script a
 * Route **review** and **QA** through `codex` and `agy` for cross-model verification before committing any changes.
 * If only one external CLI is available, use it plus Claude for the review; if no external CLI is available, route through two independent Claude subagent contexts.
 * Cross-model code review catches bugs a single model may miss; do not rely solely on the executor that generated the code.
-* Code changes must not be merged until the review passes. Record review verdicts in the run workspace.
+* Code changes must not be merged until the review passes. Record review verdicts in session memory and display them in the terminal per Stage 07.
 
 ## Additional Resources
 

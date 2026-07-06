@@ -14,9 +14,9 @@ This stage transforms a broad user request into a precise research frame without
 ### Actions
 
 1. If the request already names a topic, use it. Otherwise ask what to research.
-2. State your interpretation of the topic in **one line** (the topic frame) and proceed. Ask a clarifying question only if the topic is genuinely ambiguous in a way that changes the research — at most one question, then default to proceeding.
-3. Identify the **reader's role** so Stage 07's actionable section can target it. Infer it from the topic and stated context; if unclear, ask in one line or default to "a practitioner or decision-maker in this field."
-4. Detect the **user prompt language** from the initial request. Record it as `prompt_language` (e.g., `ko` for Korean, `en` for English). Stage 07 uses this to write the final terminal output in the correct language.
+2. State your interpretation of the topic in **one line** (the topic frame) and proceed. Across this whole stage, ask **at most one clarifying question total** — and only if the ambiguity would actually change the research; then default to proceeding.
+3. Identify the **reader's role** so Stage 07's actionable section can target it. Infer it from the topic and stated context; if unclear, default to "a practitioner or decision-maker in this field" (spend the single allowed question on the role only when it matters more than the topic framing).
+4. Detect the **user prompt language** from the initial request. Record it as `prompt_language` (e.g., `ko` for Korean, `en` for English). If the prompt mixes languages, use the language of its main clause. Stage 07 uses this to write the final terminal output in the correct language.
 5. Break the core topic into three to five specific, answerable sub-questions and one thesis question.
 6. Define explicit inclusion and exclusion boundaries, and define key terms that need strict definitions.
 7. Derive a kebab-case `topic-slug` from the topic. Keep it in session memory; no files created.

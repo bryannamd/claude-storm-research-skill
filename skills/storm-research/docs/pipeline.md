@@ -32,7 +32,7 @@ The cross-model executor design also borrows Co-STORM's core observation (Jiang 
 4. **Information Synthesis & Outline Drafting** — the V1 outline with per-claim citations.
 5. **Adversarial Peer Review** — confidence scores, bias check, missing sixth expert.
 6. **Source Verification & Fact-Checking** — cross-model clusters, CONFIRMED/CORRECTED/DEMOTED/FABRICATED verdicts, V2 rewrite.
-7. **Output Formatting & Delivery** — terminal output in the user's prompt language, humanize/grammar-check polish, code-review checkpoint (if applicable), user approval/revisions. No files generated.
+7. **Output Formatting & Delivery** — terminal output in the user's prompt language, humanize/grammar-check polish, code-review checkpoint (if applicable); post-delivery approval/revisions if the user responds. No files generated.
 
 A stage cannot begin until the previous one passes its QA checklist. Intermediate artifacts are kept in session memory so the run is inspectable at every point; if a stage fails its checks, retry it or ask the user before moving on. If the user asks to inspect intermediates, display them in the terminal. Never write to disk unless explicitly requested.
 

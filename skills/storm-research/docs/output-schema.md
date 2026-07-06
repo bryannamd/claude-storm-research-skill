@@ -15,7 +15,7 @@ A single terminal report in this exact order:
 | 03 | Where the Experts Disagree | The major tensions and the one resolving question | Stage 03 |
 | 04 | The Assumption This Briefing Rests On (and the Missing Sixth Expert) | The shared framing all experts inherit, plus the named missing expert and its expected effect | Stage 05 |
 | 05 | What To Actually Do Differently | Numbered actions targeted at the reader role | Stage 01 role + Stage 07 |
-| 06 | Sources | One entry per source: verdict badge (`CONFIRMED`/`CORRECTED`/`DEMOTED`/`FABRICATED`), linked title, grade, verification note | Stage 06 ledger |
+| 06 | Sources | One entry per surviving source: verdict badge (`CONFIRMED`/`CORRECTED`/`DEMOTED`), linked title, grade, verification note. FABRICATED sources are dropped — counted in the VERIFIED summary only | Stage 06 ledger |
 
 Reliability badge levels map from the confidence score: 8–10 HIGH, 5–7 MEDIUM, 1–4 LOW.
 

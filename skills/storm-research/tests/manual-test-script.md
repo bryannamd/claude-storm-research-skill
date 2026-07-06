@@ -32,7 +32,7 @@
 5. Verify the contradiction map answers all five questions in Stage 03 (conflicts, evidence strength, resolving question, universal agreement, blind spot).
 6. Check the synthesis outline maps every claim to a source in Stage 04.
 7. Confirm the peer review produces per-finding confidence scores and names a missing sixth expert in Stage 05.
-8. Validate the verification ledger records verdicts and verifying executors in Stage 06, with the cross-model rule held.
+8. Validate the verification ledger records producer, verdict, source quote, URL, grade, and verifying executor in Stage 06, with the cross-model rule held (no executor sole-verifying its own claims).
 9. Ensure final output is a single terminal report in Stage 07. No HTML file should be generated. No files written.
 10. Verify the terminal output is written in the user's prompt language (Korean for Korean prompts, English for English prompts).
 11. Verify the terminal output has been humanized (Korean prose) and grammar-checked.

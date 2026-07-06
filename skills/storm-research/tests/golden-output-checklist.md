@@ -7,14 +7,14 @@
 
 The terminal output follows the fixed six-section schema — see `docs/output-schema.md`.
 
-- [ ] Header: title, version (V2), date, method line (experts + executors used), reader role
+- [ ] Header: title, version (V2 (VERIFIED)), date, method line (experts + executors used), reader role
 - [ ] VERIFIED summary whose counts match the claim-verification ledger
 - [ ] Section 01 — 60-Second Summary
 - [ ] Section 02 — Key Findings ranked by reliability, each with a score badge and supported-by / challenged-by expert tags
 - [ ] Section 03 — Where the Experts Disagree
 - [ ] Section 04 — The assumption the briefing rests on + the missing sixth expert
 - [ ] Section 05 — What to do differently (targeted at the reader role)
-- [ ] Section 06 — Sources, each with a CONFIRMED / CORRECTED / DEMOTED / FABRICATED badge
+- [ ] Section 06 — Surviving sources, each with a CONFIRMED / CORRECTED / DEMOTED badge (FABRICATED sources dropped; counted in the VERIFIED summary only)
 - [ ] The terminal output carries the verified content with inline citations and a Claims Requiring Verification appendix if any `[UNVERIFIED]` items remain
 - [ ] The terminal output is written in the user's prompt language (Korean for Korean prompts, English for English prompts)
 - [ ] The terminal output has been humanized (Korean prose) and grammar-checked for spelling, spacing, and punctuation
@@ -32,7 +32,8 @@ The terminal output follows the fixed six-section schema — see `docs/output-sc
 ## Verification Ledger
 
 - [ ] Every cited source appears in the verification ledger
-- [ ] Claim ledger includes: claim, verdict (CONFIRMED/CORRECTED/DEMOTED/FABRICATED), quoted source snippet, URL, grade, and verifying executor
+- [ ] Claim ledger includes: claim, producer, verdict (CONFIRMED/CORRECTED/DEMOTED/FABRICATED), quoted source snippet, URL, grade, and verifying executor
+- [ ] No FABRICATED verdict was based on a verifier's own fetch failure (fetch failure → UNVERIFIED), and every FABRICATED verdict was spot-checked in the main session before the claim was dropped
 - [ ] Cross-model rule held: no executor was the sole verifier of claims it produced (when >1 executor available)
 - [ ] All FABRICATED claims dropped from the report; all CORRECTED claims rewritten
 - [ ] ≥ 90 % of claims traceable to quoted primary-source snippets

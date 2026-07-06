@@ -32,12 +32,13 @@ Measured fact and interpretation are scored separately: a high score means the d
 
 Every claim must be backed by a quoted source snippet from fetched **primary** content — a citation URL alone is not enough, and an aggregator restating a figure is not a primary source.
 
-For each claim, record in `claim-verification-ledger.md`:
+For each claim, record in the claim-verification ledger (kept in session memory; no file is written):
 
 | Field | Required content |
 |---|---|
 | Claim | The exact factual statement planned for the brief. |
-| Verdict | `CONFIRMED`, `CORRECTED`, `DEMOTED`, or `FABRICATED` (see Stage 06); `[UNVERIFIED]` when the source could not be fetched (disposition, not a verdict). |
+| Producer | Which executor (codex / agy / claude) produced the claim — synthesis-stage claims are Claude-produced. |
+| Verdict | `CONFIRMED`, `CORRECTED`, `DEMOTED`, or `FABRICATED` (see Stage 06); `[UNVERIFIED]` when the source could not be fetched (disposition, not a verdict — a verifier's own fetch failure is never `FABRICATED`). |
 | Source Quote | The shortest primary-source excerpt that directly supports the claim. |
 | URL | The fetched source URL for the quote. |
 | Grade | The source grade for this claim context. |

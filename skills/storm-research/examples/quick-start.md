@@ -49,7 +49,7 @@ Claude states its understanding in **one line** and proceeds (it asks at most on
 
 The report streams directly to the terminal. No files generated. Read it right in the same terminal session.
 
-The terminal output leads with a 60-second summary, then findings ranked by reliability, then the sources — each badged CONFIRMED / CORRECTED / DEMOTED / FABRICATED so you can see what survived verification.
+The terminal output leads with a 60-second summary, then findings ranked by reliability, then the surviving sources — each badged CONFIRMED / CORRECTED / DEMOTED so you can see what survived verification (fabricated claims are dropped and appear only as a count in the VERIFIED summary).
 
 ## 6. Iterate
 
