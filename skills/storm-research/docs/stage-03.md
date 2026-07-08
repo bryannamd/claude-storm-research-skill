@@ -11,7 +11,14 @@ This stage makes the five experts analyze each other. Where experts disagree is 
 
 ### Actions
 
-Answer the five contradiction-map questions against the full set of expert outputs:
+Open the stage by printing the compact position bar (per `docs/progress-ui.md`; render the label in the user's prompt language). On first use, gloss the stage's term in one line:
+
+```
+[1✓ 2✓ 3● 4 5 6 7]  지금: 의견 충돌 정리
+※ 대립 지도(contradiction map): 전문가들 주장이 서로 부딪히는 지점을 정리한 표
+```
+
+Then answer the five contradiction-map questions against the full set of expert outputs:
 
 1. **Direct conflicts** — Where do two or more experts directly contradict each other? List each conflict with the specific claims that clash and their sources.
 2. **Evidence strength** — For each conflict, which expert has the strongest evidence and which the weakest, and why? Use the evidence-quality hierarchy from `docs/verification-rubric.md`.

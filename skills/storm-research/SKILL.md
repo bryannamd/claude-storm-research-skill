@@ -23,7 +23,7 @@ metadata:
 
 # STORM Research Skill
 
-Keep progress updates terse (if the `caveman` skill is installed, `/caveman full` applies); the final report itself is always written in full, polished prose.
+Intermediate progress messages follow the standard in [docs/progress-ui.md](docs/progress-ui.md): plain language a middle/high-school student can follow (jargon glossed on first use), one progress frame per wake event during background waits, a compact position bar at every stage transition, and no fabricated time metrics. They are **not** subject to terse/compression styles. The final report itself is always written in full, polished prose per `docs/output-schema.md`.
 
 Turns one topic into a verified, multi-perspective research brief. Based on Stanford STORM (Shao et al., NAACL 2024): perspective-guided question asking and source-grounded conversations produce broader, better-organized research than a single prompt. This skill adds what STORM's authors flagged as missing — self-critique — through adversarial peer review and per-claim primary-source verification. The final output streams directly to the terminal as formatted text. No files generated.
 
@@ -127,6 +127,7 @@ If the research process surfaces code improvements, tooling changes, or script a
 The stage documents are the authoritative instructions; this overview is a summary.
 
 * **Executor protocol:** `docs/executors.md` — external-agent detection, invocation, routing, and fallback. Binding for Stages 02 and 06.
+* **Progress UI standard:** `docs/progress-ui.md` — plain-language rules, wake-event frames, position bars, glossary. Binding for all intermediate progress output.
 * **Stage instructions:** `docs/stage-01.md` … `docs/stage-07.md` — inputs, actions, outputs, QA checklists.
 * **Conceptual overview:** `docs/pipeline.md` — the STORM methodology and how stages map to it.
 * **Source grading:** `docs/verification-rubric.md` — A–F grading plus the evidence-quality hierarchy.

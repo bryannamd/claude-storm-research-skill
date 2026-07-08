@@ -13,6 +13,12 @@ This stage renders the verified V2 content into a single terminal output. No fil
 
 ### Actions
 
+Open the stage by printing the compact position bar (per `docs/progress-ui.md`; label in the user's prompt language). This is the last intermediate message before the report; the report itself follows `docs/output-schema.md` unchanged:
+
+```
+[1✓ 2✓ 3✓ 4✓ 5✓ 6✓ 7●]  지금: 최종 보고서 작성
+```
+
 1. Draft the full terminal report from the V2 outline in the user's prompt language (Korean if the user asked in Korean, English otherwise): objective tone, formatted citations on every factual claim, a dedicated tensions section, and a Claims Requiring Verification appendix if any `[UNVERIFIED]` items remain.
 2. Structure the terminal output with these sections:
    * Header: title, version (`V2 (VERIFIED)`), date, expert count, executor line, reader role.

@@ -113,6 +113,28 @@
 
 ---
 
+## Test 8: Intermediate Progress & Plain Language
+
+**Setup:** Static checks on the skill files, then one Korean-language run (e.g., `"스톰으로 반도체 공급망 조사해줘"`). Note: one passing run proves the frames *can* appear (existence), not that every run will produce them — LLM compliance is probabilistic.
+
+**Static checks (grep the skill files):**
+1. `SKILL.md` contains no instruction making progress updates terse or caveman-compressed (search `terse`, `caveman` — zero hits in a progress context).
+2. Literal frame templates are inline at their point of use: kickoff map in `stage-01.md`, dispatch + completion frames in `stage-02.md`, cluster frames in `stage-06.md`, compact position bars in `stage-02..07`.
+3. No frame template contains elapsed/remaining-time wording (search `경과`, `elapsed`, `remaining` in templates — the only allowed time phrase is the one-time dispatch expectation "보통 3~5분" / "usually takes 3–5 minutes").
+4. Every template line fits within 80 columns.
+
+**Run checks:**
+5. Kickoff prints the full ASCII map exactly once, with the run mode line filled in.
+6. Each stage transition prints a compact position bar (`[1✓ 2● …]`) — 6 in total across the run (stages 02–07; Stage 01 prints the full kickoff map instead).
+7. During Stage 02: a dispatch frame at launch, then one progress frame per expert completion reminder, each naming who just finished and who is pending. No silent stretch between dispatch and first frame other than the actual background wait.
+8. During Stage 06: dispatch frame with bar segments equal to the actual cluster count (4–6), then one frame per cluster completion.
+9. Glossary terms (`executor`, `expert`, contradiction map, adversarial peer review, verification cluster, verdicts) each carry a one-line plain-language gloss on first appearance; a non-expert reader (middle/high-school level) can follow every intermediate message.
+10. No fabricated elapsed-time claims anywhere in the run's intermediate output.
+
+**Pass Criteria:** All static checks pass; the run shows the kickoff map once, position bars at transitions, wake-event frames in Stages 02/06, first-use glosses, and zero time fabrications.
+
+---
+
 ## Sign-off
 
 | Reviewer | Date | Result |

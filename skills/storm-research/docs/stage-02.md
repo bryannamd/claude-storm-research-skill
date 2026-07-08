@@ -22,10 +22,31 @@ Every expert prompt embeds the same `{TOPIC}` and `{TOPIC_FRAME}` and demands th
 
 ### Actions
 
+Open the stage by printing the compact position bar (per `docs/progress-ui.md`; label in the user's prompt language):
+
+```
+[1✓ 2● 3 4 5 6 7]  지금: 전문가 조사
+```
+
 1. Build the five expert prompts from the topic frame, each ending with the required return format and an instruction to cite real URLs.
 2. Dispatch all five experts **in parallel** on the executors assigned in the executor manifest (external CLIs in the background; Claude subagents only as routed fallback). Follow the invocation patterns in `docs/executors.md` exactly — including the stdin redirect, the explicit timeout, and no output filters on the dispatch command.
-3. **Notify the user immediately** that the five experts are researching in parallel and estimate completion time (typically 3–5 minutes). Show a concise status line only; do not dump raw shell commands.
-4. **Actively wait for completion**. After dispatching all five experts, the system will send completion reminders as each background task finishes. Collect outputs into session memory as they become available. Do not go silent — provide a brief progress update after collecting each batch (e.g., "3 of 5 experts complete").
+3. **Immediately after dispatch, print the dispatch frame below verbatim** (adjusting the expert/executor split to the actual manifest; for non-Korean runs, render the same structure in the user's prompt language). Do not dump raw shell commands. This is the only place a duration expectation appears — never print elapsed or remaining time in any later frame (there is no clock; a measured-looking time would be fabricated — see `docs/progress-ui.md`).
+
+   ```
+   [2] 전문가 조사 시작 — expert(각기 다른 시각으로 웹을 직접 뒤지는 AI 조사원)
+       5명을 동시에 풀었어요.
+       codex: 실무자·회의론자·역사학자  |  agy: 학자·경제학자
+       보통 3~5분 걸려요. 한 명씩 끝나는 대로 알려드릴게요.
+   [□□□□□] 0/5 완료 · 방금: 5명 조사 시작 · 다음 대기: 첫 전문가 회신
+   ```
+
+4. **Wait anchored to wake events.** While the experts run, the main session is suspended and cannot wake itself to print updates — the system sends a completion reminder as each background task finishes, and those reminders are the only chances to speak. At **every completion reminder**: collect that expert's output into session memory, then print one progress frame in this exact shape — updated bar, completion count, who just finished, who is still pending:
+
+   ```
+   [■■■□□] 3/5 완료 · 방금 끝남: 회의론자 · 다음 대기: 경제학자, 역사학자
+   ```
+
+   One frame per wake event — never skip one (the run looks frozen) and never fabricate extra frames between them (transcript spam). When the last expert lands, print the `5/5` frame with one line on what happens next (follow-up questions, then Stage 03).
 5. Keep each expert's output in session memory (one transcript per expert with the fixed-format position, evidence, follow-up Q&A, and cited URLs). No files created.
 6. Run **exactly one follow-up round** per expert by default: from its output, generate 1–3 follow-up questions targeting gaps, and have the same executor answer them grounded in fetched sources. Add a second round for an expert only when a deterministic trigger fires: a Stage 01 sub-question assigned to it is still uncovered, its round-one output contains uncited claims, or it directly contradicts another expert on a factual point. Append to the transcript in session memory. This bounded loop is the skill's deliberate compression of STORM's longer simulated conversations — see `docs/pipeline.md`.
 7. Build the raw source corpus in session memory with every cited URL, title, claim summary, expert, and retrieval timestamp. No JSON files written.
@@ -47,3 +68,4 @@ Every expert prompt embeds the same `{TOPIC}` and `{TOPIC_FRAME}` and demands th
 * [ ] Were per-call failures handled by the executor fallback rules (retry once, then next executor)?
 * [ ] Do the transcripts stay within Stage 01 boundaries, with minimal overlap between experts?
 * [ ] Are all expert transcripts and the source corpus in session memory?
+* [ ] Was the dispatch frame printed at launch, and one progress frame per completion reminder (who finished / who is pending), with no elapsed-time claims?

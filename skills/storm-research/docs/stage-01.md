@@ -21,7 +21,25 @@ This stage transforms a broad user request into a precise research frame without
 6. Define explicit inclusion and exclusion boundaries, and define key terms that need strict definitions.
 7. Derive a kebab-case `topic-slug` from the topic. Keep it in session memory; no files created.
 8. Run executor detection per `docs/executors.md`. Keep the executor manifest in session memory; no files created.
-9. Keep the scope document (topic frame, thesis, sub-questions, boundaries, glossary, reader role, prompt_language) in session memory, then tell the user in one line that the pipeline is running (which experts, which executors).
+9. Keep the scope document (topic frame, thesis, sub-questions, boundaries, glossary, reader role, prompt_language) in session memory. Then — with the scope now fixed — announce the run by printing the **kickoff map** below **verbatim** (this is the only time the full map prints; later stages use the compact position bar from `docs/progress-ui.md`). Fill in the detected run mode on the `실행 모드` line. For non-Korean runs, render the same structure and content in the user's `prompt_language`.
+
+   ```
+   ==============================================
+    STORM 심층 리서치 · 전문가 5인 패널
+   ==============================================
+    [1]● 주제 좁히기        <- 지금 여기
+    [2]  전문가 조사        (AI 조사원 5명 동시)
+    [3]  의견 충돌 정리
+    [4]  뼈대 잡기
+    [5]  반박 검토
+    [6]  출처 검증
+    [7]  최종 보고서
+   ==============================================
+   실행 모드: codex + agy 교차 검증(두 AI가 서로의 주장을 맞대조)
+   ※ executor(조사·검증을 실제로 돌리는 외부 AI 도구)
+   ```
+
+   Keep the map within 80 display columns; use only ASCII for the frame glyphs — box-drawing characters (`╔═║`) are ambiguous-width and can blow past 80 columns on CJK terminals. This map replaces the old one-line pipeline notice; a bare one-liner is not sufficient.
 
 ### Outputs
 
@@ -42,3 +60,4 @@ This stage transforms a broad user request into a precise research frame without
 * [ ] Can the sub-questions be answered using available public information?
 * [ ] Was executor detection run and the manifest kept in session memory?
 * [ ] Is the scope document in session memory?
+* [ ] Was the kickoff map printed once, verbatim, within 80 columns, in the user's prompt language, with the run mode filled in?

@@ -12,6 +12,12 @@ This stage curates the expert findings and tension map into a structured outline
 
 ### Actions
 
+Open the stage by printing the compact position bar (per `docs/progress-ui.md`; label in the user's prompt language):
+
+```
+[1✓ 2✓ 3✓ 4● 5 6 7]  지금: 뼈대 잡기 (보고서 목차와 핵심 발견 초안)
+```
+
 1. Review all inputs to identify the most critical themes and findings.
 2. Draft the candidate **key findings** (typically five), each phrased as a specific claim with its supporting citations and the experts that support or challenge it — these become the report's ranked-findings section.
 3. Develop a hierarchical outline that directly answers the thesis question and sub-questions.

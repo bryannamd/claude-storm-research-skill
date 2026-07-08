@@ -13,8 +13,30 @@ Every claim in the outline gets checked against its primary source before public
 
 ### Actions
 
+0. Open the stage by printing the compact position bar (per `docs/progress-ui.md`; label in the user's prompt language):
+
+   ```
+   [1✓ 2✓ 3✓ 4✓ 5✓ 6● 7]  지금: 출처 검증
+   ```
+
 1. Extract every factual claim planned for the final report (deduplicate first; verify only claims that will actually appear) and group them into 4–6 **verification clusters** — **by producer first**, then by theme or source overlap within each producer group, so every cluster has exactly one valid verifier assignment. Claims introduced during synthesis (Stages 03–05) are **Claude-produced** and get their own cluster(s), verified by an external CLI when one is available.
-2. Assign each cluster to an executor per the routing rules in `docs/executors.md` (rules 1–5), keyed to each claim's **actual producer** — if an expert fell back to another executor, its claims are verified as that executor's output, not the originally assigned one's. In a single-model run, use fresh-context verification per rule 3. Dispatch clusters in parallel.
+2. Assign each cluster to an executor per the routing rules in `docs/executors.md` (rules 1–5), keyed to each claim's **actual producer** — if an expert fell back to another executor, its claims are verified as that executor's output, not the originally assigned one's. In a single-model run, use fresh-context verification per rule 3. Dispatch clusters in parallel, then **print the dispatch frame below verbatim** (for non-Korean runs, render the same structure in the user's prompt language). The bar has **one segment per actual cluster** — clusters number 4–6, so never hard-code the bar width:
+
+   ```
+   [6] 출처 검증 시작 - 주장들을 verification cluster(주제가 비슷한
+       주장들을 묶어 한 번에 출처 대조하는 단위) 4개로 나눠 동시에 검증해요.
+   [□□□□] 0/4 클러스터 완료 · 방금: 검증 시작 · 다음 대기: 첫 클러스터
+   ```
+
+   The template shows 4 clusters as an example — substitute the actual count everywhere (the `4개` wording, the bar segments, and the `n/total`) so they always agree.
+
+   While clusters run, the session is suspended between completion reminders — at **every completion reminder**, print one progress frame (updated bar, which cluster just finished and its theme, which are pending). No elapsed-time claims (see `docs/progress-ui.md`):
+
+   ```
+   [■■□□] 2/4 클러스터 완료 · 방금 끝남: B(경제 지표) · 다음 대기: C, D
+   ```
+
+   When the last cluster lands, print the full-bar `n/n` frame with one line on what happens next (verdict adjudication and the V2 rewrite, then Stage 07).
 3. Each verification agent must, for every claim: locate the primary source (not an aggregator), fetch it, find the supporting quote, and return a verdict:
    * **CONFIRMED** — the primary source states it; quote captured.
    * **CORRECTED** — the source says something materially different; return the corrected figure or wording.
@@ -49,3 +71,4 @@ Every claim in the outline gets checked against its primary source before public
 * [ ] Does the ledger record both the producer and the verifying executor for every claim?
 * [ ] Are unfetchable claims marked `[UNVERIFIED]` (disposition, not verdict) and routed to the appendix?
 * [ ] Do the verification statistics match the ledger counts?
+* [ ] Was the dispatch frame printed (bar segments = actual cluster count), and one progress frame per cluster completion reminder, with no elapsed-time claims?

@@ -12,7 +12,15 @@ STORM's authors flagged the method's known weakness: the system does not self-cr
 
 ### Actions
 
-Answer the five peer-review questions against the draft outline:
+Open the stage by printing the compact position bar (per `docs/progress-ui.md`; label in the user's prompt language). On first use, gloss the stage's term in one line:
+
+```
+[1✓ 2✓ 3✓ 4✓ 5● 6 7]  지금: 반박 검토
+※ 반박 검토(adversarial peer review):
+   일부러 흠을 잡는 시각으로 초안을 다시 뜯어보는 검토
+```
+
+Then answer the five peer-review questions against the draft outline:
 
 1. **Confidence scores** — Rate each key finding on a 1–10 reliability scale using the evidence-quality hierarchy (peer-reviewed causal work > official policy/financial data > single commissioned survey > analogy > preprint). Explain each score.
 2. **Weakest link** — Which claim are you least confident in? What specific information would verify it? Queue that for Stage 06.

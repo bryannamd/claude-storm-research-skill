@@ -34,6 +34,8 @@ The cross-model executor design also borrows Co-STORM's core observation (Jiang 
 6. **Source Verification & Fact-Checking** — cross-model clusters, CONFIRMED/CORRECTED/DEMOTED/FABRICATED verdicts, V2 rewrite.
 7. **Output Formatting & Delivery** — terminal output in the user's prompt language, humanize/grammar-check polish, code-review checkpoint (if applicable); post-delivery approval/revisions if the user responds. No files generated.
 
+These seven stages are exactly the seven slots of the user-facing progress map and position bar defined in `docs/progress-ui.md` (kickoff map once, then a compact `[1✓ 2● …]` bar at each transition).
+
 A stage cannot begin until the previous one passes its QA checklist. Intermediate artifacts are kept in session memory so the run is inspectable at every point; if a stage fails its checks, retry it or ask the user before moving on. If the user asks to inspect intermediates, display them in the terminal. Never write to disk unless explicitly requested.
 
 ## Sources

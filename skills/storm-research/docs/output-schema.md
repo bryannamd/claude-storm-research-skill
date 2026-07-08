@@ -1,6 +1,6 @@
 # Output Schema Specification
 
-This document defines the structure of the final terminal output. The report streams directly to the terminal as formatted text. No files generated.
+This document defines the structure of the final terminal output. The report streams directly to the terminal as formatted text. No files generated. (Intermediate progress messages are governed separately by `docs/progress-ui.md`.)
 
 ## Document Structure
 

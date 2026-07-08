@@ -29,7 +29,7 @@ Three invocation rules, learned from live failures:
 
 Run external calls **in parallel in the background** (one background shell per expert), then collect outputs into session memory. Each prompt must instruct the agent to end its reply with the exact structured format the stage doc requires, since external CLIs return plain text. External CLIs may load their own local skills or hooks; a self-contained prompt with an explicit return format keeps the reply on-spec regardless. No files written by external agents.
 
-**OpenCode / UI environment note:** When running in OpenCode or any UI-based Claude environment, do not print raw shell dispatch commands to the user chat. Instead, show a concise one-line status (e.g., "Dispatching 5 experts in parallel via codex + agy..."). The user should see progress updates, not bash heredocs or background process IDs.
+**User-facing progress note:** Never print raw shell dispatch commands, bash heredocs, or background process IDs to the user chat. What the user sees instead is defined by `docs/progress-ui.md`: a friendly dispatch frame at launch and one progress frame per completion reminder (the literal templates are inline in `stage-02.md` and `stage-06.md`).
 
 ## Routing Rules
 
