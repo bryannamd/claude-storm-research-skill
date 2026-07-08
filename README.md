@@ -5,6 +5,7 @@
   <a href="https://agentskills.io"><img alt="Agent Skill" src="https://img.shields.io/badge/Agent%20Skill-SKILL.md-2ea44f"></a>
   <a href="https://aclanthology.org/2024.naacl-long.347/"><img alt="STORM" src="https://img.shields.io/badge/method-STORM%20(NAACL%202024)-blue"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-black"></a>
+  <a href="https://github.com/bryannamd/claude-storm-research-skill/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/bryannamd/claude-storm-research-skill?style=social"></a>
 </p>
 
 <p align="center"><b>Multi-perspective deep research for Claude Code. Five experts, one cited briefing — no shallow one-shot answers.</b></p>
