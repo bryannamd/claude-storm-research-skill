@@ -118,6 +118,24 @@ Korean analyst, not machine-translated:
   in parentheses on its first appearance** — e.g. `무작위 대조시험(RCT)`,
   `여러 연구를 묶어 분석(메타분석)` — then use the short form freely afterward. A
   bare transliteration with no gloss (`코호트`, `알씨티`) is never acceptable.
+- **Section titles: idiomatic Korean, never a word-for-word calque of the English
+  name.** The six fixed sections have set English names (see Document Structure
+  above); render each in everyday Korean, avoiding literary/문어체 phrasing Korean
+  readers rarely use. Canonical renderings:
+
+  | Section (EN) | Natural Korean |
+  |---|---|
+  | The 60-Second Summary | 한눈에 보기 |
+  | Key Findings, Ranked by Reliability | 핵심 발견 (신뢰도 순) |
+  | Where the Experts Disagree | 전문가들의 견해가 갈리는 지점 |
+  | The Assumption This Briefing Rests On (and the Missing Sixth Expert) | 이 보고서의 숨은 전제 (그리고 빠진 여섯 번째 전문가) |
+  | What To Actually Do Differently | 무엇을 바꾸면 좋을까 |
+  | Sources | 출처 |
+
+  Do **not** calque the English literally: `The Assumption ... Rests On` →
+  ✗ `딛고 선 가정` (직역투). Write `숨은 전제` / `바탕에 깔린 가정`. The same applies
+  to body prose — replace stiff literary constructions (`딛고 선`, `~에 다름 아니다`,
+  `~라 할 것이다`) with plain spoken-standard Korean.
 - Avoid translationese: `~에 대해`, `~을 통해`, `~되어진다`, comma pile-ups, and
   overusing `~들` for plurals. Prefer short, declarative Korean sentences.
 - If the `humanizer` and `grammar-checker` skills are installed, this rule is

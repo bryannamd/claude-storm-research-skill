@@ -48,6 +48,7 @@ Open the stage by printing the compact position bar (per `docs/progress-ui.md`; 
 * [ ] Does the report use Markdown hierarchy (`#`/`##`/`###` headings, **bold** badges) rather than `---` underlines, and are badges readable plain-text spans?
 * [ ] Is prose left unwrapped (one line per paragraph, blank line between paragraphs) with no box-drawing/ambiguous-width glyphs in the body, so it renders the same on Windows?
 * [ ] For Korean runs, are technical terms — including research-methodology jargon like `코호트`→`추적 관찰 연구` — translated into Korean (no bare transliterations like `페인`/`익스퍼트`/`버딕트`/`코호트`; unavoidable terms such as `메타분석`/`RCT` glossed on first use) and is translationese removed?
+* [ ] For Korean runs, are section titles and prose in idiomatic Korean rather than literal English calques (e.g. `The Assumption ... Rests On` → `숨은 전제`, never `딛고 선 가정`)?
 * [ ] Is the output written in the user's prompt language (Korean for Korean prompts, English for English prompts)?
 * [ ] Do the VERIFIED summary numbers match the Stage 06 ledger?
 * [ ] Are findings ordered by post-verification reliability with expert tags and caveats?
