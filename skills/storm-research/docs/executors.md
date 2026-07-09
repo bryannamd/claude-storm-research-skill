@@ -17,15 +17,16 @@ Store the outcome in session memory (which CLIs were found, which mode was selec
 
 | Executor | Command pattern | Notes |
 |----------|-----------------|-------|
-| codex (OpenAI Codex CLI) | `timeout 600 codex --search exec --sandbox read-only "<prompt>" </dev/null` | `--search` is a top-level flag (before `exec`) enabling live web search. Read-only sandbox: research agents must not modify files. |
+| codex (OpenAI Codex CLI) | `timeout 600 codex --search exec --sandbox read-only --skip-git-repo-check "<prompt>" </dev/null` | `--search` is a top-level flag (before `exec`) enabling live web search. Read-only sandbox: research agents must not modify files. `--skip-git-repo-check` is required unless the working directory is a trusted git repo (see rule 4). |
 | agy (Antigravity CLI) | `timeout 600 agy -p "<prompt>" </dev/null` | Print mode runs a single prompt non-interactively. Has its own web access. |
 | Claude (fallback) | Built-in subagent (`general-purpose` agent via the Task tool) with `WebSearch`/`WebFetch` | Used only when no external CLI is available, or when an external call fails. |
 
-Three invocation rules, learned from live failures:
+Four invocation rules, learned from live failures:
 
 1. **Always redirect stdin from `/dev/null`.** Both CLIs wait for stdin EOF; in a background shell without the redirect they hang at "reading additional input from stdin" until the timeout kills them, returning nothing.
 2. **Always set an explicit timeout** (600 s covers a research call; a simple verification call usually returns sooner). A hung call must fail fast enough for the rule 5 fallback to matter.
 3. **Capture raw output; never pipe the call through a filter** (`| sed`, `| tail`) in the dispatch command — the pipe masks the CLI's exit code and can silently discard everything. Filter when *reading* the captured output instead.
+4. **codex needs a trusted directory.** Outside a git repo it aborts immediately with `Not inside a trusted directory and --skip-git-repo-check was not specified` and returns nothing. Either run the dispatch from the project repo (already trusted) or pass **`--skip-git-repo-check`** — required when writing to a scratch path like `/tmp`. This check fires *before* the prompt is read, so the failure looks like an empty result, not an error in your captured output; the raw stderr (rule 3 keeps it) is where the message appears. `agy` has no such requirement.
 
 Run external calls **in parallel in the background** (one background shell per expert), then collect outputs into session memory. Each prompt must instruct the agent to end its reply with the exact structured format the stage doc requires, since external CLIs return plain text. External CLIs may load their own local skills or hooks; a self-contained prompt with an explicit return format keeps the reply on-spec regardless. No files written by external agents.
 

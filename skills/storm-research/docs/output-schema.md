@@ -95,9 +95,29 @@ Korean analyst, not machine-translated:
   | 아웃라인 | 뼈대 · 개요 |
   | 크로스 모델 | 교차 검증 |
   | 소스 | 출처 |
+  | 브리핑 | 보고서 · 요약 보고 |
 
   (`CONFIRMED`/`CORRECTED`/`DEMOTED`/`FABRICATED` verdict labels and proper
   nouns stay in English — they are fixed badge tokens, not prose.)
+- **Research-methodology jargon is the most common offender — do not leave it
+  transliterated either.** Reports lean on study-design terms; write them in
+  plain Korean:
+
+  | Do not write | Write instead |
+  |---|---|
+  | 코호트 / 코호트 연구 | 추적 관찰 연구 (참여자를 오래 추적한 연구) |
+  | 메타분석 (unglossed) | 여러 연구를 묶어 분석(메타분석) — gloss on first use, then `메타분석` freely |
+  | 용량-반응 곡선 | 양-효과 곡선 (많이 할수록 효과가 어떻게 달라지는가) |
+  | 역인과 | 인과 뒤바뀜 (원인과 결과가 반대일 가능성) |
+  | 교란 요인 / 컨파운딩 | 혼동 요인 |
+  | 베이스라인 | 기준값 · 출발점 |
+  | 하자드 비 / HR | 위험비(hazard ratio) |
+
+- **Unavoidable technical term rule.** When a term is genuinely standard and has
+  no clean Korean equivalent (`RCT`, `메타분석`, `NHANES`), keep it but **gloss it
+  in parentheses on its first appearance** — e.g. `무작위 대조시험(RCT)`,
+  `여러 연구를 묶어 분석(메타분석)` — then use the short form freely afterward. A
+  bare transliteration with no gloss (`코호트`, `알씨티`) is never acceptable.
 - Avoid translationese: `~에 대해`, `~을 통해`, `~되어진다`, comma pile-ups, and
   overusing `~들` for plurals. Prefer short, declarative Korean sentences.
 - If the `humanizer` and `grammar-checker` skills are installed, this rule is
