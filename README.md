@@ -33,15 +33,20 @@ A research engine for [Claude Code](https://code.claude.com/docs) that implement
 git clone https://github.com/bryannamd/claude-storm-research-skill.git
 cd claude-storm-research-skill
 
-# 2. Install the skill into your personal Claude skills folder
+# 2. Symlink the skill into your personal Claude skills folder
+#    (a symlink means a later `git pull` updates the skill in place — no re-install)
 mkdir -p ~/.claude/skills
-rm -rf ~/.claude/skills/storm-research        # remove any previous install
-cp -r skills/storm-research ~/.claude/skills/storm-research
+rm -rf ~/.claude/skills/storm-research         # remove any previous install
+ln -s "$(pwd)/skills/storm-research" ~/.claude/skills/storm-research
 
 # 3. Start Claude Code and confirm the skill is loaded
 claude
 #   then type:  /skills          → you should see "storm-research" listed
 ```
+
+If `~/.claude/skills/` did not exist before this, restart Claude Code once so it starts watching the folder.
+
+**Updating later:** `cd` back into the repo and run `git pull`. Because the skill is symlinked, the new version is used on your next run — restart the session if it was already open. (There is no "update" command in Claude Code; `git pull` on a symlinked install is the update.)
 
 Now ask for research in plain language (or type the `/storm-research` command):
 
@@ -51,13 +56,13 @@ deep research on the impact of solid-state batteries on EV range
 
 Claude states its understanding in one line, then runs the pipeline. When it finishes, your report streams directly to the terminal as formatted text. No files generated. Read it right in the same terminal session.
 
-> **Prefer auto-updates?** Install as a symlink so `git pull` refreshes the skill in place:
+> **Prefer a static copy instead of a symlink?** Copy the files rather than linking them — but then every update means re-copying:
 > ```bash
 > mkdir -p ~/.claude/skills
 > rm -rf ~/.claude/skills/storm-research
-> ln -s "$(pwd)/skills/storm-research" ~/.claude/skills/storm-research
+> cp -r skills/storm-research ~/.claude/skills/storm-research
 > ```
-> If `~/.claude/skills/` did not exist before, restart Claude Code once so it starts watching the folder.
+> To update a copied install, `git pull` in the repo and re-run the `cp -r` line above.
 
 ## How to trigger it
 
