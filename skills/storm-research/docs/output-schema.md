@@ -28,13 +28,80 @@ The terminal output must be written in the user's prompt language:
 
 ## Terminal Formatting Constraints
 
-- Short line widths: aim for ≤80 characters per line; wrap long citations.
-- Section headers with `---` separators for visual clarity.
-- Bullet lists (`- ` or `* `) for findings and sources.
-- Compact tables only when they fit within the terminal width; otherwise use stacked key-value pairs.
-- No markdown tables that exceed 80 chars width.
-- Verdict and reliability badges must remain readable as plain text (text spans, not color-only or icon-only markers).
-- Use `code` spans for URLs, source titles, and technical terms.
+Claude Code's terminal renderer displays the output as GitHub-flavored Markdown,
+styling headings and bold text with extra weight (and color, where the terminal
+theme supports it) — use that for hierarchy instead of hand-drawn separators.
+
+### Visual hierarchy (use Markdown, not ASCII art)
+
+- **Report title** → a single `#` heading. **Section titles** (the six numbered
+  sections) → `##` headings. **Finding titles / sub-blocks** → `###` headings.
+  The renderer styles these with weight (and color) automatically; do not fake
+  headers with `===` or `---` underlines.
+- **Bold** (`**…**`) the things a reader scans for: the reliability badge, each
+  finding's one-line verdict, the source verdict badges, and the single most
+  important number in the 60-second summary. Do not bold whole sentences —
+  emphasis that covers everything emphasizes nothing.
+- Use `code` spans for URLs, source titles, file paths, and technical terms.
+- A `---` horizontal rule is allowed **between top-level sections only**, at most
+  once per section boundary — not as a decorative underline under every heading.
+
+### Windows-safe layout (the report must look the same on cmd/PowerShell)
+
+- **Do not hard-wrap prose.** Write each paragraph as one continuous line and let
+  the terminal soft-wrap it. Manual line breaks inserted at ~80 columns look
+  ragged on any window that is not exactly that wide — and Windows terminals
+  rarely are. The ≤80-column rule below applies to **structural** lines only.
+- **Separate paragraphs with one blank line.** A bare newline between two
+  paragraphs collapses into a single wrapped block in some renderers; a blank
+  line is what reliably produces a paragraph break on Windows.
+- **No box-drawing or block/bar glyphs in the report body** (`┌ ─ │ ╔ ═ ║` and
+  `■ □ ● ✓`). On Windows consoles these render at a different width — or as a
+  missing-glyph box — which breaks any layout that aligns to them. The ban is on
+  glyphs used to *draw or align* structure; use Markdown and plain ASCII (`-`,
+  `*`, `|` for the rare table) for that instead. Ambiguous-width punctuation used
+  purely *inline* (a middle dot `·` inside a sentence or badge) aligns nothing and
+  is safe to keep.
+- **Structural lines** (table rows, the rare ASCII rule) stay ≤80 columns,
+  counting each CJK glyph as 2 columns. Prose is exempt because it is not
+  hard-wrapped.
+
+### Lists, tables, badges
+
+- Bullet lists (`- `) for findings and sources.
+- Compact Markdown tables only when every row fits ≤80 columns; otherwise use
+  stacked `**key:** value` pairs, one per line.
+- Verdict and reliability badges must read as plain bold text spans
+  (`**CONFIRMED**`, `**RELIABILITY: HIGH · 9/10**`), never color-only or
+  icon-only markers — a badge must survive being copied into a plain-text file.
+
+## Natural-Korean Prose Rule (Korean runs)
+
+When the report is in Korean, the prose must read as if written by a fluent
+Korean analyst, not machine-translated:
+
+- **Translate technical terms into Korean; never leave a bare transliteration.**
+  Write the Korean term, with the English original in parentheses on first use
+  where it aids recognition. Fixed mappings for this report:
+
+  | Do not write (transliteration) | Write instead |
+  |---|---|
+  | 페인 / 페인 포인트 | 문제점 · 불편(pain point) |
+  | 익스퍼트 / 익스퍼트 패널 | 전문가 · 전문가 패널 |
+  | 컨트라딕션 / 텐션 | 의견 충돌 · 쟁점 |
+  | 버딕트 | 판정 |
+  | 클레임 | 주장 |
+  | 리라이트 / 드래프트 | 재작성 · 초안 |
+  | 아웃라인 | 뼈대 · 개요 |
+  | 크로스 모델 | 교차 검증 |
+  | 소스 | 출처 |
+
+  (`CONFIRMED`/`CORRECTED`/`DEMOTED`/`FABRICATED` verdict labels and proper
+  nouns stay in English — they are fixed badge tokens, not prose.)
+- Avoid translationese: `~에 대해`, `~을 통해`, `~되어진다`, comma pile-ups, and
+  overusing `~들` for plurals. Prefer short, declarative Korean sentences.
+- If the `humanizer` and `grammar-checker` skills are installed, this rule is
+  enforced by running them (see Stage 07); if not, apply it by hand.
 
 ## Terminal Output as Single Deliverable
 

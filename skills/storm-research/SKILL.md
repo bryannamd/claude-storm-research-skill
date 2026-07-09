@@ -108,10 +108,12 @@ Nothing to clean up. No files created. All state lives in the active session. If
 Before presenting the report:
 
 1. **Language check** — Confirm output is in the user's prompt language.
-2. **Terminal formatting** — Use clean section headers, bullet lists, and short line widths for readability in the terminal. No wide tables or horizontal scroll.
-3. **Humanize** — Run the `humanizer` skill on Korean prose sections to remove AI-generated text artifacts (if installed; otherwise do an equivalent manual pass).
-4. **Grammar check** — Run the `grammar-checker` skill on the full output to fix spelling, spacing, and punctuation (if installed; otherwise do an equivalent manual pass).
-5. **Core-focused formatting** — Highlight key findings prominently; remove redundant fluff while preserving all citations and verification badges.
+2. **Visual hierarchy** — Use Markdown headings (`#` title, `##` sections, `###` findings) and **bold** badges/verdicts; the terminal renderer styles these with weight and color. Do not fake headers with `---` underlines. See `docs/output-schema.md`.
+3. **Windows-safe layout** — Do not hard-wrap prose (one line per paragraph, terminal soft-wraps); separate paragraphs with a blank line; keep box-drawing and ambiguous-width glyphs out of the report body so it looks identical on Windows cmd/PowerShell.
+4. **Natural Korean** — For Korean runs, translate technical terms into Korean (no bare transliterations like `페인`/`익스퍼트`/`버딕트`) and remove translationese per the Natural-Korean Prose Rule in `docs/output-schema.md`.
+5. **Humanize** — Run the `humanizer` skill on Korean prose sections to remove AI-generated text artifacts (if installed; otherwise do an equivalent manual pass).
+6. **Grammar check** — Run the `grammar-checker` skill on the full output to fix spelling, spacing, and punctuation (if installed; otherwise do an equivalent manual pass).
+7. **Core-focused formatting** — Highlight key findings prominently; remove redundant fluff while preserving all citations and verification badges.
 
 ## Code Improvement Review
 

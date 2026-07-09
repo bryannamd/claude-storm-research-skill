@@ -37,16 +37,21 @@ Open the stage by printing the compact position bar (per `docs/progress-ui.md`; 
        5명을 동시에 풀었어요.
        codex: 실무자·회의론자·역사학자  |  agy: 학자·경제학자
        보통 3~5분 걸려요. 한 명씩 끝나는 대로 알려드릴게요.
-   [□□□□□] 0/5 완료 · 방금: 5명 조사 시작 · 다음 대기: 첫 전문가 회신
+   [|][□□□□□] 0/5 완료 · 방금: 5명 조사 시작 · 다음 대기: 첫 전문가 회신
    ```
+
+   The leading `[|]` is the frame-stepped spinner (`docs/progress-ui.md`): advance it one step
+   (`| → / → - → \`) on each progress frame below, and switch it to `[✓]` on the final `5/5`.
 
 4. **Wait anchored to wake events.** While the experts run, the main session is suspended and cannot wake itself to print updates — the system sends a completion reminder as each background task finishes, and those reminders are the only chances to speak. At **every completion reminder**: collect that expert's output into session memory, then print one progress frame in this exact shape — updated bar, completion count, who just finished, who is still pending:
 
    ```
-   [■■■□□] 3/5 완료 · 방금 끝남: 회의론자 · 다음 대기: 경제학자, 역사학자
+   [\][■■■□□] 3/5 완료 · 방금 끝남: 회의론자 · 다음 대기: 경제학자, 역사학자
    ```
 
-   One frame per wake event — never skip one (the run looks frozen) and never fabricate extra frames between them (transcript spam). When the last expert lands, print the `5/5` frame with one line on what happens next (follow-up questions, then Stage 03).
+   The leading marker steps once per frame (`| → / → - → \`); at `3/5` completions it has
+   stepped to `\` (cycle position `3 mod 4`, per `docs/progress-ui.md`). On the final `5/5`
+   frame use `[✓]` instead of a rotation step. One frame per wake event — never skip one (the run looks frozen) and never fabricate extra frames between them (transcript spam). When the last expert lands, print the `5/5` frame with one line on what happens next (follow-up questions, then Stage 03).
 5. Keep each expert's output in session memory (one transcript per expert with the fixed-format position, evidence, follow-up Q&A, and cited URLs). No files created.
 6. Run **exactly one follow-up round** per expert by default: from its output, generate 1–3 follow-up questions targeting gaps, and have the same executor answer them grounded in fetched sources. Add a second round for an expert only when a deterministic trigger fires: a Stage 01 sub-question assigned to it is still uncovered, its round-one output contains uncited claims, or it directly contradicts another expert on a factual point. Append to the transcript in session memory. This bounded loop is the skill's deliberate compression of STORM's longer simulated conversations — see `docs/pipeline.md`.
 7. Build the raw source corpus in session memory with every cited URL, title, claim summary, expert, and retrieval timestamp. No JSON files written.

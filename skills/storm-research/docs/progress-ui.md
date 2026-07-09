@@ -21,11 +21,36 @@ Two past failures this standard prevents:
 ## Medium constraints (be honest about them)
 
 * Claude Code output is an **append-only streaming transcript**. There is no way to update a
-  line in place: no ANSI cursor control, no carriage-return tricks, no live spinners.
-  **Never attempt them.**
+  line in place: no ANSI cursor control, no carriage-return tricks, no *live* in-place
+  spinner. **Never attempt them.**
 * "Animation" therefore means **successive new-line frames**: each wake event prints one new
   progress frame, and the visible change between frames is the animation.
-* Spinner glyphs (`⠋⠙⠹…`) printed as text just pile up — do not use them.
+* A rotating braille spinner (`⠋⠙⠹…`) is impossible here regardless — there is no timer to
+  drive it — and it can render inconsistently (including as missing-glyph boxes) on some
+  Windows consoles. **Do not use it.**
+
+## Frame-stepped spinner (the spinner you *can* have)
+
+Since a real timer-driven spinner is impossible, the pipeline uses a **frame-stepped
+spinner**: a single ASCII marker that advances one step each time a wake-event frame prints,
+so the sequence of frames reads as a spinner turning. It is honest (one glyph per real frame,
+never fake in-place animation) and Windows-safe: the rotating marker is pure ASCII. (The
+`[✓]` done marker is the one non-ASCII glyph — an accepted bar glyph, the same `✓` used in the
+position bars.)
+
+* **Cycle:** `|` → `/` → `-` → `\` → `|` … Advance one step per printed frame. The dispatch
+  frame (`0/N`) is step 0 = `|`, so a frame showing `n/N` completions carries cycle position
+  `n mod 4` (`0→|`, `1→/`, `2→-`, `3→\`). This keeps every example glyph checkable against its
+  count — e.g. `3/5` → `\`, `2/4` → `-`.
+* **Placement:** lead the frame's status line with the marker in brackets, attached directly
+  to the bar (no space between) to protect the 80-column budget:
+  `[\][■■■□□] 3/5 완료 · 방금 끝남: 회의론자 · 다음 대기: 경제학자, 역사학자`
+* **Done state:** when a bar reaches `n/n`, replace the rotating marker with `[✓]` (a
+  completed stage), not another rotation step — the spinner stops when the work stops.
+* **ASCII only:** never braille or emoji for the marker. `| / - \` render identically on
+  macOS, Linux, and Windows.
+* Still one marker per frame — do **not** print several spinner glyphs to fake motion inside a
+  single wake event; that is the pile-up the rule above forbids.
 
 ## Wake-event anchor rule (when to print a frame)
 
@@ -116,15 +141,19 @@ disagree with the count.
   in `docs/output-schema.md` applies to intermediate output too), counting CJK glyphs as 2
   columns. Frame/border glyphs must be plain ASCII (`=`, `-`, `[`, `]`) — box-drawing
   characters (`╔═║`) are ambiguous-width and can overflow on CJK terminals. Bar glyphs
-  `■ □ ✓ ●` are ambiguous-width too but appear only in short lines, which is acceptable;
+  `■ □ ✓ ●` and the middle-dot separator `·` are ambiguous-width too but appear only in short
+  lines (and are counted as 2 columns in the width budget, so they never overflow), which is
+  acceptable;
   perfect right-edge alignment with mixed CJK text is not required — the column ceiling is
   the hard rule.
 * The inline literal templates in the stage docs are written in Korean (the primary
   audience). **Non-Korean runs render the same structure and cadence in the user's prompt
   language** (Stage 01 `prompt_language`); EN reference wordings for the frames:
-  * Dispatch: `[□□□□□] 0/5 done · just now: 5 experts dispatched · waiting on: first reply`
-  * Progress: `[■■■□□] 3/5 done · just finished: the Skeptic · waiting on: Economist, Historian`
+  * Dispatch: `[|][□□□□□] 0/5 done · 5 experts dispatched · waiting on: first reply`
+  * Progress: `[\][■■■□□] 3/5 done · just finished: the Skeptic · waiting on: Economist`
   * Position bar: `[1✓ 2✓ 3● 4 5 6 7]  now: mapping disagreements`
+  (the leading `|` / `/` / `-` / `\` is the frame-stepped spinner; it advances one step per
+  frame and becomes `[✓]` at `n/n`.)
 
 ## Compression modes (caveman etc.)
 

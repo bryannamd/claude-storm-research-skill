@@ -25,15 +25,17 @@ Every claim in the outline gets checked against its primary source before public
    ```
    [6] 출처 검증 시작 - 주장들을 verification cluster(주제가 비슷한
        주장들을 묶어 한 번에 출처 대조하는 단위) 4개로 나눠 동시에 검증해요.
-   [□□□□] 0/4 클러스터 완료 · 방금: 검증 시작 · 다음 대기: 첫 클러스터
+   [|][□□□□] 0/4 클러스터 완료 · 방금: 검증 시작 · 다음 대기: 첫 클러스터
    ```
 
+   The leading `[|]` is the frame-stepped spinner (`docs/progress-ui.md`): step it
+   (`| → / → - → \`) on each progress frame, and switch to `[✓]` on the final `n/n`.
    The template shows 4 clusters as an example — substitute the actual count everywhere (the `4개` wording, the bar segments, and the `n/total`) so they always agree.
 
    While clusters run, the session is suspended between completion reminders — at **every completion reminder**, print one progress frame (updated bar, which cluster just finished and its theme, which are pending). No elapsed-time claims (see `docs/progress-ui.md`):
 
    ```
-   [■■□□] 2/4 클러스터 완료 · 방금 끝남: B(경제 지표) · 다음 대기: C, D
+   [-][■■□□] 2/4 클러스터 완료 · 방금 끝남: B(경제 지표) · 다음 대기: C, D
    ```
 
    When the last cluster lands, print the full-bar `n/n` frame with one line on what happens next (verdict adjudication and the V2 rewrite, then Stage 07).
