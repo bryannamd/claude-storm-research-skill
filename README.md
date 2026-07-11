@@ -150,6 +150,8 @@ Running stages in parallel is a stable **~2.2×** faster than serial. Against Cl
 | **Required** | [Claude Code](https://code.claude.com/docs) with the `WebSearch` and `WebFetch` tools available. That's all. |
 | **Optional** | `codex` (OpenAI Codex CLI), `agy` (Antigravity CLI), and/or `grok` (xAI Grok CLI, **experimental** — activates only after headless live web search is confirmed) on your PATH, so a second AI can double-check the first. Auto-detected; missing CLIs get install + web-login guidance, else falls back to Claude alone. |
 
+> **Removing the grok caveat:** grok graduates from experimental to a full executor once you confirm, in an install that has grok, that (1) headless `grok -p` performs live web search and (2) a read-only containment flag (codex's `--sandbox read-only` equivalent) exists — then finalize the invocation pattern in [`docs/executors.md`](skills/storm-research/docs/executors.md) and drop the caveat.
+
 ## Documentation
 
 Everything lives under [`skills/storm-research/`](skills/storm-research/):
