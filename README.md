@@ -108,6 +108,8 @@ Every run streams a single user-facing deliverable directly to the terminal:
 
 - **Formatted terminal report** with inline citations, written in the language you asked in (Korean if you asked in Korean, English otherwise). It includes: a 60-second summary; key findings ranked by reliability, each showing which experts backed it and which pushed back; the assumption the report rests on (plus one angle the panel missed); advice aimed at whoever the report is for; and a source list badged **CONFIRMED / CORRECTED / DEMOTED / FABRICATED**.
 
+Both the progress updates and the final report follow one **Readability standard** — a high-school reader can follow them (jargon glossed on first use), they read smoothly, and they stay lean without dropping the words, glosses, citations, or badges that keep a claim followable.
+
 No files are generated. If code/tool changes surfaced during the run, the cross-model review verdict is also shown. All intermediate state (expert transcripts, source corpus, tension maps, outlines, peer-review notes) stays in session memory for inspection during the run. Want it saved? Ask explicitly and it's written to a file at that point only.
 
 ## Key features
