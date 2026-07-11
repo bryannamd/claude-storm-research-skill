@@ -26,7 +26,7 @@
 
 **Steps:**
 1. Feed the sample request to Claude Code.
-2. Confirm the skill shows a **green-light executor status** up front (🟢/⚪ for codex and agy) and states the run mode (cross-model / one-CLI / Claude-only), matching what is actually installed.
+2. Confirm the skill shows a **green-light executor status** up front (🟢/⚪ for codex, agy, and grok; in this environment grok is not installed, so the honest runtime assertion is `⚪ grok — not installed (optional)`) and states the run mode (cross-model / one-CLI / Claude-only), matching what is actually installed. Static check: grep the skill files to confirm grok is wired into `executors.md`'s invocation table, `SKILL.md`'s `allowed-tools`, and the Stage 01/02/06 routing, and that the experimental/OFF gate is documented.
 3. Verify the Skill invokes Stage 01 (Scope Clarification) first, runs executor detection, and keeps the executor manifest in session memory.
 4. Confirm the 5 experts run **in parallel** in Stage 02 on the executors recorded in the manifest (external CLIs when available), each returning the fixed format (core position / strongest evidence / the one thing).
 5. Verify the contradiction map answers all five questions in Stage 03 (conflicts, evidence strength, resolving question, universal agreement, blind spot).

@@ -3,8 +3,8 @@ name: storm-research
 description: >
   Deep research skill implementing the Stanford STORM methodology (Shao et al., NAACL 2024) with
   five parallel experts, contradiction mapping, adversarial peer review, and primary-source
-  verification. Expert and verification agents run on external CLIs (codex, agy) by default for
-  cross-model diversity, with Claude subagents as fallback. Use whenever the user wants deep,
+  verification. Expert and verification agents run on external CLIs (codex, agy; grok experimental) by
+  default for cross-model diversity, with Claude subagents as fallback. Use whenever the user wants deep,
   multi-source, or thorough research on a topic — even when they ask loosely or implicitly, not only
   with exact phrases. Triggers include "deep research on", "STORM briefing", "comprehensive research
   brief", "investigate the topic of", "research report on", "storm research", "research X with storm",
@@ -13,11 +13,13 @@ description: >
 license: MIT
 compatibility: >
   Requires Claude Code with WebSearch and WebFetch tool access. Prefers external agent CLIs
-  (codex, agy) on PATH for expert and verification agents; falls back to built-in subagents.
-allowed-tools: WebSearch WebFetch Bash(codex *) Bash(agy *) Bash(timeout *) Bash(command -v *)
+  (codex, agy, grok) on PATH for expert and verification agents; falls back to built-in subagents.
+  grok support is experimental — off by default until headless live web search is confirmed
+  (see docs/executors.md).
+allowed-tools: WebSearch WebFetch Bash(codex *) Bash(agy *) Bash(grok *) Bash(timeout *) Bash(command -v *)
 argument-hint: "[topic to research]"
 metadata:
-  version: "2.1.0"
+  version: "2.2.0"
   author: Bryan Choi
 ---
 
@@ -36,25 +38,32 @@ Which external AI CLIs are installed, checked right now:
 ```!
 command -v codex >/dev/null 2>&1 && echo "🟢 codex — available" || echo "⚪ codex — not installed (optional)"
 command -v agy   >/dev/null 2>&1 && echo "🟢 agy (Antigravity / Gemini) — available" || echo "⚪ agy (Antigravity / Gemini) — not installed (optional)"
+command -v grok  >/dev/null 2>&1 && echo "🟢 grok (xAI) — available (experimental)" || echo "⚪ grok (xAI) — not installed (optional)"
 ```
 
 **Before starting, show the user a one-line green-light status** based on the result above, then state the mode:
 
-- **Both 🟢** → cross-model mode (strongest): experts split across codex and agy, and each verifies the other's claims.
-- **One 🟢** → that CLI runs the experts; Claude and that CLI verify each other's claims.
-- **None** → Claude-only mode; the whole pipeline still runs, just without a second AI's cross-check.
+- **2+ external CLIs 🟢** → cross-model mode (strongest): experts are split across the available CLIs, and each executor cross-checks the others' claims.
+- **1 external CLI 🟢** → that CLI runs the experts; Claude and that CLI verify each other's claims.
+- **0 external CLIs** → Claude-only mode; the pipeline still runs end to end (just without a second AI's cross-check).
 
-If the block above did not execute (shell injection disabled), run `command -v codex` and `command -v agy` yourself and report the same status. Record the result in session memory (Stage 01).
+(grok is treated as OFF until its capability is confirmed — see [docs/executors.md](docs/executors.md). An unconfirmed grok is not counted toward "2+".)
+
+If any CLI shows ⚪ (not installed), point the user to [docs/executors.md](docs/executors.md) "Setup & Login" for the install-and-web-login ladder — non-blocking, informational only.
+
+If the block above did not execute (shell injection disabled), run `command -v codex`, `command -v agy`, and `command -v grok` yourself and report the same status. Record the result in session memory (Stage 01).
 
 ## Executor Routing (read first)
 
 Expert agents (Stage 02) and verification agents (Stage 06) run on **external, non-Anthropic agent CLIs by default** — cross-model execution catches biases a model cannot see in its own output.
 
-1. Detect once at run start: `command -v codex`, `command -v agy`.
-2. Both available → split experts across both; verification is cross-model (each executor verifies the *other's* claims, never solely its own).
-3. One available → it runs all experts; Claude verifies its claims, and it verifies any Claude-produced claims (producer/verifier separation holds).
-4. Neither available → Claude built-in subagents run everything, with verification in fresh contexts that never see the expert transcripts. Note the single-model run in the report's method line.
+1. Detect once at run start: `command -v codex`, `command -v agy`, `command -v grok`.
+2. 2+ external CLIs available → cross-model mode: split experts across them; verification is cross-model (each executor verifies claims it did not produce, never solely its own).
+3. 1 external CLI available → it runs all experts; Claude verifies its claims, and it verifies any Claude-produced claims (producer/verifier separation holds).
+4. 0 external CLIs available → Claude built-in subagents run everything, with verification in fresh contexts that never see the expert transcripts. Note the single-model run in the report's method line.
 5. Synthesis and final drafting always stay in the main Claude session — weak models fail at citation-dense text; delegation is for parallel research and verification only.
+
+grok is **experimental and OFF by default** even when detected — it is excluded from the routing count above until the user confirms headless live web search works in their install. See [docs/executors.md](docs/executors.md) for the grok caveat and the install-and-login ladder.
 
 Full detection, invocation, and failure-fallback rules: [docs/executors.md](docs/executors.md). **Follow it exactly.**
 
@@ -119,8 +128,8 @@ Before presenting the report:
 
 If the research process surfaces code improvements, tooling changes, or script additions:
 
-* Route **review** and **QA** through `codex` and `agy` for cross-model verification before committing any changes.
-* If only one external CLI is available, use it plus Claude for the review; if no external CLI is available, route through two independent Claude subagent contexts.
+* Route **review** and **QA** across the available external CLIs (`codex`, `agy`, and `grok` once confirmed — grok stays experimental and only joins after the Step 0 / [docs/executors.md](docs/executors.md) confirmation) for cross-model verification before committing any changes.
+* If only one external CLI is available, use it plus Claude for the review; if none are available, route through two independent Claude subagent contexts.
 * Cross-model code review catches bugs a single model may miss; do not rely solely on the executor that generated the code.
 * Code changes must not be merged until the review passes. Record review verdicts in session memory and display them in the terminal per Stage 07.
 

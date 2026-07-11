@@ -2,7 +2,7 @@
 
 ### Purpose
 
-This is the core STORM mechanism. Five named experts research the same topic frame in parallel, each finding holes the others miss. Per `docs/executors.md`, the experts run on external agent CLIs (codex, agy) when available — cross-model diversity is part of the design — and each expert gets one to two grounded follow-up rounds, reproducing STORM's simulated writer–expert conversation in bounded form.
+This is the core STORM mechanism. Five named experts research the same topic frame in parallel, each finding holes the others miss. Per `docs/executors.md`, the experts run on external agent CLIs (codex, agy, and grok when confirmed) when available, assigned by the routing table's single N-generalized split rule — cross-model diversity is part of the design — and each expert gets one to two grounded follow-up rounds, reproducing STORM's simulated writer–expert conversation in bounded form.
 
 ### Inputs
 
@@ -30,7 +30,7 @@ Open the stage by printing the compact position bar (per `docs/progress-ui.md`; 
 
 1. Build the five expert prompts from the topic frame, each ending with the required return format and an instruction to cite real URLs.
 2. Dispatch all five experts **in parallel** on the executors assigned in the executor manifest (external CLIs in the background; Claude subagents only as routed fallback). Follow the invocation patterns in `docs/executors.md` exactly — including the stdin redirect, the explicit timeout, and no output filters on the dispatch command.
-3. **Immediately after dispatch, print the dispatch frame below verbatim** (adjusting the expert/executor split to the actual manifest; for non-Korean runs, render the same structure in the user's prompt language). Do not dump raw shell commands. This is the only place a duration expectation appears — never print elapsed or remaining time in any later frame (there is no clock; a measured-looking time would be fabricated — see `docs/progress-ui.md`).
+3. **Immediately after dispatch, print the dispatch frame below verbatim**, adjusting the expert/executor split line to the actual manifest per the N-generalized split rule in `docs/executors.md`: the codex + agy split shown below is the default two-way case; when codex + agy + grok are all confirmed, render `codex: 실무자·경제학자  |  agy: 학자·역사학자  |  grok: 회의론자` (2/2/1) instead. For non-Korean runs, render the same structure in the user's prompt language. Do not dump raw shell commands. This is the only place a duration expectation appears — never print elapsed or remaining time in any later frame (there is no clock; a measured-looking time would be fabricated — see `docs/progress-ui.md`).
 
    ```
    [2] 전문가 조사 시작 — expert(각기 다른 시각으로 웹을 직접 뒤지는 AI 조사원)

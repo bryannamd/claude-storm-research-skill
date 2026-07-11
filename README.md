@@ -24,7 +24,7 @@ A research engine for [Claude Code](https://code.claude.com/docs) that implement
 
 **This repo contains no program to run — it is a set of instructions Claude Code follows.** A "skill" is Markdown (a `SKILL.md` file plus supporting docs) that teaches Claude *how* to do something. When you install it and ask Claude to research a topic, Claude reads these files and does the work itself using its own web-search and file-writing tools. There is no JavaScript, Python, or server to start. If you clone this and wonder "where's the code?" — the Markdown **is** the code.
 
-**You do not need anything beyond Claude Code for your first run.** Optionally, if the `codex` (OpenAI Codex CLI) or `agy` (Antigravity CLI) commands are on your PATH, the skill uses them so that one model's claims get verified by a *different* model — stronger than a model grading its own work. Without them, Claude does the whole pipeline itself. Either way it just works.
+**You do not need anything beyond Claude Code for your first run.** Optionally, if the `codex` (OpenAI Codex CLI), `agy` (Antigravity CLI), or `grok` (xAI Grok CLI, **experimental** — used only after headless live web search is confirmed in your environment) commands are on your PATH, the skill uses them so that one model's claims get verified by a *different* model — stronger than a model grading its own work. Missing a CLI? The skill points you to install + web-login steps instead of failing; without any of them, Claude does the whole pipeline itself. Either way it just works.
 
 ## Quick start (5 minutes)
 
@@ -148,7 +148,7 @@ Running stages in parallel is a stable **~2.2×** faster than serial. Against Cl
 | | Requirement |
 |---|---|
 | **Required** | [Claude Code](https://code.claude.com/docs) with the `WebSearch` and `WebFetch` tools available. That's all. |
-| **Optional** | `codex` (OpenAI Codex CLI) and/or `agy` (Antigravity CLI) on your PATH, so a second AI can double-check the first. Auto-detected; falls back to Claude alone if absent. |
+| **Optional** | `codex` (OpenAI Codex CLI), `agy` (Antigravity CLI), and/or `grok` (xAI Grok CLI, **experimental** — activates only after headless live web search is confirmed) on your PATH, so a second AI can double-check the first. Auto-detected; missing CLIs get install + web-login guidance, else falls back to Claude alone. |
 
 ## Documentation
 

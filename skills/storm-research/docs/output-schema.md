@@ -138,6 +138,13 @@ Korean analyst, not machine-translated:
   `~라 할 것이다`) with plain spoken-standard Korean.
 - Avoid translationese: `~에 대해`, `~을 통해`, `~되어진다`, comma pile-ups, and
   overusing `~들` for plurals. Prefer short, declarative Korean sentences.
+- **No bare English words left in the prose.** Translate stray English
+  adjectives/nouns into Korean (`experimental` → `실험 단계`, `raw model` →
+  `모델 자체`); keep only fixed badge tokens and proper nouns in English.
+- **Do not calque English metaphors word-for-word.** Render the meaning in plain
+  Korean instead: `주변을 감싸는` → `받쳐 주는`, `평가표 앞줄/뒷줄에 둔다` →
+  `맨 앞에 둔다 / 후순위로`, `노출이 따른다` → `걸릴 위험이 따른다`,
+  `X로 읽으면 안 된다` → `X로 해석하면 안 된다`.
 - If the `humanizer` and `grammar-checker` skills are installed, this rule is
   enforced by running them (see Stage 07); if not, apply it by hand.
 

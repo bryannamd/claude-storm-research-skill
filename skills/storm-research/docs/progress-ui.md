@@ -96,7 +96,7 @@ with no background in AI research tooling. Technical terms are allowed, but:
 
 | Term | One-line gloss (KO example) |
 |---|---|
-| executor | 조사·검증을 실제로 돌리는 외부 AI 도구 (codex, agy 등) |
+| executor | 조사·검증을 실제로 돌리는 외부 AI 도구 (codex, agy, grok 등) |
 | expert / expert persona | 각기 다른 시각으로 웹을 직접 뒤지는 AI 조사원 |
 | contradiction map (대립 지도) | 전문가들 주장이 서로 부딪히는 지점을 정리한 표 |
 | adversarial peer review (반박 검토) | 일부러 흠을 잡는 시각으로 초안을 다시 뜯어보는 검토 |

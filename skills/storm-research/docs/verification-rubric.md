@@ -37,12 +37,12 @@ For each claim, record in the claim-verification ledger (kept in session memory;
 | Field | Required content |
 |---|---|
 | Claim | The exact factual statement planned for the brief. |
-| Producer | Which executor (codex / agy / claude) produced the claim — synthesis-stage claims are Claude-produced. |
+| Producer | Which executor (codex / agy / grok / claude) produced the claim — synthesis-stage claims are Claude-produced. |
 | Verdict | `CONFIRMED`, `CORRECTED`, `DEMOTED`, or `FABRICATED` (see Stage 06); `[UNVERIFIED]` when the source could not be fetched (disposition, not a verdict — a verifier's own fetch failure is never `FABRICATED`). |
 | Source Quote | The shortest primary-source excerpt that directly supports the claim. |
 | URL | The fetched source URL for the quote. |
 | Grade | The source grade for this claim context. |
-| Verifying Executor | Which executor (codex / agy / claude) verified the claim. |
+| Verifying Executor | Which executor (codex / agy / grok / claude) verified the claim. |
 
 Verdict handling: CONFIRMED claims keep their score; CORRECTED claims are rewritten to match the evidence; DEMOTED claims stay with lowered confidence and a labeled source grade; FABRICATED claims are dropped from the report entirely.
 

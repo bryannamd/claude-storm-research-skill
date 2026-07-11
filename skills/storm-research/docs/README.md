@@ -21,6 +21,6 @@ Stages run in order; each one's output feeds the next.
 | File | What it covers |
 |---|---|
 | [`pipeline.md`](pipeline.md) | How this skill maps to the original Stanford STORM method, and where it deliberately differs. |
-| [`executors.md`](executors.md) | How expert and verification work is routed across external CLIs (`codex`, `agy`) and Claude — detection, cross-model rules, and fallback. |
+| [`executors.md`](executors.md) | How expert and verification work is routed across external CLIs (`codex`, `agy`, `grok`) and Claude — detection, cross-model rules, and fallback. |
 | [`verification-rubric.md`](verification-rubric.md) | How sources are graded A–F and how findings are scored 1–10 for confidence. |
 | [`output-schema.md`](output-schema.md) | The exact structure of the final terminal output. |

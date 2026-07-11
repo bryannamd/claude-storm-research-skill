@@ -12,7 +12,7 @@ Output format: A detailed markdown report with a clear executive summary."
 **Pipeline Execution Summary** (the 7 stages, in order — see `docs/stage-01.md` … `stage-07.md`):
 
 1. **Scope Clarification**: The system restates your topic in one line, records the audience (technical product managers) and the boundaries (passenger vehicles only; TPUs/NPUs in focus), and proceeds.
-2. **The Experts Research**: Five experts — practitioner, academic, skeptic, economist, historian — research in parallel, each doing real web/source retrieval on TPUs, NPUs, and latency benchmarks, then a short follow-up round. On a machine with `codex`/`agy` installed, they run on those other AI models.
+2. **The Experts Research**: Five experts — practitioner, academic, skeptic, economist, historian — research in parallel, each doing real web/source retrieval on TPUs, NPUs, and latency benchmarks, then a short follow-up round. On a machine with `codex`/`agy`/`grok` installed, they run on those other AI models (`grok` support is experimental).
 3. **Map the Disagreements**: Where the experts disagree, agree, and go blind is mapped explicitly.
 4. **Synthesis & Outline Drafting**: The findings are curated into a cited outline structured for the product-manager audience.
 5. **Self-Review**: The draft is scored for confidence, checked for bias, and probed for an angle the five experts missed.

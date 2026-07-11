@@ -15,7 +15,7 @@ The paper also names the method's open problems: **source bias transfer** (the s
 | STORM (paper / official implementation) | This skill |
 |---|---|
 | Perspective discovery from similar articles | Five fixed experts (Practitioner, Academic, Skeptic, Economist, Historian) + user-added experts — fixed personas trade discovery breadth for comparability and repeatability across runs |
-| Simulated writer–expert conversations, one per perspective, in parallel | Stage 02: parallel expert agents on external CLIs (codex, agy) with one or two grounded follow-up rounds each |
+| Simulated writer–expert conversations, one per perspective, in parallel | Stage 02: parallel expert agents on external CLIs (codex, agy, grok) with one or two grounded follow-up rounds each |
 | Separate LM roles (cheap model for conversation simulation, strong model for cited text) | Executor split: research and verification delegated outward; synthesis and citation-dense drafting stay in the main Claude session |
 | Outline curation → article generation → polish | Stages 04 → 07 |
 | — (paper flags missing self-critique) | Stage 05 adversarial peer review + Stage 06 cross-model verification, added on top of STORM |

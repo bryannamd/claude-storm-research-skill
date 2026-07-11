@@ -43,7 +43,7 @@ Audience: a hospital procurement lead deciding what to pilot.
 
 ## 4. What happens
 
-Claude states its understanding in **one line** and proceeds (it asks at most one clarifying question, and only if the topic is genuinely ambiguous). Then it runs the pipeline: five experts research in parallel → the skill maps where they disagree → a tough self-review → every claim is fact-checked against its original source → a final briefing is written. On a machine with `codex` or `agy` installed, the research and fact-checking run on those other AI models; otherwise Claude does it all.
+Claude states its understanding in **one line** and proceeds (it asks at most one clarifying question, and only if the topic is genuinely ambiguous). Then it runs the pipeline: five experts research in parallel → the skill maps where they disagree → a tough self-review → every claim is fact-checked against its original source → a final briefing is written. On a machine with `codex`, `agy`, or `grok` installed, the research and fact-checking run on those other AI models (`grok` support is experimental); otherwise Claude does it all.
 
 ## 5. Read the result
 

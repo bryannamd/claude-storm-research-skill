@@ -39,8 +39,8 @@ Per the [Agent Skills spec](https://agentskills.io/specification):
 - [ ] `name: storm-research` — lowercase, hyphens only, matches the parent directory name (`storm-research`), ≤ 64 characters
 - [ ] `description` present, non-empty, ≤ 1024 characters, states what the skill does and when to use it
 - [ ] `license` references the repo's MIT license
-- [ ] `compatibility` documents tool requirements and the external-CLI preference (codex/agy) with fallback
-- [ ] `allowed-tools` includes `WebSearch`, `WebFetch`, and the scoped Bash patterns `Bash(codex *)`, `Bash(agy *)`, `Bash(timeout *)`, and `Bash(command -v *)` (the invoked commands are `timeout 600 codex --search exec …`, `timeout 600 agy -p …`, and `command -v …`; the skill writes no files, so no `rm`/`find` patterns are needed)
+- [ ] `compatibility` documents tool requirements and the external-CLI preference (codex/agy/grok, grok experimental) with fallback
+- [ ] `allowed-tools` includes `WebSearch`, `WebFetch`, and the scoped Bash patterns `Bash(codex *)`, `Bash(agy *)`, `Bash(grok *)`, `Bash(timeout *)`, and `Bash(command -v *)` (the invoked commands are `timeout 600 codex --search exec …`, `timeout 600 agy -p …`, `timeout 600 grok -p … </dev/null`, and `command -v …`; the skill writes no files, so no `rm`/`find` patterns are needed)
 - [ ] `metadata.version` follows semver (`x.y.z`), `metadata.author` present — custom fields belong under `metadata`, not top-level
 - [ ] Top-level fields limited to the spec's `name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools` plus documented Claude Code extension fields (`argument-hint`) — never undocumented inventions like `id`
 - [ ] Trigger phrases are documented in `description` or body text
