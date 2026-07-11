@@ -118,7 +118,7 @@
 **Setup:** Static checks on the skill files, then one Korean-language run (e.g., `"스톰으로 반도체 공급망 조사해줘"`). Note: one passing run proves the frames *can* appear (existence), not that every run will produce them — LLM compliance is probabilistic.
 
 **Static checks (grep the skill files):**
-1. `SKILL.md` contains no instruction making progress updates terse or caveman-compressed (search `terse`, `caveman` — zero hits in a progress context).
+1. None of `SKILL.md`, `docs/progress-ui.md`, `docs/output-schema.md`, or `docs/stage-07.md` instructs progress updates or the final report to be caveman-*compressed* — the article-dropping, gloss-stripping squeeze that leaves bare jargon (documented past failure #1). The Readability standard's caveman *economy* (lean **and** grammatically complete, with jargon glossed) is expected and allowed, so `caveman` may appear only as the named past failure, the economy *spirit*, or the plugin context — never as a directive to drop grammar words or glosses to save space. Confirm no instruction or template strips articles/connectives/glosses/citations/badges for brevity.
 2. Literal frame templates are inline at their point of use: kickoff map in `stage-01.md`, dispatch + completion frames in `stage-02.md`, cluster frames in `stage-06.md`, compact position bars in `stage-02..07`.
 3. No frame template contains elapsed/remaining-time wording (search `경과`, `elapsed`, `remaining` in templates — the only allowed time phrase is the one-time dispatch expectation "보통 3~5분" / "usually takes 3–5 minutes").
 4. Every template line fits within 80 columns.
@@ -130,8 +130,9 @@
 8. During Stage 06: dispatch frame with bar segments equal to the actual cluster count (4–6), then one frame per cluster completion.
 9. Glossary terms (`executor`, `expert`, contradiction map, adversarial peer review, verification cluster, verdicts) each carry a one-line plain-language gloss on first appearance; a non-expert reader (middle/high-school level) can follow every intermediate message.
 10. No fabricated elapsed-time claims anywhere in the run's intermediate output.
+11. The delivered **final report** meets the Readability standard, not just the intermediate frames: a high-school reader can follow it, every technical term (including leaked pipeline terms like `executor`/`verdict`) is glossed in one plain line on first use, it reads smoothly start to finish, and it is economical **without** dropping any grammar/connective words, glosses, citations, or verdict badges. Spot-check that no sentence was shortened by stripping those.
 
-**Pass Criteria:** All static checks pass; the run shows the kickoff map once, position bars at transitions, wake-event frames in Stages 02/06, first-use glosses, and zero time fabrications.
+**Pass Criteria:** All static checks pass; the run shows the kickoff map once, position bars at transitions, wake-event frames in Stages 02/06, first-use glosses, and zero time fabrications; and the final report satisfies the Readability standard (check 11) with no comprehension-breaking compression.
 
 ---
 

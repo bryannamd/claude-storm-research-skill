@@ -26,6 +26,31 @@ The terminal output must be written in the user's prompt language:
 - If the user asked in English, the report must be in English.
 - All user-facing text follows this rule.
 
+## Readability standard (the final report obeys it too)
+
+The final report follows the same **Readability standard** defined in
+`docs/progress-ui.md` as the intermediate frames — this is one bar for everything
+the skill shows the user, not two:
+
+- **High-school comprehension.** A high-school student can follow the whole report.
+  Any term a high-schooler would not know is glossed in one plain line on first use
+  (this is what the Natural-Korean Prose Rule below enforces for Korean runs). This
+  includes pipeline-internal terms that leak into the report's method/meta lines
+  (e.g. `executor`, `verdict`): gloss them once or use a plain equivalent — never
+  leave them bare in the user-facing briefing.
+- **Smooth flow.** Sentences are short and clear and connect naturally; the report
+  reads start-to-finish without snagging, not as a stack of fragments.
+- **Economical and concise.** Cut rhetoric, filler, and academic padding; make the
+  core findings land in the fewest plain words that still carry them. Write lean
+  but grammatically complete — keep the grammar and connective words. This is the
+  caveman *spirit* (economy), held even when the caveman plugin is not active.
+- **Economy is not compression.** Being lean must never strip the grammar and
+  connective words, glosses, citations, or verdict badges that make a claim
+  followable and checkable. When brevity and clarity pull apart, clarity wins.
+
+"Polished" here means *lean and readable*, not *long and ornate*. A report can be
+fully formatted per the sections below and still be tight — that is the target.
+
 ## Terminal Formatting Constraints
 
 Claude Code's terminal renderer displays the output as GitHub-flavored Markdown,

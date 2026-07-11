@@ -2,7 +2,8 @@
 
 This document is the contract for every **intermediate** (in-progress) message the pipeline
 prints. It governs tone, vocabulary, and progress feedback between kickoff and final delivery.
-The final report itself is governed by `docs/output-schema.md` and is unaffected by this file.
+The final report's **structure** is governed by `docs/output-schema.md`; its **readability**
+follows the same Readability standard defined below — one bar shared across both.
 
 The literal frame templates live **inline in the stage docs at their point of use**
 (`stage-01.md` kickoff map, `stage-02.md` expert frames, `stage-06.md` cluster frames,
@@ -17,6 +18,33 @@ Two past failures this standard prevents:
    jargon with no explanation. Users could not follow what the pipeline was doing.
 2. **Silent waits.** Stages 02 and 06 run external agents in the background for minutes.
    With only a single status line, the run looked frozen.
+
+## Readability standard (intermediate frames AND the final report)
+
+One standard governs every user-facing sentence the skill writes — both the
+in-progress frames here and the final report in `docs/output-schema.md`. Four
+points, all at once:
+
+1. **A high-school student can follow it.** Technical terms are allowed, but any
+   term a high-schooler would not know is glossed in one plain line on its first
+   use. Everyday words are never glossed — that only bloats the text. The
+   Plain-language rule and glossary below name exactly which terms to gloss in the
+   progress frames; the final report glosses its research jargon the same way.
+2. **It reads smoothly.** Short, clear sentences that connect and flow — not a
+   pile of disjoint fragments the reader has to reassemble.
+3. **It stays economical and concise.** Cut rhetoric, filler words, and academic
+   padding; say the thing in the fewest plain words that still land. Write lean
+   **but grammatically complete** — keep the articles, connective words, and
+   glosses; drop only the fluff. This is the caveman *spirit* (economy), and it is
+   the skill's own default even when the caveman plugin is not active — not a
+   borrowed mode. It is distinct from caveman *compression*, which point 4 forbids.
+4. **Economy is not compression.** Being short must never drop the grammar words,
+   connectors, glosses, citations, or badges that make a sentence followable and
+   checkable, leaving bare jargon — that is exactly past failure #1 above. Write
+   short, but always readable. When brevity and clarity pull apart, clarity wins.
+
+This resolves the tension: lean *because the fluff is gone*, never terse *because
+the meaning was squeezed out*.
 
 ## Medium constraints (be honest about them)
 
@@ -157,11 +185,16 @@ disagree with the count.
 
 ## Compression modes (caveman etc.)
 
-Intermediate progress messages are **exempt from terse/compression styles** by design intent:
-the stage docs inline literal templates with "print this block verbatim" instructions
-precisely so a compression mode has nothing to compress. A globally active user style (e.g.
-`/caveman full`) is outside this skill's control — the skill competes by making the friendly
-wording the literal, lowest-effort path, not by claiming to override user settings.
+The Readability standard already settles this: point 3 adopts the caveman **economy** (the
+default here), point 4 rejects caveman **compression** (the article-dropping squeeze that
+leaves bare jargon). So a caveman-style economy is welcome; only comprehension-breaking
+compression is out.
+
+The literal frame templates carry this balance already: they are inlined with "print this
+block verbatim" instructions, and each is written lean **and** glossed, so there is nothing
+left for a compression mode to usefully squeeze. A globally active user style (e.g.
+`/caveman full`) is outside this skill's control — the skill competes by making the lean,
+readable wording the literal, lowest-effort path, not by claiming to override user settings.
 
 ## Known limits
 
