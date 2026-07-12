@@ -31,7 +31,10 @@ points, all at once:
    Plain-language rule and glossary below name exactly which terms to gloss in the
    progress frames; the final report glosses its research jargon the same way.
 2. **It reads smoothly.** Short, clear sentences that connect and flow — not a
-   pile of disjoint fragments the reader has to reassemble.
+   pile of disjoint fragments the reader has to reassemble. The operational
+   rules for this — the high-school word test, gloss placement, sentence
+   mechanics, the read-aloud test — are defined once in `docs/output-schema.md`
+   and apply to the narration here too.
 3. **It stays economical and concise.** Cut rhetoric, filler words, and academic
    padding; say the thing in the fewest plain words that still land. Write lean
    **but grammatically complete** — keep the articles, connective words, and
@@ -130,6 +133,22 @@ with no background in AI research tooling. Technical terms are allowed, but:
 | adversarial peer review (반박 검토) | 일부러 흠을 잡는 시각으로 초안을 다시 뜯어보는 검토 |
 | verification cluster (검증 클러스터) | 주제가 비슷한 주장들을 묶어 한 번에 출처 대조하는 단위 |
 | verdict (판정: CONFIRMED/CORRECTED/DEMOTED/FABRICATED) | 출처 대조 결과 — 확인됨/정정됨/신뢰도 하향/출처 없음(삭제) |
+
+### Narration between frames (this is prose, not a status line)
+
+Frames are labeled status lines — clipped fragments there (`방금 끝남: 회의론자`)
+are correct and stay. Everything **else** the pipeline prints between frames —
+the sentence or two of narration around a dispatch, a stage hand-off, a note on
+what verification just found — is prose, and follows the operational rules in
+`docs/output-schema.md`: complete sentences ending in verbs, at most one gloss
+per sentence (long glosses become their own sentence), no bare noun chains. The
+high-school word test applies to narration too: the *topic's* jargon that
+surfaces mid-run (not just the pipeline terms above) gets a one-line gloss on
+its first appearance. One carve-out: the inline parenthetical glosses baked
+into the verbatim frame templates (e.g. `expert(각기 다른 시각으로 …)`) are
+governed by the Glossary rule above and stay as printed — the
+long-gloss-as-own-sentence rule applies to free-prose narration, not to the
+fixed templates.
 
 ## Compact position bar (stage transitions)
 

@@ -10,7 +10,7 @@ A single terminal report in this exact order:
 |---|---|---|---|
 | — | Header | Title, version (`V2 (VERIFIED)`), date, five-expert subtitle, method/audience meta line | Stage 01 + executor manifest |
 | — | VERIFIED summary | Sources checked, cluster count, fabricated/corrected/demoted counts, verify date | Stage 06 statistics |
-| 01 | The 60-Second Summary | The whole story in a few sentences, leading with the tension that matters most | Stage 04/07 |
+| 01 | The 60-Second Summary | The whole story in a few sentences: one or two plain orientation sentences first (what the topic is, why it matters), then the tension that matters most | Stage 04/07 |
 | 02 | Key Findings, Ranked by Reliability | One block per finding, highest score first: title, `RELIABILITY: HIGH/MEDIUM/LOW · n/10` badge, cited body, supported-by/challenged-by expert tags, caveat line | Stage 06 V2 outline |
 | 03 | Where the Experts Disagree | The major tensions and the one resolving question | Stage 03 |
 | 04 | The Assumption This Briefing Rests On (and the Missing Sixth Expert) | The shared framing all experts inherit, plus the named missing expert and its expected effect | Stage 05 |
@@ -50,6 +50,83 @@ the skill shows the user, not two:
 
 "Polished" here means *lean and readable*, not *long and ornate*. A report can be
 fully formatted per the sections below and still be tight — that is the target.
+
+The four points above are the principles; the subsections below are the
+**operational rules** (plus a worked example) that make them checkable. They exist because past runs
+satisfied the principles "in spirit" while still shipping reports a
+high-schooler could not follow. Intermediate narration follows the same rules
+(see `docs/progress-ui.md`).
+
+### The high-school word test (what counts as jargon)
+
+The gloss rule fails most often on words that feel everyday to a developer,
+analyst, or researcher but are not everyday to a high-schooler. Run every noun
+in the report through one test: **would a 17-year-old with no coding, finance,
+or research background know this word?** If not, gloss it on first use — even
+if it feels too basic to need one. Typical traps that past runs left bare:
+
+| Feels everyday to the model, is not | First-use gloss (KO example) |
+|---|---|
+| PR | PR(작성한 코드를 반영해 달라는 요청) |
+| CI | CI(코드를 합칠 때마다 자동으로 검사하는 장치) |
+| 벤치마크 / 리더보드 | 벤치마크(같은 조건에서 성능을 재는 시험) · 리더보드(그 성적 순위표) |
+| 샌드박스 | 샌드박스(프로그램을 가둬 놓고 돌리는 안전한 공간) |
+| 헤드리스 | 헤드리스(화면 없이 명령만으로 실행하는 방식) |
+| 파인튜닝 | 파인튜닝(기존 AI 모델을 특정 용도에 맞게 추가로 학습시키는 것) |
+| 토큰 | 토큰(AI가 글을 읽고 쓰는 최소 단위) |
+
+The table is examples, not a complete list — every topic brings its own jargon,
+so the test is what matters, not the table. (The glossary in
+`docs/progress-ui.md` covers the skill's own *pipeline* terms; this test covers
+the *topic's* terms, which change every run.)
+
+### Gloss placement (a gloss must never break its sentence)
+
+- A short gloss — one plain phrase — goes inline in parentheses right after the
+  term: `무작위 대조시험(RCT)`.
+- A long explanation gets its **own short sentence immediately after** instead:
+  `… 무작위 대조시험(RCT)에서는 반대 결과가 나왔다. 참가자를 무작위로 두 집단으로
+  나눠 도구의 효과만 떼어내 측정하는 실험이다.` Parking a full clause inside
+  mid-sentence parentheses makes the reader lose the sentence they were in.
+- **At most one gloss per sentence.** A sentence that needs two glosses is two
+  sentences.
+
+### Sentence mechanics (what "smooth" means, operationally)
+
+- **Open with orientation.** The first one or two sentences of the 60-second
+  summary tell a newcomer, in plain words, what the topic is and why it matters
+  — before any tension, number, or technical term. A reader who knows nothing
+  about the field must not be lost by sentence one.
+- **Unroll noun chains.** Three or more technical nouns strung together with
+  `·` or commas (`권한 관리, 헤드리스·CI 실행, 로그·감사, 비용 통제`) read as a
+  spec sheet even when a verb follows. Weave them into a sentence, or break
+  them into a bullet list where each item gets its gloss.
+- **One dash aside per sentence.** An em-dash aside is fine once; needing a
+  second means the sentence should be split.
+- **Body prose ends in verbs.** Sentences in body paragraphs end with a full
+  verb ending (`~다`), never a clipped noun form (`결이 다름`, `근거 없음`).
+  Clipped forms live only in labeled fragments: tag lines, table cells, badges.
+- **Each finding is a mini-story, not a fact pile.** Two to four complete
+  sentences, in order: what was found → the strongest evidence → what it means
+  for this reader.
+- **Read-aloud test.** Before delivery, read the report as if reading it aloud.
+  Any sentence you would stumble over, re-read, or run out of breath on gets
+  rewritten. This is the final gate on smoothness.
+
+### Worked example (one finding body, KO)
+
+Before — fails the standard (bare jargon, clipped ending, no story):
+
+> 깃허브 규모 연구(프로젝트 128,018개)는 채택률 22~29% 추정, MS 연구에서 PR 24%
+> 증가. 다만 병합 PR은 가치와 다름.
+
+After — passes (orientation, glossed, verb endings, found → evidence → meaning):
+
+> 코딩 에이전트(사람 대신 코드를 짜고 고치는 AI 도구)는 이미 실험 단계를 지나
+> 일상 업무에 들어왔다. 깃허브 프로젝트 128,018개를 조사한 연구는 채택률을
+> 22~29%로 추정했고, 마이크로소프트 연구에서는 도구를 도입한 개발자의 PR(작성한
+> 코드를 반영해 달라는 요청)이 넉 달간 약 24% 늘었다. 다만 PR 수는 일의 양을
+> 어림하는 지표일 뿐이라, 그만큼 가치가 늘었다는 뜻으로 해석하면 안 된다.
 
 ## Terminal Formatting Constraints
 

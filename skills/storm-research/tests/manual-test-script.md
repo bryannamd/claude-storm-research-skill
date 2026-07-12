@@ -131,8 +131,9 @@
 9. Glossary terms (`executor`, `expert`, contradiction map, adversarial peer review, verification cluster, verdicts) each carry a one-line plain-language gloss on first appearance; a non-expert reader (middle/high-school level) can follow every intermediate message.
 10. No fabricated elapsed-time claims anywhere in the run's intermediate output.
 11. The delivered **final report** meets the Readability standard, not just the intermediate frames: a high-school reader can follow it, every technical term (including leaked pipeline terms like `executor`/`verdict`) is glossed in one plain line on first use, it reads smoothly start to finish, and it is economical **without** dropping any grammar/connective words, glosses, citations, or verdict badges. Spot-check that no sentence was shortened by stripping those.
+12. The report passes the **mechanics checks** in `docs/output-schema.md`: the 60-second summary opens with an orientation sentence a newcomer can follow; developer-everyday traps (`PR`, `CI`, `벤치마크`, `샌드박스` 등) are glossed, not just pipeline terms; no sentence carries more than one gloss (long glosses stand as their own sentence); body prose ends in full verb endings (no clipped `~함`/`~음` closings outside tag lines); 3+-term noun chains are unrolled.
 
-**Pass Criteria:** All static checks pass; the run shows the kickoff map once, position bars at transitions, wake-event frames in Stages 02/06, first-use glosses, and zero time fabrications; and the final report satisfies the Readability standard (check 11) with no comprehension-breaking compression.
+**Pass Criteria:** All static checks pass; the run shows the kickoff map once, position bars at transitions, wake-event frames in Stages 02/06, first-use glosses, and zero time fabrications; and the final report satisfies the Readability standard (check 11) and the mechanics checks (check 12) with no comprehension-breaking compression.
 
 ---
 
