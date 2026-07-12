@@ -117,9 +117,15 @@ No files are generated. If code/tool changes surfaced during the run, the cross-
 | Feature | What it does |
 |---|---|
 | **7-stage pipeline** | Scope → five experts research at once → map disagreements → outline → adversarial self-review → fact-check every claim → deliver a consistent report. |
-| **Cross-model verification** | Research and fact-checking can run on `codex`/`agy` when installed, so one model's claims get reviewed by a *different* one. Falls back to Claude alone otherwise. See [`docs/executors.md`](skills/storm-research/docs/executors.md). |
+| **Cross-model verification** | Research and fact-checking can run on `codex`/`agy` (and `grok`, experimental) when installed, so one model's claims get reviewed by a *different* one. Falls back to Claude alone otherwise. See [`docs/executors.md`](skills/storm-research/docs/executors.md). |
 | **Primary-source fact-checking** | Each claim needs a real quote from an original source. Anything invented is dropped and the report is rewritten with confidence scores updated. |
 | **Built-in self-critique** | Plain STORM had no self-check, so it could absorb a source's bias or invent links between unrelated facts. The review stage hunts for exactly those two mistakes. |
+
+## What's new in 2.2.0
+
+- **A third optional executor: `grok`.** Auto-detected alongside `codex` and `agy`, but **experimental and off by default** until you confirm headless live web search works in your install (see the [caveat-removal condition](#requirements)). Expert splitting and cross-model verification now follow one rule that works for any executor count, so the existing `codex`+`agy` behavior is unchanged. Details in [`docs/executors.md`](skills/storm-research/docs/executors.md).
+- **Setup & Login ladder.** Missing a CLI? Step 0 points you to the install and web-OAuth steps for each one; if none work, the pipeline still runs on Claude alone. This is guidance text only — the skill never runs those commands itself.
+- **One Readability standard for every output.** Both the progress updates and the final report must be high-school comprehensible (technical terms glossed on first use), read smoothly, and stay lean — without dropping the words, glosses, citations, or badges that keep a claim followable. It is the caveman *economy* (cut the fluff), never the caveman *compression* that strips grammar and leaves bare jargon. Defined in [`docs/progress-ui.md`](skills/storm-research/docs/progress-ui.md), applied to the report in [`docs/output-schema.md`](skills/storm-research/docs/output-schema.md).
 
 ## storm-research vs. deep-research
 
